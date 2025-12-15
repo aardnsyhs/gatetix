@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, MapPin, QrCode, Download, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const tickets = [
   {
@@ -58,117 +68,136 @@ export default function MyTickets() {
         </div>
 
         {/* Filter Tabs */}
-        <div className="gt-tabs inline-flex mb-8">
-          {(["all", "active", "used"] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`gt-tab capitalize ${filter === f ? "active" : ""}`}
+        <Tabs
+          value={filter}
+          onValueChange={(v) => setFilter(v as typeof filter)}
+          className="mb-8"
+        >
+          <TabsList className="bg-muted/50 p-1 rounded-xl">
+            <TabsTrigger
+              value="all"
+              className="rounded-lg capitalize data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
             >
-              {f}
-            </button>
-          ))}
-        </div>
+              All
+            </TabsTrigger>
+            <TabsTrigger
+              value="active"
+              className="rounded-lg capitalize data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
+            >
+              Active
+            </TabsTrigger>
+            <TabsTrigger
+              value="used"
+              className="rounded-lg capitalize data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
+            >
+              Used
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
 
         {/* Tickets Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredTickets.map((ticket) => (
-            <div key={ticket.id} className="gt-ticket p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">
-                    {ticket.eventName}
-                  </h3>
-                  <span
-                    className={`gt-badge ${
-                      ticket.status === "active"
-                        ? "gt-badge-success"
-                        : "gt-badge-muted"
-                    }`}
+            <Card
+              key={ticket.id}
+              className="gt-card-glow gt-ticket-card overflow-hidden"
+            >
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">
+                      {ticket.eventName}
+                    </h3>
+                    <Badge
+                      variant={
+                        ticket.status === "active" ? "default" : "secondary"
+                      }
+                      className={
+                        ticket.status === "active"
+                          ? "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
+                          : ""
+                      }
+                    >
+                      {ticket.status === "active" ? "Active" : "Used"}
+                    </Badge>
+                  </div>
+                  <span className="text-sm font-mono text-muted-foreground">
+                    {ticket.id}
+                  </span>
+                </div>
+
+                <div className="space-y-2 mb-6">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Calendar className="h-4 w-4" />
+                    <span>
+                      {ticket.date} at {ticket.time}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4" />
+                    <span>{ticket.location}</span>
+                  </div>
+                  <p className="text-sm">
+                    <span className="text-muted-foreground">Type:</span>{" "}
+                    <span className="font-medium">{ticket.ticketType}</span>
+                  </p>
+                </div>
+
+                <div className="h-px bg-border my-4" />
+
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setSelectedTicket(ticket)}
+                    className="flex-1 rounded-xl"
                   >
-                    {ticket.status === "active" ? "Active" : "Used"}
-                  </span>
+                    <QrCode className="h-4 w-4 mr-2" />
+                    Show QR
+                  </Button>
+                  <Button
+                    asChild
+                    className="flex-1 gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+                  >
+                    <Link to={`/tickets/${ticket.id}`}>View Details</Link>
+                  </Button>
                 </div>
-                <span className="text-sm font-mono text-muted-foreground">
-                  {ticket.id}
-                </span>
-              </div>
-
-              <div className="space-y-2 mb-6">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4" />
-                  <span>
-                    {ticket.date} at {ticket.time}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  <span>{ticket.location}</span>
-                </div>
-                <p className="text-sm">
-                  <span className="text-muted-foreground">Type:</span>{" "}
-                  <span className="font-medium">{ticket.ticketType}</span>
-                </p>
-              </div>
-
-              <div className="gt-divider" />
-
-              <div className="flex gap-3 pt-4">
-                <button
-                  onClick={() => setSelectedTicket(ticket)}
-                  className="gt-btn-outline flex-1"
-                >
-                  <QrCode className="h-4 w-4 mr-2" />
-                  Show QR
-                </button>
-                <Link to={`/tickets/${ticket.id}`} className="flex-1">
-                  <button className="gt-btn-primary w-full">
-                    View Details
-                  </button>
-                </Link>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
         {/* QR Code Modal */}
-        {selectedTicket && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
-            <div className="gt-card-flat max-w-sm w-full p-6 animate-scale-in">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold">
-                  {selectedTicket.eventName}
-                </h3>
-                <button
-                  onClick={() => setSelectedTicket(null)}
-                  className="gt-icon-btn"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-
+        <Dialog
+          open={!!selectedTicket}
+          onOpenChange={() => setSelectedTicket(null)}
+        >
+          <DialogContent className="sm:max-w-sm gt-card-glow">
+            <DialogHeader>
+              <DialogTitle>{selectedTicket?.eventName}</DialogTitle>
+            </DialogHeader>
+            <div className="text-center">
               <div className="bg-white p-6 rounded-2xl mb-6">
                 <img
-                  src={selectedTicket.qrCode}
+                  src={selectedTicket?.qrCode}
                   alt="Ticket QR Code"
                   className="w-full aspect-square"
                 />
               </div>
 
-              <p className="text-sm text-muted-foreground text-center mb-2">
+              <p className="text-sm text-muted-foreground mb-2">
                 Show this QR code at the venue entrance
               </p>
-              <p className="text-xs font-mono text-center text-muted-foreground mb-6">
-                {selectedTicket.id}
+              <p className="text-xs font-mono text-muted-foreground mb-6">
+                {selectedTicket?.id}
               </p>
 
-              <button className="gt-btn-outline w-full">
+              <Button variant="outline" className="w-full rounded-xl">
                 <Download className="h-4 w-4 mr-2" />
                 Download Ticket
-              </button>
+              </Button>
             </div>
-          </div>
-        )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

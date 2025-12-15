@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Menu, X, Ticket, User, ChevronDown } from "lucide-react";
+import { Menu, X, Ticket, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const navLinks = [
   { label: "Browse Events", path: "/events" },
@@ -49,28 +50,33 @@ export default function PublicLayout() {
 
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center gap-3">
-              <Link to="/login">
-                <button className="gt-btn-ghost">
+              <Button asChild variant="ghost" className="rounded-xl">
+                <Link to="/login">
                   <User className="h-4 w-4 mr-2" />
                   Sign In
-                </button>
-              </Link>
-              <Link to="/admin/dashboard">
-                <button className="gt-btn-primary">Organizer Portal</button>
-              </Link>
+                </Link>
+              </Button>
+              <Button
+                asChild
+                className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+              >
+                <Link to="/admin/dashboard">Organizer Portal</Link>
+              </Button>
             </div>
 
             {/* Mobile Menu Button */}
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden gt-icon-btn"
+              className="md:hidden rounded-xl"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
               ) : (
                 <Menu className="h-6 w-6" />
               )}
-            </button>
+            </Button>
           </div>
 
           {/* Mobile Menu */}
@@ -92,20 +98,27 @@ export default function PublicLayout() {
                   </Link>
                 ))}
                 <div className="pt-4 mt-2 border-t border-border space-y-2">
-                  <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                    <button className="gt-btn-ghost w-full justify-start">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="w-full justify-start rounded-xl"
+                  >
+                    <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
                       <User className="h-4 w-4 mr-2" />
                       Sign In
-                    </button>
-                  </Link>
-                  <Link
-                    to="/admin/dashboard"
-                    onClick={() => setMobileMenuOpen(false)}
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
                   >
-                    <button className="gt-btn-primary w-full">
+                    <Link
+                      to="/admin/dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
                       Organizer Portal
-                    </button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </div>

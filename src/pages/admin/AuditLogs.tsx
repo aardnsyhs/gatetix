@@ -9,6 +9,9 @@ import {
   Plus,
   Edit,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 const auditLogs = [
   {
@@ -80,9 +83,9 @@ export default function AuditLogs() {
   const getTypeStyle = (type: string) => {
     switch (type) {
       case "create":
-        return "bg-success/10 text-success";
+        return "bg-emerald-500/10 text-emerald-500";
       case "update":
-        return "bg-info/10 text-info";
+        return "bg-blue-500/10 text-blue-500";
       case "delete":
         return "bg-destructive/10 text-destructive";
       default:
@@ -92,7 +95,6 @@ export default function AuditLogs() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold">Audit Logs</h1>
@@ -100,76 +102,77 @@ export default function AuditLogs() {
             Track all system activities
           </p>
         </div>
-        <button className="gt-btn-outline">
+        <Button variant="outline" className="rounded-xl">
           <Download className="h-4 w-4 mr-2" />
           Export Logs
-        </button>
+        </Button>
       </div>
 
-      {/* Search & Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <input
+        <Input
           type="text"
           placeholder="Search logs..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="gt-input-search flex-1 max-w-md"
+          className="flex-1 max-w-md rounded-xl"
         />
-        <button className="gt-btn-ghost">
+        <Button variant="ghost" className="rounded-xl">
           <Filter className="h-4 w-4 mr-2" />
           Filters
-        </button>
+        </Button>
       </div>
 
-      {/* Logs Timeline */}
-      <div className="gt-card-flat">
-        <div className="divide-y divide-border">
-          {filteredLogs.map((log) => {
-            const Icon = log.icon;
-            return (
-              <div
-                key={log.id}
-                className="p-5 hover:bg-muted/30 transition-smooth"
-              >
-                <div className="flex items-start gap-4">
-                  <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getTypeStyle(
-                      log.type
-                    )}`}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="font-medium">{log.action}</p>
-                        <p className="text-sm text-muted-foreground mt-0.5">
-                          by{" "}
-                          <span className="text-foreground font-medium">
-                            {log.user}
-                          </span>{" "}
-                          on{" "}
-                          <span className="text-foreground">{log.target}</span>
-                        </p>
+      <Card className="gt-card-glow">
+        <CardContent className="p-0">
+          <div className="divide-y divide-border">
+            {filteredLogs.map((log) => {
+              const Icon = log.icon;
+              return (
+                <div
+                  key={log.id}
+                  className="p-5 hover:bg-muted/30 transition-smooth"
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getTypeStyle(
+                        log.type
+                      )}`}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-medium">{log.action}</p>
+                          <p className="text-sm text-muted-foreground mt-0.5">
+                            by{" "}
+                            <span className="text-foreground font-medium">
+                              {log.user}
+                            </span>{" "}
+                            on{" "}
+                            <span className="text-foreground">
+                              {log.target}
+                            </span>
+                          </p>
+                        </div>
+                        <time className="text-sm text-muted-foreground whitespace-nowrap">
+                          {log.timestamp}
+                        </time>
                       </div>
-                      <time className="text-sm text-muted-foreground whitespace-nowrap">
-                        {log.timestamp}
-                      </time>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        {/* Load More */}
-        <div className="p-4 border-t border-border text-center">
-          <button className="text-sm text-primary font-medium hover:underline">
-            Load more logs
-          </button>
-        </div>
-      </div>
+          <div className="p-4 border-t border-border text-center">
+            <button className="text-sm text-primary font-medium hover:underline">
+              Load more logs
+            </button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

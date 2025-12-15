@@ -10,6 +10,17 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const events = [
   {
@@ -55,7 +66,6 @@ const events = [
 
 export default function AdminEvents() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeMenu, setActiveMenu] = useState<number | null>(null);
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -71,32 +81,49 @@ export default function AdminEvents() {
             Manage your events and ticket sales
           </p>
         </div>
-        <button className="gt-btn-primary">
+        <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
           <Plus className="h-4 w-4 mr-2" />
           Create Event
-        </button>
+        </Button>
       </div>
 
       {/* Search & Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <input
+        <Input
           type="text"
           placeholder="Search events..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="gt-input-search flex-1 max-w-md"
+          className="flex-1 max-w-md rounded-xl"
         />
-        <div className="gt-tabs">
-          <button className="gt-tab active">All</button>
-          <button className="gt-tab">Published</button>
-          <button className="gt-tab">Draft</button>
-        </div>
+        <Tabs defaultValue="all">
+          <TabsList className="bg-muted/50 p-1 rounded-xl">
+            <TabsTrigger
+              value="all"
+              className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
+            >
+              All
+            </TabsTrigger>
+            <TabsTrigger
+              value="published"
+              className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
+            >
+              Published
+            </TabsTrigger>
+            <TabsTrigger
+              value="draft"
+              className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
+            >
+              Draft
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
 
       {/* Events Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredEvents.map((event) => (
-          <div key={event.id} className="gt-card overflow-hidden group">
+          <Card key={event.id} className="gt-card-glow overflow-hidden group">
             {/* Event Image */}
             <div className="relative h-40 overflow-hidden">
               <img
@@ -106,15 +133,18 @@ export default function AdminEvents() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute top-3 right-3">
-                <span
-                  className={`gt-badge ${
+                <Badge
+                  variant={
+                    event.status === "published" ? "default" : "secondary"
+                  }
+                  className={
                     event.status === "published"
-                      ? "gt-badge-success"
-                      : "gt-badge-muted"
-                  }`}
+                      ? "bg-emerald-500/10 text-emerald-500"
+                      : ""
+                  }
                 >
                   {event.status}
-                </span>
+                </Badge>
               </div>
               <div className="absolute bottom-3 left-3 right-3">
                 <h3 className="text-white font-semibold text-lg line-clamp-1">
@@ -124,7 +154,7 @@ export default function AdminEvents() {
             </div>
 
             {/* Event Details */}
-            <div className="p-5">
+            <CardContent className="p-5">
               <div className="space-y-2 mb-4">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4" />
@@ -156,9 +186,9 @@ export default function AdminEvents() {
               </div>
 
               {/* Progress Bar */}
-              <div className="gt-progress mt-2">
+              <div className="h-2 bg-muted rounded-full overflow-hidden mt-2">
                 <div
-                  className="gt-progress-bar"
+                  className="h-full gt-gradient-primary rounded-full"
                   style={{
                     width: `${(event.ticketsSold / event.capacity) * 100}%`,
                   }}
@@ -167,37 +197,39 @@ export default function AdminEvents() {
 
               {/* Actions */}
               <div className="flex items-center gap-2 mt-4">
-                <Link to={`/admin/events/${event.id}`} className="flex-1">
-                  <button className="gt-btn-primary w-full text-sm py-2">
+                <Button
+                  asChild
+                  className="flex-1 gt-gradient-primary border-0 hover:opacity-90 rounded-xl text-sm"
+                >
+                  <Link to={`/admin/events/${event.id}`}>
                     <Eye className="h-4 w-4 mr-1" />
                     View
-                  </button>
-                </Link>
-                <div className="relative">
-                  <button
-                    className="gt-icon-btn"
-                    onClick={() =>
-                      setActiveMenu(activeMenu === event.id ? null : event.id)
-                    }
-                  >
-                    <MoreVertical className="h-4 w-4" />
-                  </button>
-                  {activeMenu === event.id && (
-                    <div className="gt-dropdown absolute right-0 bottom-full mb-2 w-40 py-1 animate-scale-in z-10">
-                      <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-smooth">
-                        <Edit className="h-4 w-4" />
-                        Edit
-                      </button>
-                      <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-smooth">
-                        <Trash2 className="h-4 w-4" />
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
+                  </Link>
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-xl"
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="rounded-xl">
+                    <DropdownMenuItem className="rounded-lg cursor-pointer">
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

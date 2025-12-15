@@ -1,5 +1,15 @@
 import { useState } from "react";
 import { Plus, Copy, MoreVertical, Edit, Trash2, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const promoCodes = [
   {
@@ -47,7 +57,6 @@ const promoCodes = [
 export default function PromoCodes() {
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<number | null>(null);
-  const [activeMenu, setActiveMenu] = useState<number | null>(null);
 
   const filteredCodes = promoCodes.filter((code) =>
     code.code.toLowerCase().includes(searchQuery.toLowerCase())
@@ -62,19 +71,16 @@ export default function PromoCodes() {
   const getStatusStyle = (status: string) => {
     switch (status) {
       case "active":
-        return "gt-badge-success";
+        return "bg-emerald-500/10 text-emerald-500";
       case "exhausted":
-        return "gt-badge-muted";
-      case "expired":
-        return "gt-badge-danger";
+        return "";
       default:
-        return "gt-badge-muted";
+        return "";
     }
   };
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold">Promo Codes</h1>
@@ -82,102 +88,103 @@ export default function PromoCodes() {
             Create and manage discount codes
           </p>
         </div>
-        <button className="gt-btn-primary">
+        <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
           <Plus className="h-4 w-4 mr-2" />
           Create Code
-        </button>
+        </Button>
       </div>
 
-      {/* Search */}
-      <input
+      <Input
         type="text"
         placeholder="Search promo codes..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="gt-input-search max-w-md"
+        className="max-w-md rounded-xl"
       />
 
-      {/* Promo Codes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredCodes.map((promo) => (
-          <div key={promo.id} className="gt-card-flat p-5">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <code className="px-3 py-1.5 bg-muted rounded-lg text-sm font-mono font-semibold">
-                  {promo.code}
-                </code>
-                <button
-                  onClick={() => copyCode(promo.id, promo.code)}
-                  className="gt-icon-btn"
-                >
-                  {copiedId === promo.id ? (
-                    <Check className="h-4 w-4 text-success" />
-                  ) : (
-                    <Copy className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-              <div className="relative">
-                <button
-                  className="gt-icon-btn"
-                  onClick={() =>
-                    setActiveMenu(activeMenu === promo.id ? null : promo.id)
-                  }
-                >
-                  <MoreVertical className="h-4 w-4" />
-                </button>
-                {activeMenu === promo.id && (
-                  <div className="gt-dropdown absolute right-0 top-full mt-1 w-36 py-1 animate-scale-in z-10">
-                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-smooth">
-                      <Edit className="h-4 w-4" />
+          <Card key={promo.id} className="gt-card-glow">
+            <CardContent className="p-5">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <code className="px-3 py-1.5 bg-muted rounded-lg text-sm font-mono font-semibold">
+                    {promo.code}
+                  </code>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => copyCode(promo.id, promo.code)}
+                    className="rounded-xl h-8 w-8"
+                  >
+                    {copiedId === promo.id ? (
+                      <Check className="h-4 w-4 text-emerald-500" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-xl h-8 w-8"
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="rounded-xl">
+                    <DropdownMenuItem className="rounded-lg cursor-pointer">
+                      <Edit className="h-4 w-4 mr-2" />
                       Edit
-                    </button>
-                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-smooth">
-                      <Trash2 className="h-4 w-4" />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                      <Trash2 className="h-4 w-4 mr-2" />
                       Delete
-                    </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl font-bold text-primary">
+                    {promo.discount}
+                  </span>
+                  <Badge className={getStatusStyle(promo.status)}>
+                    {promo.status}
+                  </Badge>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Usage</span>
+                    <span className="font-medium">
+                      {promo.used} / {promo.usageLimit}
+                    </span>
                   </div>
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-primary">
-                  {promo.discount}
-                </span>
-                <span className={`gt-badge ${getStatusStyle(promo.status)}`}>
-                  {promo.status}
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Usage</span>
-                  <span className="font-medium">
-                    {promo.used} / {promo.usageLimit}
-                  </span>
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div
+                      className="h-full gt-gradient-primary rounded-full"
+                      style={{
+                        width: `${(promo.used / promo.usageLimit) * 100}%`,
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="gt-progress">
-                  <div
-                    className="gt-progress-bar"
-                    style={{
-                      width: `${(promo.used / promo.usageLimit) * 100}%`,
-                    }}
-                  />
+
+                <div className="pt-3 border-t border-dashed border-border">
+                  <p className="text-xs text-muted-foreground">
+                    Expires:{" "}
+                    <span className="font-medium text-foreground">
+                      {promo.expires}
+                    </span>
+                  </p>
                 </div>
               </div>
-
-              <div className="pt-3 border-t border-dashed border-border">
-                <p className="text-xs text-muted-foreground">
-                  Expires:{" "}
-                  <span className="font-medium text-foreground">
-                    {promo.expires}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

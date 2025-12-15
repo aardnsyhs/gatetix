@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Ticket, Mail, Lock, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -33,11 +37,12 @@ export default function Login() {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <input
+                <Input
+                  id="email"
                   type="email"
                   value={formData.email}
                   onChange={(e) =>
@@ -45,21 +50,22 @@ export default function Login() {
                   }
                   placeholder="you@example.com"
                   required
-                  className="gt-input pl-12"
+                  className="pl-12 rounded-xl h-12"
                 />
               </div>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-medium">Password</label>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
                 <a href="#" className="text-sm text-primary hover:underline">
                   Forgot password?
                 </a>
               </div>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <input
+                <Input
+                  id="password"
                   type="password"
                   value={formData.password}
                   onChange={(e) =>
@@ -67,7 +73,7 @@ export default function Login() {
                   }
                   placeholder="••••••••"
                   required
-                  className="gt-input pl-12"
+                  className="pl-12 rounded-xl h-12"
                 />
               </div>
             </div>
@@ -86,10 +92,13 @@ export default function Login() {
               </label>
             </div>
 
-            <button type="submit" className="gt-btn-primary w-full py-3">
+            <Button
+              type="submit"
+              className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl h-12"
+            >
               Sign In
               <ArrowRight className="h-4 w-4 ml-2" />
-            </button>
+            </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-8">

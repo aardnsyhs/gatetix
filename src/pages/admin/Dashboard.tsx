@@ -7,6 +7,9 @@ import {
   ArrowDownRight,
   MoreHorizontal,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const stats = [
   {
@@ -118,34 +121,40 @@ export default function AdminDashboard() {
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.title} className="gt-stat-card">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground font-medium">
-                    {stat.title}
-                  </p>
-                  <p className="text-3xl font-bold mt-2">{stat.value}</p>
+            <Card key={stat.title} className="gt-card-glow">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground font-medium">
+                      {stat.title}
+                    </p>
+                    <p className="text-3xl font-bold mt-2">{stat.value}</p>
+                    <div
+                      className={`flex items-center gap-1 mt-2 text-sm ${
+                        stat.trend === "up"
+                          ? "text-emerald-500"
+                          : "text-destructive"
+                      }`}
+                    >
+                      {stat.trend === "up" ? (
+                        <ArrowUpRight className="h-4 w-4" />
+                      ) : (
+                        <ArrowDownRight className="h-4 w-4" />
+                      )}
+                      <span className="font-medium">{stat.change}</span>
+                      <span className="text-muted-foreground">
+                        vs last week
+                      </span>
+                    </div>
+                  </div>
                   <div
-                    className={`flex items-center gap-1 mt-2 text-sm ${
-                      stat.trend === "up" ? "text-success" : "text-destructive"
-                    }`}
+                    className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}
                   >
-                    {stat.trend === "up" ? (
-                      <ArrowUpRight className="h-4 w-4" />
-                    ) : (
-                      <ArrowDownRight className="h-4 w-4" />
-                    )}
-                    <span className="font-medium">{stat.change}</span>
-                    <span className="text-muted-foreground">vs last week</span>
+                    <Icon className="h-6 w-6 text-white" strokeWidth={2} />
                   </div>
                 </div>
-                <div
-                  className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}
-                >
-                  <Icon className="h-6 w-6 text-white" strokeWidth={2} />
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           );
         })}
       </div>
@@ -153,72 +162,77 @@ export default function AdminDashboard() {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Orders */}
-        <div className="lg:col-span-2 gt-card-flat">
-          <div className="p-6 border-b border-border flex items-center justify-between">
+        <Card className="lg:col-span-2 gt-card-glow">
+          <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold">Recent Orders</h2>
+              <CardTitle>Recent Orders</CardTitle>
               <p className="text-sm text-muted-foreground">
                 Latest ticket purchases
               </p>
             </div>
-            <button className="gt-icon-btn">
+            <Button variant="ghost" size="icon" className="rounded-xl">
               <MoreHorizontal className="h-5 w-5" />
-            </button>
-          </div>
-          <div className="divide-y divide-border">
-            {recentOrders.map((order) => (
-              <div
-                key={order.id}
-                className="p-4 flex items-center justify-between hover:bg-muted/30 transition-smooth"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="gt-avatar">
-                    {order.customer
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
+            </Button>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="divide-y divide-border">
+              {recentOrders.map((order) => (
+                <div
+                  key={order.id}
+                  className="p-4 flex items-center justify-between hover:bg-muted/30 transition-smooth"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
+                      {order.customer
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </div>
+                    <div>
+                      <p className="font-medium">{order.customer}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {order.event}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium">{order.customer}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {order.event}
-                    </p>
+                  <div className="text-right">
+                    <p className="font-semibold">{order.amount}</p>
+                    <div className="flex items-center gap-2">
+                      <Badge
+                        variant={
+                          order.status === "completed" ? "default" : "secondary"
+                        }
+                        className={
+                          order.status === "completed"
+                            ? "bg-emerald-500/10 text-emerald-500"
+                            : "bg-amber-500/10 text-amber-500"
+                        }
+                      >
+                        {order.status}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">
+                        {order.time}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-semibold">{order.amount}</p>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`gt-badge ${
-                        order.status === "completed"
-                          ? "gt-badge-success"
-                          : "gt-badge-warning"
-                      }`}
-                    >
-                      {order.status}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {order.time}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="p-4 border-t border-border">
-            <button className="text-sm text-primary font-medium hover:underline">
-              View all orders →
-            </button>
-          </div>
-        </div>
+              ))}
+            </div>
+            <div className="p-4 border-t border-border">
+              <button className="text-sm text-primary font-medium hover:underline">
+                View all orders →
+              </button>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Upcoming Events */}
-        <div className="gt-card-flat">
-          <div className="p-6 border-b border-border">
-            <h2 className="text-lg font-semibold">Upcoming Events</h2>
+        <Card className="gt-card-glow">
+          <CardHeader>
+            <CardTitle>Upcoming Events</CardTitle>
             <p className="text-sm text-muted-foreground">Your next events</p>
-          </div>
-          <div className="p-4 space-y-4">
+          </CardHeader>
+          <CardContent className="space-y-4">
             {upcomingEvents.map((event, index) => (
               <div
                 key={index}
@@ -242,9 +256,9 @@ export default function AdminDashboard() {
                       {event.sold} / {event.capacity}
                     </span>
                   </div>
-                  <div className="gt-progress">
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div
-                      className="gt-progress-bar"
+                      className="h-full gt-gradient-primary rounded-full transition-all"
                       style={{
                         width: `${(event.sold / event.capacity) * 100}%`,
                       }}
@@ -253,8 +267,8 @@ export default function AdminDashboard() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

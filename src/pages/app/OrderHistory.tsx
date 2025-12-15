@@ -1,5 +1,22 @@
 import { useState } from "react";
-import { Calendar, Eye, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 const orders = [
   {
@@ -44,50 +61,61 @@ export default function OrderHistory() {
         </div>
 
         {/* Desktop Table */}
-        <div className="hidden md:block gt-card-flat overflow-hidden">
-          <table className="gt-table">
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Event</th>
-                <th>Date</th>
-                <th>Tickets</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
+        <Card className="hidden md:block gt-card-glow overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Order ID</TableHead>
+                <TableHead>Event</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Tickets</TableHead>
+                <TableHead>Total</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {orders.map((order) => (
-                <tr key={order.id} className="group">
-                  <td className="font-mono">{order.id}</td>
-                  <td className="font-medium">{order.eventName}</td>
-                  <td className="text-muted-foreground">{order.date}</td>
-                  <td>{order.tickets}</td>
-                  <td className="font-semibold">${order.total.toFixed(2)}</td>
-                  <td>
-                    <span
-                      className={`gt-badge ${
+                <TableRow key={order.id} className="group">
+                  <TableCell className="font-mono">{order.id}</TableCell>
+                  <TableCell className="font-medium">
+                    {order.eventName}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {order.date}
+                  </TableCell>
+                  <TableCell>{order.tickets}</TableCell>
+                  <TableCell className="font-semibold">
+                    ${order.total.toFixed(2)}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        order.status === "completed" ? "default" : "secondary"
+                      }
+                      className={
                         order.status === "completed"
-                          ? "gt-badge-success"
-                          : "gt-badge-muted"
-                      }`}
+                          ? "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
+                          : ""
+                      }
                     >
                       {order.status}
-                    </span>
-                  </td>
-                  <td>
-                    <button
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => setSelectedOrder(order)}
-                      className="gt-icon-btn opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"
                     >
                       <Eye className="h-4 w-4" />
-                    </button>
-                  </td>
-                </tr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
 
           {/* Pagination */}
           <div className="flex items-center justify-between p-4 border-t border-border">
@@ -96,124 +124,143 @@ export default function OrderHistory() {
               <span className="font-medium">3</span> orders
             </p>
             <div className="flex items-center gap-2">
-              <button className="gt-icon-btn" disabled>
+              <Button
+                variant="outline"
+                size="icon"
+                disabled
+                className="rounded-xl"
+              >
                 <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button className="w-8 h-8 rounded-lg bg-primary text-white text-sm font-medium">
+              </Button>
+              <Button
+                size="icon"
+                className="gt-gradient-primary border-0 rounded-xl"
+              >
                 1
-              </button>
-              <button className="gt-icon-btn" disabled>
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                disabled
+                className="rounded-xl"
+              >
                 <ChevronRight className="h-4 w-4" />
-              </button>
+              </Button>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Mobile Cards */}
         <div className="md:hidden space-y-4">
           {orders.map((order) => (
-            <div key={order.id} className="gt-card-flat p-5">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <p className="font-mono text-sm text-muted-foreground mb-1">
-                    {order.id}
-                  </p>
-                  <h3 className="font-semibold">{order.eventName}</h3>
+            <Card key={order.id} className="gt-card-glow">
+              <CardContent className="p-5">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <p className="font-mono text-sm text-muted-foreground mb-1">
+                      {order.id}
+                    </p>
+                    <h3 className="font-semibold">{order.eventName}</h3>
+                  </div>
+                  <Badge
+                    variant={
+                      order.status === "completed" ? "default" : "secondary"
+                    }
+                    className={
+                      order.status === "completed"
+                        ? "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
+                        : ""
+                    }
+                  >
+                    {order.status}
+                  </Badge>
                 </div>
-                <span
-                  className={`gt-badge ${
-                    order.status === "completed"
-                      ? "gt-badge-success"
-                      : "gt-badge-muted"
-                  }`}
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Calendar className="h-4 w-4" />
+                    <span>{order.date}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Tickets:</span>
+                    <span>{order.tickets}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Total:</span>
+                    <span className="font-semibold">
+                      ${order.total.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedOrder(order)}
+                  className="w-full rounded-xl"
                 >
-                  {order.status}
-                </span>
-              </div>
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4" />
-                  <span>{order.date}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Tickets:</span>
-                  <span>{order.tickets}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Total:</span>
-                  <span className="font-semibold">
-                    ${order.total.toFixed(2)}
-                  </span>
-                </div>
-              </div>
-              <button
-                onClick={() => setSelectedOrder(order)}
-                className="gt-btn-outline w-full"
-              >
-                View Details
-              </button>
-            </div>
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
-        {/* Order Detail Drawer */}
-        {selectedOrder && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 animate-fade-in">
-            <div className="absolute right-0 top-0 bottom-0 w-full max-w-md bg-card shadow-2xl animate-slide-up">
-              <div className="p-6 border-b border-border flex items-center justify-between">
-                <h2 className="text-lg font-semibold">Order Details</h2>
-                <button
-                  onClick={() => setSelectedOrder(null)}
-                  className="gt-icon-btn"
-                >
-                  <X className="h-5 w-5" />
-                </button>
+        {/* Order Detail Sheet */}
+        <Sheet
+          open={!!selectedOrder}
+          onOpenChange={() => setSelectedOrder(null)}
+        >
+          <SheetContent className="gt-card-glow">
+            <SheetHeader>
+              <SheetTitle>Order Details</SheetTitle>
+            </SheetHeader>
+            <div className="space-y-6 mt-6">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Order ID</p>
+                <p className="font-mono">{selectedOrder?.id}</p>
               </div>
-              <div className="p-6 space-y-6">
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Order ID</p>
-                  <p className="font-mono">{selectedOrder.id}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Event</p>
-                  <p className="font-medium">{selectedOrder.eventName}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">
-                    Purchase Date
-                  </p>
-                  <p>{selectedOrder.date}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">
-                    Number of Tickets
-                  </p>
-                  <p>{selectedOrder.tickets}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">
-                    Total Amount
-                  </p>
-                  <p className="text-xl font-bold text-primary">
-                    ${selectedOrder.total.toFixed(2)}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Status</p>
-                  <span
-                    className={`gt-badge ${
-                      selectedOrder.status === "completed"
-                        ? "gt-badge-success"
-                        : "gt-badge-muted"
-                    }`}
-                  >
-                    {selectedOrder.status}
-                  </span>
-                </div>
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Event</p>
+                <p className="font-medium">{selectedOrder?.eventName}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">
+                  Purchase Date
+                </p>
+                <p>{selectedOrder?.date}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">
+                  Number of Tickets
+                </p>
+                <p>{selectedOrder?.tickets}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">
+                  Total Amount
+                </p>
+                <p className="text-xl font-bold text-primary">
+                  ${selectedOrder?.total.toFixed(2)}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Status</p>
+                <Badge
+                  variant={
+                    selectedOrder?.status === "completed"
+                      ? "default"
+                      : "secondary"
+                  }
+                  className={
+                    selectedOrder?.status === "completed"
+                      ? "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
+                      : ""
+                  }
+                >
+                  {selectedOrder?.status}
+                </Badge>
               </div>
             </div>
-          </div>
-        )}
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );

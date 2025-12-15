@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Ticket, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -51,13 +54,12 @@ export default function Register() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  First name
-                </label>
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First name</Label>
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <input
+                  <Input
+                    id="firstName"
                     type="text"
                     value={formData.firstName}
                     onChange={(e) =>
@@ -65,15 +67,14 @@ export default function Register() {
                     }
                     placeholder="John"
                     required
-                    className="gt-input pl-12"
+                    className="pl-12 rounded-xl h-12"
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Last name
-                </label>
-                <input
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last name</Label>
+                <Input
+                  id="lastName"
                   type="text"
                   value={formData.lastName}
                   onChange={(e) =>
@@ -81,16 +82,17 @@ export default function Register() {
                   }
                   placeholder="Doe"
                   required
-                  className="gt-input"
+                  className="rounded-xl h-12"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <input
+                <Input
+                  id="email"
                   type="email"
                   value={formData.email}
                   onChange={(e) =>
@@ -98,16 +100,17 @@ export default function Register() {
                   }
                   placeholder="you@example.com"
                   required
-                  className="gt-input pl-12"
+                  className="pl-12 rounded-xl h-12"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <input
+                <Input
+                  id="password"
                   type="password"
                   value={formData.password}
                   onChange={(e) =>
@@ -115,10 +118,10 @@ export default function Register() {
                   }
                   placeholder="••••••••"
                   required
-                  className="gt-input pl-12"
+                  className="pl-12 rounded-xl h-12"
                 />
               </div>
-              <p className="text-xs text-muted-foreground mt-2">
+              <p className="text-xs text-muted-foreground">
                 Must be at least 8 characters
               </p>
             </div>
@@ -142,10 +145,13 @@ export default function Register() {
               </label>
             </div>
 
-            <button type="submit" className="gt-btn-primary w-full py-3">
+            <Button
+              type="submit"
+              className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl h-12"
+            >
               Create Account
               <ArrowRight className="h-4 w-4 ml-2" />
-            </button>
+            </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-8">

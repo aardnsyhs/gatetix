@@ -8,6 +8,15 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { label: "My Tickets", path: "/tickets", icon: Ticket },
@@ -16,7 +25,6 @@ const navLinks = [
 
 export default function AppLayout() {
   const location = useLocation();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -55,46 +63,33 @@ export default function AppLayout() {
               })}
 
               {/* User Menu */}
-              <div className="relative ml-2">
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-muted transition-smooth"
-                >
-                  <div className="gt-avatar w-8 h-8 text-xs">JD</div>
-                  <ChevronDown
-                    className={`h-4 w-4 text-muted-foreground transition-transform ${
-                      dropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {dropdownOpen && (
-                  <div className="gt-dropdown absolute right-0 mt-2 w-48 py-2 animate-scale-in">
-                    <div className="px-4 py-2 border-b border-border">
-                      <p className="text-sm font-medium">John Doe</p>
-                      <p className="text-xs text-muted-foreground">
-                        john@example.com
-                      </p>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="ml-2 rounded-xl">
+                    <div className="w-8 h-8 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium mr-2">
+                      JD
                     </div>
-                    <div className="py-1">
-                      <a
-                        href="#"
-                        className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted transition-smooth"
-                      >
-                        <Settings className="h-4 w-4" />
-                        Settings
-                      </a>
-                      <a
-                        href="#"
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 transition-smooth"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        Sign Out
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
+                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 rounded-xl">
+                  <DropdownMenuLabel>
+                    <p className="font-medium">John Doe</p>
+                    <p className="text-xs text-muted-foreground font-normal">
+                      john@example.com
+                    </p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="rounded-lg cursor-pointer">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </nav>

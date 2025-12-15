@@ -8,6 +8,11 @@ import {
   Globe,
   Palette,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 const tabs = [
   { id: "general", label: "General", icon: Building },
@@ -27,7 +32,6 @@ export default function Settings() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold">Settings</h1>
         <p className="text-muted-foreground mt-1">
@@ -47,7 +51,7 @@ export default function Settings() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-smooth ${
                     activeTab === tab.id
-                      ? "bg-primary text-white shadow-lg shadow-primary/25"
+                      ? "gt-gradient-primary text-white shadow-lg shadow-primary/25"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
@@ -62,28 +66,26 @@ export default function Settings() {
         {/* Content */}
         <div className="lg:col-span-3">
           {activeTab === "general" && (
-            <div className="gt-card-flat">
-              <div className="p-6 border-b border-border">
-                <h2 className="text-lg font-semibold">Organization Details</h2>
+            <Card className="gt-card-glow">
+              <CardHeader>
+                <CardTitle>Organization Details</CardTitle>
                 <p className="text-sm text-muted-foreground">
                   Update your organization information
                 </p>
-              </div>
-              <div className="p-6 space-y-6">
+              </CardHeader>
+              <CardContent className="space-y-6">
                 {/* Logo Upload */}
                 <div>
-                  <label className="block text-sm font-medium mb-3">
-                    Organization Logo
-                  </label>
+                  <Label className="mb-3 block">Organization Logo</Label>
                   <div className="flex items-center gap-4">
                     <div className="w-20 h-20 gt-gradient-primary rounded-2xl flex items-center justify-center">
                       <span className="text-2xl font-bold text-white">GT</span>
                     </div>
                     <div>
-                      <button className="gt-btn-outline text-sm py-2">
+                      <Button variant="outline" className="rounded-xl">
                         <Palette className="h-4 w-4 mr-2" />
                         Change Logo
-                      </button>
+                      </Button>
                       <p className="text-xs text-muted-foreground mt-2">
                         PNG, JPG up to 2MB
                       </p>
@@ -92,111 +94,113 @@ export default function Settings() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      Organization Name
-                    </label>
-                    <input
-                      type="text"
+                  <div className="space-y-2">
+                    <Label htmlFor="orgName">Organization Name</Label>
+                    <Input
+                      id="orgName"
                       value={orgName}
                       onChange={(e) => setOrgName(e.target.value)}
-                      className="gt-input"
+                      className="rounded-xl"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      Contact Email
-                    </label>
-                    <input
+                  <div className="space-y-2">
+                    <Label htmlFor="orgEmail">Contact Email</Label>
+                    <Input
+                      id="orgEmail"
                       type="email"
                       value={orgEmail}
                       onChange={(e) => setOrgEmail(e.target.value)}
-                      className="gt-input"
+                      className="rounded-xl"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Website
-                  </label>
+                <div className="space-y-2">
+                  <Label htmlFor="orgWebsite">Website</Label>
                   <div className="flex">
                     <span className="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-border bg-muted text-muted-foreground text-sm">
                       <Globe className="h-4 w-4" />
                     </span>
-                    <input
-                      type="url"
+                    <Input
+                      id="orgWebsite"
                       value={orgWebsite}
                       onChange={(e) => setOrgWebsite(e.target.value)}
-                      className="gt-input rounded-l-none"
+                      className="rounded-l-none rounded-r-xl"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Description
-                  </label>
-                  <textarea
+                <div className="space-y-2">
+                  <Label htmlFor="orgDescription">Description</Label>
+                  <Textarea
+                    id="orgDescription"
                     value={orgDescription}
                     onChange={(e) => setOrgDescription(e.target.value)}
                     rows={4}
-                    className="gt-input resize-none"
+                    className="rounded-xl resize-none"
                   />
                 </div>
 
                 <div className="pt-4 border-t border-border">
-                  <button className="gt-btn-primary">
+                  <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
                     <Save className="h-4 w-4 mr-2" />
                     Save Changes
-                  </button>
+                  </Button>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           )}
 
           {activeTab === "payment" && (
-            <div className="gt-card-flat p-6">
-              <div className="text-center py-12">
-                <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Payment Settings</h3>
-                <p className="text-muted-foreground max-w-sm mx-auto">
-                  Configure payment gateway and payout settings for your
-                  organization.
-                </p>
-                <button className="gt-btn-primary mt-6">
-                  Connect Payment Gateway
-                </button>
-              </div>
-            </div>
+            <Card className="gt-card-glow">
+              <CardContent className="p-6">
+                <div className="text-center py-12">
+                  <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">
+                    Payment Settings
+                  </h3>
+                  <p className="text-muted-foreground max-w-sm mx-auto">
+                    Configure payment gateway and payout settings for your
+                    organization.
+                  </p>
+                  <Button className="mt-6 gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
+                    Connect Payment Gateway
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           )}
 
           {activeTab === "notifications" && (
-            <div className="gt-card-flat p-6">
-              <div className="text-center py-12">
-                <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">
-                  Notification Preferences
-                </h3>
-                <p className="text-muted-foreground max-w-sm mx-auto">
-                  Manage email and push notification settings.
-                </p>
-              </div>
-            </div>
+            <Card className="gt-card-glow">
+              <CardContent className="p-6">
+                <div className="text-center py-12">
+                  <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">
+                    Notification Preferences
+                  </h3>
+                  <p className="text-muted-foreground max-w-sm mx-auto">
+                    Manage email and push notification settings.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           )}
 
           {activeTab === "security" && (
-            <div className="gt-card-flat p-6">
-              <div className="text-center py-12">
-                <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">
-                  Security Settings
-                </h3>
-                <p className="text-muted-foreground max-w-sm mx-auto">
-                  Manage security and access controls for your organization.
-                </p>
-              </div>
-            </div>
+            <Card className="gt-card-glow">
+              <CardContent className="p-6">
+                <div className="text-center py-12">
+                  <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">
+                    Security Settings
+                  </h3>
+                  <p className="text-muted-foreground max-w-sm mx-auto">
+                    Manage security and access controls for your organization.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           )}
         </div>
       </div>

@@ -1,5 +1,15 @@
 import { useState } from "react";
 import { UserPlus, MoreVertical, Shield, Mail, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const teamMembers = [
   {
@@ -65,7 +75,6 @@ const roles = [
 
 export default function TeamRoles() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeMenu, setActiveMenu] = useState<number | null>(null);
 
   const filteredMembers = teamMembers.filter(
     (member) =>
@@ -75,7 +84,6 @@ export default function TeamRoles() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold">Team & Roles</h1>
@@ -83,108 +91,112 @@ export default function TeamRoles() {
             Manage team members and permissions
           </p>
         </div>
-        <button className="gt-btn-primary">
+        <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
           <UserPlus className="h-4 w-4 mr-2" />
           Invite Member
-        </button>
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Team Members */}
         <div className="lg:col-span-2 space-y-4">
-          <input
+          <Input
             type="text"
             placeholder="Search members..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="gt-input-search max-w-md"
+            className="max-w-md rounded-xl"
           />
 
-          <div className="gt-card-flat">
-            <div className="p-5 border-b border-border">
-              <h2 className="text-lg font-semibold">Team Members</h2>
+          <Card className="gt-card-glow">
+            <CardHeader>
+              <CardTitle>Team Members</CardTitle>
               <p className="text-sm text-muted-foreground">
                 {teamMembers.length} members
               </p>
-            </div>
-            <div className="divide-y divide-border">
-              {filteredMembers.map((member) => (
-                <div
-                  key={member.id}
-                  className="p-4 flex items-center justify-between hover:bg-muted/30 transition-smooth"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="gt-avatar">
-                      {member.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium">{member.name}</p>
-                        {member.status === "pending" && (
-                          <span className="gt-badge gt-badge-warning">
-                            Pending
-                          </span>
-                        )}
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="divide-y divide-border">
+                {filteredMembers.map((member) => (
+                  <div
+                    key={member.id}
+                    className="p-4 flex items-center justify-between hover:bg-muted/30 transition-smooth"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
+                        {member.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        {member.email}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-right hidden sm:block">
-                      <span className="gt-badge gt-badge-primary">
-                        {member.role}
-                      </span>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {member.lastActive}
-                      </p>
-                    </div>
-                    <div className="relative">
-                      <button
-                        className="gt-icon-btn"
-                        onClick={() =>
-                          setActiveMenu(
-                            activeMenu === member.id ? null : member.id
-                          )
-                        }
-                      >
-                        <MoreVertical className="h-4 w-4" />
-                      </button>
-                      {activeMenu === member.id && (
-                        <div className="gt-dropdown absolute right-0 top-full mt-1 w-44 py-1 animate-scale-in z-10">
-                          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-smooth">
-                            <Shield className="h-4 w-4" />
-                            Change Role
-                          </button>
-                          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-smooth">
-                            <Mail className="h-4 w-4" />
-                            Resend Invite
-                          </button>
-                          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-smooth">
-                            <Trash2 className="h-4 w-4" />
-                            Remove
-                          </button>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{member.name}</p>
+                          {member.status === "pending" && (
+                            <Badge
+                              variant="secondary"
+                              className="bg-amber-500/10 text-amber-500"
+                            >
+                              Pending
+                            </Badge>
+                          )}
                         </div>
-                      )}
+                        <p className="text-sm text-muted-foreground">
+                          {member.email}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right hidden sm:block">
+                        <Badge className="bg-primary/10 text-primary">
+                          {member.role}
+                        </Badge>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {member.lastActive}
+                        </p>
+                      </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="rounded-xl"
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="rounded-xl w-44"
+                        >
+                          <DropdownMenuItem className="rounded-lg cursor-pointer">
+                            <Shield className="h-4 w-4 mr-2" />
+                            Change Role
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="rounded-lg cursor-pointer">
+                            <Mail className="h-4 w-4 mr-2" />
+                            Resend Invite
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Remove
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Roles */}
-        <div className="gt-card-flat h-fit">
-          <div className="p-5 border-b border-border">
-            <h2 className="text-lg font-semibold">Roles</h2>
+        <Card className="gt-card-glow h-fit">
+          <CardHeader>
+            <CardTitle>Roles</CardTitle>
             <p className="text-sm text-muted-foreground">Permission levels</p>
-          </div>
-          <div className="p-4 space-y-3">
+          </CardHeader>
+          <CardContent className="space-y-3">
             {roles.map((role) => (
               <div
                 key={role.name}
@@ -207,8 +219,8 @@ export default function TeamRoles() {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

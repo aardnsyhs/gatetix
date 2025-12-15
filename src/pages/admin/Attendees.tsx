@@ -7,6 +7,18 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const attendees = [
   {
@@ -83,115 +95,122 @@ export default function AdminAttendees() {
           </p>
         </div>
         <div className="flex gap-2">
-          <button className="gt-btn-ghost">
+          <Button variant="ghost" className="rounded-xl">
             <Mail className="h-4 w-4 mr-2" />
             Email All
-          </button>
-          <button className="gt-btn-outline">
+          </Button>
+          <Button variant="outline" className="rounded-xl">
             <Download className="h-4 w-4 mr-2" />
             Export
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="gt-card-flat p-5">
-          <p className="text-sm text-muted-foreground">Total Attendees</p>
-          <p className="text-3xl font-bold mt-1">{attendees.length}</p>
-        </div>
-        <div className="gt-card-flat p-5">
-          <p className="text-sm text-muted-foreground">Checked In</p>
-          <p className="text-3xl font-bold mt-1 text-success">
-            {checkedInCount}
-          </p>
-        </div>
-        <div className="gt-card-flat p-5">
-          <p className="text-sm text-muted-foreground">Check-in Rate</p>
-          <p className="text-3xl font-bold mt-1">
-            {Math.round((checkedInCount / attendees.length) * 100)}%
-          </p>
-        </div>
+        <Card className="gt-card-glow">
+          <CardContent className="p-5">
+            <p className="text-sm text-muted-foreground">Total Attendees</p>
+            <p className="text-3xl font-bold mt-1">{attendees.length}</p>
+          </CardContent>
+        </Card>
+        <Card className="gt-card-glow">
+          <CardContent className="p-5">
+            <p className="text-sm text-muted-foreground">Checked In</p>
+            <p className="text-3xl font-bold mt-1 text-emerald-500">
+              {checkedInCount}
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="gt-card-glow">
+          <CardContent className="p-5">
+            <p className="text-sm text-muted-foreground">Check-in Rate</p>
+            <p className="text-3xl font-bold mt-1">
+              {Math.round((checkedInCount / attendees.length) * 100)}%
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Search */}
-      <input
+      <Input
         type="text"
         placeholder="Search attendees..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="gt-input-search max-w-md"
+        className="max-w-md rounded-xl"
       />
 
       {/* Attendees Table */}
-      <div className="gt-card-flat overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="gt-table">
-            <thead>
-              <tr>
-                <th>Attendee</th>
-                <th>Event</th>
-                <th>Ticket Type</th>
-                <th>Status</th>
-                <th>Check-in Time</th>
-                <th>Gate</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredAttendees.map((attendee) => (
-                <tr key={attendee.id}>
-                  <td>
-                    <div className="flex items-center gap-3">
-                      <div className="gt-avatar text-xs">
-                        {attendee.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </div>
-                      <div>
-                        <p className="font-medium">{attendee.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {attendee.email}
-                        </p>
-                      </div>
+      <Card className="gt-card-glow overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Attendee</TableHead>
+              <TableHead>Event</TableHead>
+              <TableHead>Ticket Type</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Check-in Time</TableHead>
+              <TableHead>Gate</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredAttendees.map((attendee) => (
+              <TableRow key={attendee.id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
+                      {attendee.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
                     </div>
-                  </td>
-                  <td>{attendee.event}</td>
-                  <td>
-                    <span
-                      className={`gt-badge ${
-                        attendee.ticketType === "VIP"
-                          ? "gt-badge-primary"
-                          : "gt-badge-muted"
-                      }`}
-                    >
-                      {attendee.ticketType}
+                    <div>
+                      <p className="font-medium">{attendee.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {attendee.email}
+                      </p>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{attendee.event}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant={
+                      attendee.ticketType === "VIP" ? "default" : "secondary"
+                    }
+                    className={
+                      attendee.ticketType === "VIP"
+                        ? "bg-primary/10 text-primary"
+                        : ""
+                    }
+                  >
+                    {attendee.ticketType}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  {attendee.checkedIn ? (
+                    <span className="flex items-center gap-1.5 text-emerald-500">
+                      <CheckCircle className="h-4 w-4" />
+                      <span className="text-sm font-medium">Checked In</span>
                     </span>
-                  </td>
-                  <td>
-                    {attendee.checkedIn ? (
-                      <span className="flex items-center gap-1.5 text-success">
-                        <CheckCircle className="h-4 w-4" />
-                        <span className="text-sm font-medium">Checked In</span>
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1.5 text-muted-foreground">
-                        <XCircle className="h-4 w-4" />
-                        <span className="text-sm">Not Checked In</span>
-                      </span>
-                    )}
-                  </td>
-                  <td className="text-muted-foreground">
-                    {attendee.checkInTime || "—"}
-                  </td>
-                  <td className="text-muted-foreground">
-                    {attendee.gate || "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  ) : (
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <XCircle className="h-4 w-4" />
+                      <span className="text-sm">Not Checked In</span>
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {attendee.checkInTime || "—"}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {attendee.gate || "—"}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
 
         {/* Pagination */}
         <div className="flex items-center justify-between p-4 border-t border-border">
@@ -200,18 +219,31 @@ export default function AdminAttendees() {
             <span className="font-medium">5</span> attendees
           </p>
           <div className="flex items-center gap-2">
-            <button className="gt-icon-btn" disabled>
+            <Button
+              variant="outline"
+              size="icon"
+              disabled
+              className="rounded-xl"
+            >
               <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button className="w-8 h-8 rounded-lg bg-primary text-white text-sm font-medium">
+            </Button>
+            <Button
+              size="icon"
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
               1
-            </button>
-            <button className="gt-icon-btn" disabled>
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              disabled
+              className="rounded-xl"
+            >
               <ChevronRight className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

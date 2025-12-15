@@ -17,6 +17,16 @@ import {
   LogOut,
   Ticket,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
@@ -32,7 +42,6 @@ const sidebarItems = [
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -58,16 +67,18 @@ export default function AdminLayout() {
                 </span>
               )}
             </Link>
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="gt-icon-btn lg:flex hidden"
+              className="lg:flex hidden rounded-xl"
             >
               {sidebarOpen ? (
                 <X className="h-5 w-5" />
               ) : (
                 <Menu className="h-5 w-5" />
               )}
-            </button>
+            </Button>
           </div>
 
           {/* Navigation */}
@@ -78,9 +89,11 @@ export default function AdminLayout() {
               return (
                 <Link key={item.path} to={item.path}>
                   <div
-                    className={`gt-sidebar-item ${active ? "active" : ""} ${
-                      !sidebarOpen ? "justify-center px-0" : ""
-                    }`}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-smooth ${
+                      active
+                        ? "gt-gradient-primary text-white"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    } ${!sidebarOpen ? "justify-center px-0" : ""}`}
                   >
                     <Icon className="h-5 w-5 flex-shrink-0" strokeWidth={2} />
                     {sidebarOpen && <span>{item.label}</span>}
@@ -94,7 +107,9 @@ export default function AdminLayout() {
           {sidebarOpen && (
             <div className="p-4 border-t border-border">
               <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
-                <div className="gt-avatar">JD</div>
+                <div className="w-10 h-10 rounded-full gt-gradient-primary flex items-center justify-center text-white text-sm font-medium">
+                  JD
+                </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">John Doe</p>
                   <p className="text-xs text-muted-foreground truncate">
@@ -112,69 +127,56 @@ export default function AdminLayout() {
         {/* Topbar */}
         <header className="gt-navbar h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden gt-icon-btn"
+              className="lg:hidden rounded-xl"
             >
               <Menu className="h-5 w-5" />
-            </button>
-            <div className="hidden md:block relative">
-              <input
+            </Button>
+            <div className="hidden md:block">
+              <Input
                 type="text"
                 placeholder="Search anything..."
-                className="gt-input-search w-72"
+                className="w-72 rounded-xl"
               />
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="gt-icon-btn relative">
+            <Button variant="ghost" size="icon" className="relative rounded-xl">
               <Bell className="h-5 w-5" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
-            </button>
+            </Button>
 
-            <div className="relative">
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-muted transition-smooth"
-              >
-                <span className="text-sm font-medium hidden sm:block">
-                  My Organization
-                </span>
-                <ChevronDown
-                  className={`h-4 w-4 transition-transform ${
-                    dropdownOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-
-              {dropdownOpen && (
-                <div className="gt-dropdown absolute right-0 mt-2 w-56 py-2 animate-scale-in">
-                  <div className="px-4 py-2 border-b border-border">
-                    <p className="text-sm font-medium">My Organization</p>
-                    <p className="text-xs text-muted-foreground">
-                      john@example.com
-                    </p>
-                  </div>
-                  <div className="py-1">
-                    <a
-                      href="#"
-                      className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-muted transition-smooth"
-                    >
-                      <Settings className="h-4 w-4" />
-                      Settings
-                    </a>
-                    <a
-                      href="#"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 transition-smooth"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Sign Out
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="rounded-xl">
+                  <span className="text-sm font-medium hidden sm:block mr-2">
+                    My Organization
+                  </span>
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 rounded-xl">
+                <DropdownMenuLabel>
+                  <p className="font-medium">My Organization</p>
+                  <p className="text-xs text-muted-foreground font-normal">
+                    john@example.com
+                  </p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="rounded-lg cursor-pointer">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 

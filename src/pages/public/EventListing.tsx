@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, MapPin, Users, SlidersHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Calendar,
+  MapPin,
+  Users,
+  SlidersHorizontal,
+  Search,
+} from "lucide-react";
 
 const events = [
   {
@@ -93,48 +103,47 @@ export default function EventListing() {
   });
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Header */}
+    <div className="min-h-screen bg-background">
+      {/* Hero Header */}
       <div className="gt-gradient-primary py-16">
-        <div className="gt-container text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Browse Events
-          </h1>
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold text-white mb-4">Browse Events</h1>
           <p className="text-white/80 mb-8 max-w-2xl mx-auto">
             Discover amazing events happening near you
           </p>
-          <input
-            type="text"
-            placeholder="Search events..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="gt-input-search max-w-lg mx-auto"
-          />
+          <div className="relative max-w-lg mx-auto">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search events..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 h-12 rounded-2xl border-0 shadow-xl"
+            />
+          </div>
         </div>
       </div>
 
-      <div className="gt-container py-8">
+      <div className="container mx-auto px-4 py-8">
         {/* Filters */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
-              <button
+              <Button
                 key={category}
+                variant={selectedCategory === category ? "default" : "outline"}
+                size="sm"
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-smooth ${
-                  selectedCategory === category
-                    ? "bg-primary text-white shadow-lg shadow-primary/25"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
-                }`}
+                className="rounded-full"
               >
                 {category}
-              </button>
+              </Button>
             ))}
           </div>
-          <button className="gt-btn-ghost">
+          <Button variant="outline" size="sm">
             <SlidersHorizontal className="h-4 w-4 mr-2" />
             Filters
-          </button>
+          </Button>
         </div>
 
         {/* Results Count */}
@@ -150,7 +159,7 @@ export default function EventListing() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {filteredEvents.map((event) => (
             <Link key={event.id} to={`/events/${event.slug}`}>
-              <div className="gt-card overflow-hidden group h-full">
+              <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={event.image}
@@ -158,17 +167,15 @@ export default function EventListing() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute top-3 left-3">
-                    <span className="gt-badge bg-white/20 backdrop-blur-sm text-white">
-                      {event.category}
-                    </span>
-                  </div>
+                  <Badge className="absolute top-3 left-3" variant="secondary">
+                    {event.category}
+                  </Badge>
                   <div className="absolute bottom-3 left-3 flex items-center gap-1 text-white/90 text-sm">
                     <Users className="h-4 w-4" />
                     <span>{event.attendees} attending</span>
                   </div>
                 </div>
-                <div className="p-5">
+                <CardContent className="p-5">
                   <h3 className="font-semibold text-lg mb-3 group-hover:text-primary transition-colors line-clamp-1">
                     {event.title}
                   </h3>
@@ -182,35 +189,35 @@ export default function EventListing() {
                       <span>{event.location}</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-dashed border-border">
-                    <span className="font-bold text-primary">
+                  <div className="flex items-center justify-between pt-4 border-t border-dashed">
+                    <span className="font-bold text-primary text-lg">
                       {event.price}
                     </span>
                     <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
                       Get tickets →
                     </span>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </Link>
           ))}
         </div>
 
         {/* Pagination */}
         <div className="flex justify-center gap-2">
-          <button className="gt-icon-btn" disabled>
+          <Button variant="outline" size="icon" disabled>
             ←
-          </button>
-          <button className="w-10 h-10 rounded-xl bg-primary text-white font-medium">
-            1
-          </button>
-          <button className="w-10 h-10 rounded-xl hover:bg-muted font-medium transition-smooth">
+          </Button>
+          <Button size="sm">1</Button>
+          <Button variant="outline" size="sm">
             2
-          </button>
-          <button className="w-10 h-10 rounded-xl hover:bg-muted font-medium transition-smooth">
+          </Button>
+          <Button variant="outline" size="sm">
             3
-          </button>
-          <button className="gt-icon-btn">→</button>
+          </Button>
+          <Button variant="outline" size="icon">
+            →
+          </Button>
         </div>
       </div>
     </div>

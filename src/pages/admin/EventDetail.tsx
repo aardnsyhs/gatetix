@@ -7,10 +7,12 @@ import {
   Ticket,
   DollarSign,
   Edit,
-  MoreVertical,
   Share2,
   Eye,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default function AdminEventDetail() {
   const { eventId } = useParams();
@@ -80,21 +82,23 @@ export default function AdminEventDetail() {
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Link to="/admin/events" className="gt-icon-btn">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
+        <Button asChild variant="ghost" size="icon" className="rounded-xl">
+          <Link to="/admin/events">
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+        </Button>
         <div className="flex-1">
           <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-2xl sm:text-3xl font-bold">{event.title}</h1>
-            <span
-              className={`gt-badge ${
+            <Badge
+              className={
                 event.status === "published"
-                  ? "gt-badge-success"
-                  : "gt-badge-muted"
-              }`}
+                  ? "bg-emerald-500/10 text-emerald-500"
+                  : ""
+              }
             >
               {event.status}
-            </span>
+            </Badge>
           </div>
           <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
             <span className="flex items-center gap-1">
@@ -108,13 +112,13 @@ export default function AdminEventDetail() {
           </div>
         </div>
         <div className="flex gap-2">
-          <button className="gt-icon-btn">
+          <Button variant="ghost" size="icon" className="rounded-xl">
             <Share2 className="h-5 w-5" />
-          </button>
-          <button className="gt-btn-primary">
+          </Button>
+          <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
             <Edit className="h-4 w-4 mr-2" />
             Edit Event
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -143,10 +147,13 @@ export default function AdminEventDetail() {
               </span>
             </div>
           </div>
-          <button className="gt-btn-ghost text-white border border-white/30 hover:bg-white/10">
+          <Button
+            variant="outline"
+            className="text-white border-white/30 hover:bg-white/10 rounded-xl"
+          >
             <Eye className="h-4 w-4 mr-2" />
             Preview
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -155,19 +162,23 @@ export default function AdminEventDetail() {
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.label} className="gt-card-flat p-5">
-              <div className="flex items-center gap-4">
-                <div
-                  className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}
-                >
-                  <Icon className="h-6 w-6 text-white" />
+            <Card key={stat.label} className="gt-card-glow">
+              <CardContent className="p-5">
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}
+                  >
+                    <Icon className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">
+                      {stat.label}
+                    </p>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           );
         })}
       </div>
@@ -175,14 +186,14 @@ export default function AdminEventDetail() {
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Ticket Types */}
-        <div className="lg:col-span-2 gt-card-flat">
-          <div className="p-5 border-b border-border">
-            <h2 className="text-lg font-semibold">Ticket Types</h2>
+        <Card className="lg:col-span-2 gt-card-glow">
+          <CardHeader>
+            <CardTitle>Ticket Types</CardTitle>
             <p className="text-sm text-muted-foreground">
               Sales by ticket category
             </p>
-          </div>
-          <div className="p-5 space-y-4">
+          </CardHeader>
+          <CardContent className="space-y-4">
             {event.ticketTypes.map((ticket, index) => (
               <div
                 key={index}
@@ -207,9 +218,9 @@ export default function AdminEventDetail() {
                     </p>
                   </div>
                 </div>
-                <div className="gt-progress">
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
                   <div
-                    className="gt-progress-bar"
+                    className="h-full gt-gradient-primary rounded-full"
                     style={{
                       width: `${
                         (ticket.sold / (ticket.sold + ticket.available || 1)) *
@@ -220,15 +231,15 @@ export default function AdminEventDetail() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Event Details */}
-        <div className="gt-card-flat">
-          <div className="p-5 border-b border-border">
-            <h2 className="text-lg font-semibold">Event Details</h2>
-          </div>
-          <div className="p-5">
+        <Card className="gt-card-glow">
+          <CardHeader>
+            <CardTitle>Event Details</CardTitle>
+          </CardHeader>
+          <CardContent>
             <p className="text-muted-foreground text-sm leading-relaxed">
               {event.description}
             </p>
@@ -239,18 +250,21 @@ export default function AdminEventDetail() {
                   Quick Actions
                 </p>
               </div>
-              <button className="gt-btn-outline w-full text-sm py-2.5">
+              <Button variant="outline" className="w-full rounded-xl">
                 View Attendees
-              </button>
-              <button className="gt-btn-outline w-full text-sm py-2.5">
+              </Button>
+              <Button variant="outline" className="w-full rounded-xl">
                 Manage Check-in
-              </button>
-              <button className="gt-btn-ghost w-full text-sm py-2.5 text-destructive hover:bg-destructive/10">
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-full rounded-xl text-destructive hover:bg-destructive/10"
+              >
                 Cancel Event
-              </button>
+              </Button>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

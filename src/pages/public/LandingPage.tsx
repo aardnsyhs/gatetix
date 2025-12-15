@@ -12,6 +12,10 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 const categories = [
   { icon: Music, label: "Music", color: "from-purple-500 to-pink-500" },
@@ -99,10 +103,13 @@ export default function LandingPage() {
 
         <div className="gt-container relative z-10 py-24 lg:py-32">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm mb-6">
-              <Star className="h-4 w-4" />
-              <span>Trusted by 10,000+ event organizers</span>
-            </div>
+            <Badge
+              variant="secondary"
+              className="bg-white/10 backdrop-blur-sm text-white/90 mb-6 px-4 py-2"
+            >
+              <Star className="h-4 w-4 mr-2" />
+              Trusted by 10,000+ event organizers
+            </Badge>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
               Discover Amazing
@@ -118,17 +125,19 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <input
+                <Input
                   type="text"
                   placeholder="Search for events, artists, venues..."
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-white/50 shadow-xl"
+                  className="w-full pl-12 pr-4 py-6 rounded-2xl bg-white text-foreground placeholder:text-muted-foreground border-0 shadow-xl h-14"
                 />
               </div>
-              <Link to="/events">
-                <button className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white text-primary font-semibold hover:bg-white/90 transition-smooth shadow-xl">
-                  Explore Events
-                </button>
-              </Link>
+              <Button
+                asChild
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 rounded-2xl shadow-xl h-14 px-8"
+              >
+                <Link to="/events">Explore Events</Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -166,14 +175,19 @@ export default function LandingPage() {
               const Icon = category.icon;
               return (
                 <Link key={category.label} to="/events" className="group">
-                  <div className="gt-card p-6 sm:p-8 text-center">
-                    <div
-                      className={`w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
-                    >
-                      <Icon className="h-8 w-8 text-white" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold">{category.label}</h3>
-                  </div>
+                  <Card className="gt-card-glow hover:scale-[1.02] transition-all">
+                    <CardContent className="p-6 sm:p-8 text-center">
+                      <div
+                        className={`w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+                      >
+                        <Icon
+                          className="h-8 w-8 text-white"
+                          strokeWidth={1.5}
+                        />
+                      </div>
+                      <h3 className="font-semibold">{category.label}</h3>
+                    </CardContent>
+                  </Card>
                 </Link>
               );
             })}
@@ -205,7 +219,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {trendingEvents.map((event) => (
               <Link key={event.id} to={`/events/${event.slug}`}>
-                <div className="gt-card overflow-hidden group">
+                <Card className="gt-card-glow overflow-hidden group">
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={event.image}
@@ -214,12 +228,15 @@ export default function LandingPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <div className="absolute bottom-3 left-3">
-                      <span className="gt-badge bg-white/20 backdrop-blur-sm text-white">
+                      <Badge
+                        variant="secondary"
+                        className="bg-white/20 backdrop-blur-sm text-white border-0"
+                      >
                         {event.attendees} attending
-                      </span>
+                      </Badge>
                     </div>
                   </div>
-                  <div className="p-5">
+                  <CardContent className="p-5">
                     <h3 className="font-semibold mb-2 line-clamp-1 group-hover:text-primary transition-colors">
                       {event.title}
                     </h3>
@@ -241,8 +258,8 @@ export default function LandingPage() {
                         Get tickets →
                       </span>
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </Link>
             ))}
           </div>
@@ -284,11 +301,13 @@ export default function LandingPage() {
                 Join thousands of organizers using GateTix to manage their
                 events and sell tickets effortlessly.
               </p>
-              <Link to="/admin/dashboard">
-                <button className="px-8 py-4 rounded-2xl bg-white text-primary font-semibold hover:bg-white/90 transition-smooth shadow-xl">
-                  Get Started Free
-                </button>
-              </Link>
+              <Button
+                asChild
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 rounded-2xl shadow-xl h-14 px-8"
+              >
+                <Link to="/admin/dashboard">Get Started Free</Link>
+              </Button>
             </div>
           </div>
         </div>

@@ -3,12 +3,22 @@ import {
   Search,
   Mail,
   MessageCircle,
-  ChevronDown,
   HelpCircle,
   Ticket,
   CreditCard,
   RefreshCw,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const faqs = [
   {
@@ -45,7 +55,6 @@ const faqs = [
 
 export default function HelpCenter() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -77,12 +86,12 @@ export default function HelpCenter() {
           </p>
           <div className="relative max-w-lg mx-auto">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <input
+            <Input
               type="text"
               placeholder="Search for help..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-white/50 shadow-xl"
+              className="w-full pl-12 pr-4 py-6 rounded-2xl bg-white text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-white/50 shadow-xl border-0"
             />
           </div>
         </div>
@@ -94,119 +103,115 @@ export default function HelpCenter() {
           <h2 className="text-2xl font-bold mb-8">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-4">
+          <Accordion type="single" collapsible className="space-y-4">
             {filteredFaqs.map((faq, index) => {
               const Icon = faq.icon;
-              const isOpen = openFaq === index;
               return (
-                <div key={index} className="gt-card-flat overflow-hidden">
-                  <button
-                    onClick={() => setOpenFaq(isOpen ? null : index)}
-                    className="w-full p-5 flex items-center gap-4 text-left hover:bg-muted/30 transition-smooth"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Icon className="h-5 w-5 text-primary" />
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="gt-card-glow border-0 rounded-2xl overflow-hidden px-0"
+                >
+                  <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-muted/30 transition-smooth">
+                    <div className="flex items-center gap-4 text-left">
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <span className="font-medium">{faq.question}</span>
                     </div>
-                    <span className="flex-1 font-medium">{faq.question}</span>
-                    <ChevronDown
-                      className={`h-5 w-5 text-muted-foreground transition-transform ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                  {isOpen && (
-                    <div className="px-5 pb-5 animate-fade-in">
-                      <p className="text-muted-foreground pl-14">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-5 pb-5">
+                    <p className="text-muted-foreground pl-14">{faq.answer}</p>
+                  </AccordionContent>
+                </AccordionItem>
               );
             })}
-          </div>
+          </Accordion>
         </div>
 
         {/* Contact Form */}
         <div className="max-w-2xl mx-auto">
-          <div className="gt-card-flat p-8">
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 rounded-2xl gt-gradient-primary flex items-center justify-center mx-auto mb-4">
-                <MessageCircle className="h-8 w-8 text-white" />
+          <Card className="gt-card-glow">
+            <CardContent className="p-8">
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 rounded-2xl gt-gradient-primary flex items-center justify-center mx-auto mb-4">
+                  <MessageCircle className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold mb-2">Still Need Help?</h2>
+                <p className="text-muted-foreground">
+                  Send us a message and we'll get back to you within 24 hours
+                </p>
               </div>
-              <h2 className="text-2xl font-bold mb-2">Still Need Help?</h2>
-              <p className="text-muted-foreground">
-                Send us a message and we'll get back to you within 24 hours
-              </p>
-            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Name</label>
-                  <input
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      required
+                      className="rounded-xl"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      required
+                      className="rounded-xl"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="subject">Subject</Label>
+                  <Input
+                    id="subject"
                     type="text"
-                    value={formData.name}
+                    value={formData.subject}
                     onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
+                      setFormData({ ...formData, subject: e.target.value })
                     }
                     required
-                    className="gt-input"
-                    placeholder="Your name"
+                    className="rounded-xl"
+                    placeholder="How can we help?"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    value={formData.message}
                     onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
+                      setFormData({ ...formData, message: e.target.value })
                     }
                     required
-                    className="gt-input"
-                    placeholder="you@example.com"
+                    rows={5}
+                    className="rounded-xl resize-none"
+                    placeholder="Describe your issue..."
                   />
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  value={formData.subject}
-                  onChange={(e) =>
-                    setFormData({ ...formData, subject: e.target.value })
-                  }
-                  required
-                  className="gt-input"
-                  placeholder="How can we help?"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Message
-                </label>
-                <textarea
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                  required
-                  rows={5}
-                  className="gt-input resize-none"
-                  placeholder="Describe your issue..."
-                />
-              </div>
-              <button type="submit" className="gt-btn-primary w-full py-3">
-                <Mail className="h-4 w-4 mr-2" />
-                Send Message
-              </button>
-            </form>
-          </div>
+                <Button
+                  type="submit"
+                  className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl py-6"
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Send Message
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
