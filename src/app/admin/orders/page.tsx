@@ -7,7 +7,14 @@ import {
   Filter,
   ChevronLeft,
   ChevronRight,
-  X,
+  Calendar,
+  Clock,
+  Ticket,
+  Mail,
+  Printer,
+  CheckCircle2,
+  AlertCircle,
+  XCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -41,6 +48,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const orders = [
   {
@@ -107,6 +123,9 @@ export default function AdminOrders() {
   );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
+  const [tempStatusFilter, setTempStatusFilter] = useState("all");
+  const [showPrintSuccess, setShowPrintSuccess] = useState(false);
+  const [showEmailSuccess, setShowEmailSuccess] = useState(false);
 
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
@@ -326,41 +345,29 @@ export default function AdminOrders() {
 
       {/* Order Detail Sheet */}
       <Sheet open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
-        <SheetContent className="gt-card-glow">
-          <SheetHeader>
-            <SheetTitle>Detail Pesanan</SheetTitle>
-          </SheetHeader>
-          <div className="space-y-6 mt-6">
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">ID Pesanan</p>
-              <p className="font-mono font-medium">{selectedOrder?.id}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Pelanggan</p>
-              <p className="font-medium">{selectedOrder?.customer}</p>
-              <p className="text-sm text-muted-foreground">
-                {selectedOrder?.email}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Event</p>
-              <p className="font-medium">{selectedOrder?.event}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Jumlah Tiket</p>
-              <p>{selectedOrder?.tickets} tiket</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">
-                Total Pembayaran
-              </p>
-              <p className="text-xl font-bold text-primary">
-                Rp {selectedOrder?.amount.toLocaleString("id-ID")}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Status</p>
-              <Badge className={getStatusStyle(selectedOrder?.status || "")}>
+        <SheetContent className="sm:max-w-md overflow-y-auto px-6">
+          <SheetHeader className="pb-4 border-b border-border">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground">Detail Pesanan</p>
+                <SheetTitle className="text-lg font-bold">
+                  {selectedOrder?.id}
+                </SheetTitle>
+              </div>
+              <Badge
+                className={`${getStatusStyle(
+                  selectedOrder?.status || ""
+                )} px-3 py-1`}
+              >
+                {selectedOrder?.status === "completed" && (
+                  <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />
+                )}
+                {selectedOrder?.status === "pending" && (
+                  <AlertCircle className="h-3.5 w-3.5 mr-1.5" />
+                )}
+                {selectedOrder?.status === "refunded" && (
+                  <XCircle className="h-3.5 w-3.5 mr-1.5" />
+                )}
                 {selectedOrder?.status === "completed"
                   ? "Selesai"
                   : selectedOrder?.status === "pending"
@@ -368,20 +375,166 @@ export default function AdminOrders() {
                   : "Dikembalikan"}
               </Badge>
             </div>
+          </SheetHeader>
+
+          <div className="py-6 space-y-5">
+            {/* Customer Info */}
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/40">
+              <div className="w-12 h-12 rounded-full gt-gradient-primary flex items-center justify-center text-white font-semibold shrink-0">
+                {selectedOrder?.customer
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </div>
+              <div className="min-w-0">
+                <p className="font-semibold truncate">
+                  {selectedOrder?.customer}
+                </p>
+                <p className="text-sm text-muted-foreground truncate">
+                  {selectedOrder?.email}
+                </p>
+              </div>
+            </div>
+
+            {/* Event Info */}
             <div>
-              <p className="text-sm text-muted-foreground mb-1">
-                Tanggal & Waktu
+              <p className="text-xs font-medium text-muted-foreground mb-2">
+                EVENT
               </p>
-              <p>
-                {selectedOrder?.date} • {selectedOrder?.time}
+              <Card className="p-4">
+                <p className="font-semibold">{selectedOrder?.event}</p>
+                <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" />
+                    {selectedOrder?.date}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5" />
+                    {selectedOrder?.time}
+                  </span>
+                </div>
+              </Card>
+            </div>
+
+            {/* Order Summary */}
+            <div>
+              <p className="text-xs font-medium text-muted-foreground mb-2">
+                RINGKASAN PESANAN
               </p>
+              <Card className="divide-y divide-border">
+                <div className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Ticket className="h-4 w-4 text-primary" />
+                    </div>
+                    <span className="text-sm">Jumlah Tiket</span>
+                  </div>
+                  <span className="font-semibold">
+                    {selectedOrder?.tickets} tiket
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-4">
+                  <span className="text-sm text-muted-foreground">
+                    Harga per tiket
+                  </span>
+                  <span className="text-sm">
+                    Rp{" "}
+                    {(
+                      (selectedOrder?.amount || 0) /
+                      (selectedOrder?.tickets || 1)
+                    ).toLocaleString("id-ID")}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-muted/30">
+                  <span className="font-medium">Total Pembayaran</span>
+                  <span className="text-lg font-bold text-primary">
+                    Rp {selectedOrder?.amount.toLocaleString("id-ID")}
+                  </span>
+                </div>
+              </Card>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 pt-2">
+              <Button
+                variant="outline"
+                className="flex-1 rounded-xl"
+                onClick={() => {
+                  setShowPrintSuccess(true);
+                  setSelectedOrder(null);
+                }}
+              >
+                <Printer className="h-4 w-4 mr-2" />
+                Cetak
+              </Button>
+              <Button
+                className="flex-1 gt-gradient-primary border-0 rounded-xl"
+                onClick={() => {
+                  setShowEmailSuccess(true);
+                  setSelectedOrder(null);
+                }}
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                Kirim Email
+              </Button>
             </div>
           </div>
         </SheetContent>
       </Sheet>
 
+      {/* Print Success Dialog */}
+      <AlertDialog open={showPrintSuccess} onOpenChange={setShowPrintSuccess}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="mx-auto w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mb-2">
+              <CheckCircle2 className="h-6 w-6 text-emerald-500" />
+            </div>
+            <AlertDialogTitle className="text-center">
+              Invoice Siap Dicetak
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              Invoice telah disiapkan dan siap untuk dicetak. Silakan periksa
+              printer Anda.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:justify-center">
+            <AlertDialogAction className="gt-gradient-primary border-0 rounded-xl">
+              Tutup
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Email Success Dialog */}
+      <AlertDialog open={showEmailSuccess} onOpenChange={setShowEmailSuccess}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="mx-auto w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mb-2">
+              <Mail className="h-6 w-6 text-emerald-500" />
+            </div>
+            <AlertDialogTitle className="text-center">
+              Email Terkirim
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              Invoice telah berhasil dikirim ke email pelanggan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:justify-center">
+            <AlertDialogAction className="gt-gradient-primary border-0 rounded-xl">
+              Tutup
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Filter Dialog */}
-      <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+      <Dialog
+        open={isFilterOpen}
+        onOpenChange={(open) => {
+          setIsFilterOpen(open);
+          if (open) setTempStatusFilter(statusFilter);
+        }}
+      >
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle>Filter Pesanan</DialogTitle>
@@ -389,7 +542,10 @@ export default function AdminOrders() {
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="status-filter">Status</Label>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <Select
+                value={tempStatusFilter}
+                onValueChange={setTempStatusFilter}
+              >
                 <SelectTrigger className="rounded-xl">
                   <SelectValue placeholder="Pilih status" />
                 </SelectTrigger>
@@ -407,6 +563,7 @@ export default function AdminOrders() {
               variant="outline"
               className="flex-1 rounded-xl"
               onClick={() => {
+                setTempStatusFilter("all");
                 setStatusFilter("all");
                 setIsFilterOpen(false);
               }}
@@ -415,7 +572,10 @@ export default function AdminOrders() {
             </Button>
             <Button
               className="flex-1 gt-gradient-primary border-0 rounded-xl"
-              onClick={() => setIsFilterOpen(false)}
+              onClick={() => {
+                setStatusFilter(tempStatusFilter);
+                setIsFilterOpen(false);
+              }}
             >
               Terapkan
             </Button>

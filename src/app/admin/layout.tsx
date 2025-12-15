@@ -19,9 +19,11 @@ import {
   ChevronDown,
   LogOut,
   Ticket,
+  CheckCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,6 +32,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+const notifications = [
+  {
+    id: 1,
+    title: "Pesanan Baru",
+    message: "Budi Santoso membeli 2 tiket Jakarta Music Festival",
+    time: "2 menit lalu",
+    read: false,
+  },
+  {
+    id: 2,
+    title: "Check-in Berhasil",
+    message: "Siti Rahayu berhasil check-in di Gate A",
+    time: "15 menit lalu",
+    read: false,
+  },
+  {
+    id: 3,
+    title: "Refund Diproses",
+    message: "Refund untuk pesanan #1234 telah diproses",
+    time: "1 jam lalu",
+    read: true,
+  },
+];
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
@@ -156,10 +187,66 @@ export default function AdminLayout({
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative rounded-xl">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative rounded-xl"
+                >
+                  <Bell className="h-5 w-5" />
+                  {notifications.some((n) => !n.read) && (
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-80 p-0 rounded-xl">
+                <div className="p-4 border-b border-border">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold">Notifikasi</h4>
+                    <Badge
+                      variant="secondary"
+                      className="bg-primary/10 text-primary"
+                    >
+                      {notifications.filter((n) => !n.read).length} baru
+                    </Badge>
+                  </div>
+                </div>
+                <div className="max-h-80 overflow-y-auto">
+                  {notifications.map((notif) => (
+                    <div
+                      key={notif.id}
+                      className={`p-4 border-b border-border hover:bg-muted/50 cursor-pointer transition-colors ${
+                        !notif.read ? "bg-primary/5" : ""
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                            !notif.read ? "bg-primary" : "bg-transparent"
+                          }`}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm">{notif.title}</p>
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {notif.message}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {notif.time}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-3 border-t border-border">
+                  <Button variant="ghost" className="w-full rounded-xl text-sm">
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    Tandai semua sudah dibaca
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
