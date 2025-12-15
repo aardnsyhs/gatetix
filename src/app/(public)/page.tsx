@@ -178,7 +178,14 @@ export default function LandingPage() {
             {categories.map((category) => {
               const Icon = category.icon;
               return (
-                <Link key={category.label} href="/events" className="group">
+                <Link
+                  key={category.label}
+                  href={`/events?category=${encodeURIComponent(
+                    category.label
+                  )}`}
+                  scroll={true}
+                  className="group"
+                >
                   <Card className="gt-card-glow hover:scale-[1.02] transition-all">
                     <CardContent className="p-6 sm:p-8 text-center">
                       <div

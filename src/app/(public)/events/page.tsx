@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -8,11 +9,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
-  Calendar,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Calendar as CalendarIcon,
   MapPin,
   Users,
   SlidersHorizontal,
   Search,
+  X,
 } from "lucide-react";
 
 const events = [
@@ -91,14 +107,68 @@ const events = [
 ];
 
 const categories = ["Semua", "Musik", "Bisnis", "Kuliner", "Komunitas"];
+const locations = [
+  "Semua Lokasi",
+  "Jakarta",
+  "Tangerang",
+  "Bandung",
+  "Surabaya",
+  "Jawa Timur",
+];
+const priceRanges = [
+  { label: "Semua Harga", value: "all" },
+  { label: "Gratis", value: "free" },
+  { label: "< Rp 100.000", value: "under100k" },
+  { label: "Rp 100.000 - Rp 300.000", value: "100k-300k" },
+  { label: "> Rp 300.000", value: "above300k" },
+];
 
 export default function EventListing() {
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get("category");
+
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  // Filter states (temporary until applied)
+  const [tempLocation, setTempLocation] = useState("Semua Lokasi");
+  const [tempPriceRange, setTempPriceRange] = useState("all");
+
+  // Applied filter states
+  const [appliedLocation, setAppliedLocation] = useState("Semua Lokasi");
+  const [appliedPriceRange, setAppliedPriceRange] = useState("all");
+
+  // Scroll to top when page loads or URL params change
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    // Use setTimeout to ensure scroll happens after render
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }, 0);
+  }, [searchParams]);
+
+  // Set category from URL parameter
+  useEffect(() => {
+    if (categoryFromUrl && categories.includes(categoryFromUrl)) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl]);
+
+  const applyFilters = () => {
+    setAppliedLocation(tempLocation);
+    setAppliedPriceRange(tempPriceRange);
+    setIsFilterOpen(false);
+  };
+
+  const resetFilters = () => {
+    setTempLocation("Semua Lokasi");
+    setTempPriceRange("all");
+    setAppliedLocation("Semua Lokasi");
+    setAppliedPriceRange("all");
+  };
+
+  const hasActiveFilters =
+    appliedLocation !== "Semua Lokasi" || appliedPriceRange !== "all";
 
   const filteredEvents = events.filter((event) => {
     const matchesCategory =
@@ -106,7 +176,40 @@ export default function EventListing() {
     const matchesSearch = event.title
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+
+    // Location filter
+    const matchesLocation =
+      appliedLocation === "Semua Lokasi" ||
+      event.location.includes(appliedLocation);
+
+    // Price filter
+    let matchesPrice = true;
+    if (appliedPriceRange !== "all") {
+      const priceText = event.price.toLowerCase();
+      if (appliedPriceRange === "free") {
+        matchesPrice = priceText === "gratis";
+      } else if (appliedPriceRange === "under100k") {
+        const priceMatch = event.price.match(/[\d.]+/);
+        if (priceMatch) {
+          const price = parseInt(priceMatch[0].replace(".", ""));
+          matchesPrice = price < 100000;
+        }
+      } else if (appliedPriceRange === "100k-300k") {
+        const priceMatch = event.price.match(/[\d.]+/);
+        if (priceMatch) {
+          const price = parseInt(priceMatch[0].replace(".", ""));
+          matchesPrice = price >= 100000 && price <= 300000;
+        }
+      } else if (appliedPriceRange === "above300k") {
+        const priceMatch = event.price.match(/[\d.]+/);
+        if (priceMatch) {
+          const price = parseInt(priceMatch[0].replace(".", ""));
+          matchesPrice = price > 300000;
+        }
+      }
+    }
+
+    return matchesCategory && matchesSearch && matchesLocation && matchesPrice;
   });
 
   return (
@@ -151,11 +254,126 @@ export default function EventListing() {
               </Button>
             ))}
           </div>
-          <Button variant="outline" size="sm" className="rounded-xl">
-            <SlidersHorizontal className="h-4 w-4 mr-2" />
-            Filter
-          </Button>
+          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-xl relative"
+              >
+                <SlidersHorizontal className="h-4 w-4 mr-2" />
+                Filter
+                {hasActiveFilters && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full" />
+                )}
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="sm:max-w-md overflow-y-auto px-6">
+              <SheetHeader className="pb-4 border-b border-border">
+                <div>
+                  <p className="text-xs text-muted-foreground">Pengaturan</p>
+                  <SheetTitle className="text-lg font-bold">
+                    Filter Event
+                  </SheetTitle>
+                </div>
+              </SheetHeader>
+
+              <div className="py-6 space-y-5">
+                {/* Location Filter */}
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground mb-2">
+                    LOKASI
+                  </p>
+                  <Select value={tempLocation} onValueChange={setTempLocation}>
+                    <SelectTrigger className="h-12 rounded-xl">
+                      <SelectValue placeholder="Pilih lokasi" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {locations.map((loc) => (
+                        <SelectItem key={loc} value={loc}>
+                          {loc}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Price Range Filter */}
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground mb-2">
+                    RENTANG HARGA
+                  </p>
+                  <Select
+                    value={tempPriceRange}
+                    onValueChange={setTempPriceRange}
+                  >
+                    <SelectTrigger className="h-12 rounded-xl">
+                      <SelectValue placeholder="Pilih rentang harga" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {priceRanges.map((range) => (
+                        <SelectItem key={range.value} value={range.value}>
+                          {range.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4 border-t border-border">
+                <Button
+                  variant="outline"
+                  onClick={resetFilters}
+                  className="flex-1 rounded-xl"
+                >
+                  Reset
+                </Button>
+                <Button
+                  onClick={applyFilters}
+                  className="flex-1 gt-gradient-primary border-0 rounded-xl"
+                >
+                  Terapkan
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
+
+        {/* Active Filters */}
+        {hasActiveFilters && (
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            <span className="text-sm text-muted-foreground">Filter aktif:</span>
+            {appliedLocation !== "Semua Lokasi" && (
+              <Badge variant="secondary" className="rounded-full pr-1">
+                {appliedLocation}
+                <button
+                  onClick={() => setAppliedLocation("Semua Lokasi")}
+                  className="ml-1 hover:bg-muted rounded-full p-0.5"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </Badge>
+            )}
+            {appliedPriceRange !== "all" && (
+              <Badge variant="secondary" className="rounded-full pr-1">
+                {priceRanges.find((r) => r.value === appliedPriceRange)?.label}
+                <button
+                  onClick={() => setAppliedPriceRange("all")}
+                  className="ml-1 hover:bg-muted rounded-full p-0.5"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </Badge>
+            )}
+            <button
+              onClick={resetFilters}
+              className="text-sm text-primary hover:underline"
+            >
+              Hapus semua
+            </button>
+          </div>
+        )}
 
         {/* Results Count */}
         <p className="text-sm text-muted-foreground mb-6">
@@ -194,7 +412,7 @@ export default function EventListing() {
                   </h3>
                   <div className="space-y-2 text-sm text-muted-foreground mb-4">
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
+                      <CalendarIcon className="h-4 w-4" />
                       <span>{event.date}</span>
                     </div>
                     <div className="flex items-center gap-2">
