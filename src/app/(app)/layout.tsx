@@ -7,8 +7,8 @@ import { Menu, X, Ticket, User, ShoppingBag, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "My Tickets", path: "/tickets", icon: Ticket },
-  { label: "Order History", path: "/orders", icon: ShoppingBag },
+  { label: "Tiket Saya", path: "/tickets", icon: Ticket },
+  { label: "Riwayat Pesanan", path: "/orders", icon: ShoppingBag },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -54,12 +54,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="hidden md:flex items-center gap-3">
               <Button variant="ghost" className="rounded-xl">
                 <User className="h-4 w-4 mr-2" />
-                John Doe
+                Budi Santoso
               </Button>
               <Button asChild variant="outline" className="rounded-xl">
                 <Link href="/login">
                   <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
+                  Keluar
                 </Link>
               </Button>
             </div>
@@ -105,7 +105,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     className="w-full justify-start rounded-xl"
                   >
                     <User className="h-4 w-4 mr-2" />
-                    John Doe
+                    Budi Santoso
                   </Button>
                   <Button
                     asChild
@@ -117,7 +117,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <LogOut className="h-4 w-4 mr-2" />
-                      Sign Out
+                      Keluar
                     </Link>
                   </Button>
                 </div>
@@ -131,7 +131,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       <footer className="border-t border-border bg-card mt-auto">
         <div className="gt-container py-6 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} GateTix. All rights reserved.
+          © {new Date().getFullYear()} GateTix. Hak cipta dilindungi.
         </div>
       </footer>
     </div>

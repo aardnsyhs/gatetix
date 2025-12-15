@@ -23,26 +23,26 @@ import {
 const orders = [
   {
     id: "ORD-12345",
-    eventName: "Summer Music Festival 2024",
-    date: "June 1, 2024",
+    eventName: "Jakarta Music Festival 2024",
+    date: "1 Juni 2024",
     tickets: 2,
-    total: 107.8,
+    total: 600000,
     status: "completed",
   },
   {
     id: "ORD-12346",
-    eventName: "Tech Conference 2024",
-    date: "June 15, 2024",
+    eventName: "Indonesia Tech Summit 2024",
+    date: "15 Juni 2024",
     tickets: 1,
-    total: 218.9,
+    total: 1500000,
     status: "completed",
   },
   {
     id: "ORD-12347",
-    eventName: "Food & Wine Expo",
-    date: "May 20, 2024",
+    eventName: "Festival Kuliner Nusantara",
+    date: "20 Mei 2024",
     tickets: 3,
-    total: 115.5,
+    total: 450000,
     status: "refunded",
   },
 ];
@@ -56,9 +56,11 @@ export default function OrderHistory() {
     <div className="bg-background min-h-screen py-8 lg:py-12">
       <div className="gt-container">
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Order History</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">
+            Riwayat Pesanan
+          </h1>
           <p className="text-muted-foreground">
-            View your past ticket purchases
+            Lihat riwayat pembelian tiket Anda
           </p>
         </div>
 
@@ -67,10 +69,10 @@ export default function OrderHistory() {
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead>Order ID</TableHead>
+                <TableHead>ID Pesanan</TableHead>
                 <TableHead>Event</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Tickets</TableHead>
+                <TableHead>Tanggal</TableHead>
+                <TableHead>Tiket</TableHead>
                 <TableHead>Total</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead></TableHead>
@@ -88,7 +90,7 @@ export default function OrderHistory() {
                   </TableCell>
                   <TableCell>{order.tickets}</TableCell>
                   <TableCell className="font-semibold">
-                    ${order.total.toFixed(2)}
+                    Rp {order.total.toLocaleString("id-ID")}
                   </TableCell>
                   <TableCell>
                     <Badge
@@ -101,7 +103,9 @@ export default function OrderHistory() {
                           : ""
                       }
                     >
-                      {order.status}
+                      {order.status === "completed"
+                        ? "Selesai"
+                        : "Dikembalikan"}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -122,8 +126,8 @@ export default function OrderHistory() {
           {/* Pagination */}
           <div className="flex items-center justify-between p-4 border-t border-border">
             <p className="text-sm text-muted-foreground">
-              Showing <span className="font-medium">1-3</span> of{" "}
-              <span className="font-medium">3</span> orders
+              Menampilkan <span className="font-medium">1-3</span> dari{" "}
+              <span className="font-medium">3</span> pesanan
             </p>
             <div className="flex items-center gap-2">
               <Button
@@ -174,7 +178,7 @@ export default function OrderHistory() {
                         : ""
                     }
                   >
-                    {order.status}
+                    {order.status === "completed" ? "Selesai" : "Dikembalikan"}
                   </Badge>
                 </div>
                 <div className="space-y-2 mb-4">
@@ -183,13 +187,13 @@ export default function OrderHistory() {
                     <span>{order.date}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Tickets:</span>
+                    <span className="text-muted-foreground">Tiket:</span>
                     <span>{order.tickets}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Total:</span>
                     <span className="font-semibold">
-                      ${order.total.toFixed(2)}
+                      Rp {order.total.toLocaleString("id-ID")}
                     </span>
                   </div>
                 </div>
@@ -198,7 +202,7 @@ export default function OrderHistory() {
                   onClick={() => setSelectedOrder(order)}
                   className="w-full rounded-xl"
                 >
-                  View Details
+                  Lihat Detail
                 </Button>
               </CardContent>
             </Card>
@@ -212,11 +216,11 @@ export default function OrderHistory() {
         >
           <SheetContent className="gt-card-glow">
             <SheetHeader>
-              <SheetTitle>Order Details</SheetTitle>
+              <SheetTitle>Detail Pesanan</SheetTitle>
             </SheetHeader>
             <div className="space-y-6 mt-6">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Order ID</p>
+                <p className="text-sm text-muted-foreground mb-1">ID Pesanan</p>
                 <p className="font-mono">{selectedOrder?.id}</p>
               </div>
               <div>
@@ -225,22 +229,22 @@ export default function OrderHistory() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground mb-1">
-                  Purchase Date
+                  Tanggal Pembelian
                 </p>
                 <p>{selectedOrder?.date}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground mb-1">
-                  Number of Tickets
+                  Jumlah Tiket
                 </p>
                 <p>{selectedOrder?.tickets}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground mb-1">
-                  Total Amount
+                  Total Pembayaran
                 </p>
                 <p className="text-xl font-bold text-primary">
-                  ${selectedOrder?.total.toFixed(2)}
+                  Rp {selectedOrder?.total.toLocaleString("id-ID")}
                 </p>
               </div>
               <div>
@@ -257,7 +261,9 @@ export default function OrderHistory() {
                       : ""
                   }
                 >
-                  {selectedOrder?.status}
+                  {selectedOrder?.status === "completed"
+                    ? "Selesai"
+                    : "Dikembalikan"}
                 </Badge>
               </div>
             </div>

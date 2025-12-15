@@ -18,21 +18,21 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const tickets = [
   {
     id: "TKT-001",
-    eventName: "Summer Music Festival 2024",
-    date: "July 15, 2024",
-    time: "6:00 PM",
-    location: "Central Park, NY",
-    ticketType: "General Admission",
+    eventName: "Jakarta Music Festival 2024",
+    date: "15 Juli 2024",
+    time: "18:00 WIB",
+    location: "Gelora Bung Karno, Jakarta",
+    ticketType: "Regular",
     status: "active",
     qrCode:
       "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-001",
   },
   {
     id: "TKT-002",
-    eventName: "Tech Conference 2024",
-    date: "August 20, 2024",
-    time: "9:00 AM",
-    location: "Convention Center, SF",
+    eventName: "Indonesia Tech Summit 2024",
+    date: "20 Agustus 2024",
+    time: "09:00 WIB",
+    location: "ICE BSD, Tangerang",
     ticketType: "VIP Pass",
     status: "active",
     qrCode:
@@ -40,11 +40,11 @@ const tickets = [
   },
   {
     id: "TKT-003",
-    eventName: "Food & Wine Expo",
-    date: "June 5, 2024",
-    time: "12:00 PM",
-    location: "Downtown, LA",
-    ticketType: "General Admission",
+    eventName: "Festival Kuliner Nusantara",
+    date: "5 Juni 2024",
+    time: "12:00 WIB",
+    location: "Senayan City, Jakarta",
+    ticketType: "Regular",
     status: "used",
     qrCode:
       "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-003",
@@ -64,9 +64,9 @@ export default function MyTickets() {
     <div className="bg-background min-h-screen py-8 lg:py-12">
       <div className="gt-container">
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">My Tickets</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Tiket Saya</h1>
           <p className="text-muted-foreground">
-            View and manage your event tickets
+            Lihat dan kelola tiket event Anda
           </p>
         </div>
 
@@ -81,19 +81,19 @@ export default function MyTickets() {
               value="all"
               className="rounded-lg capitalize data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
             >
-              All
+              Semua
             </TabsTrigger>
             <TabsTrigger
               value="active"
               className="rounded-lg capitalize data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
             >
-              Active
+              Aktif
             </TabsTrigger>
             <TabsTrigger
               value="used"
               className="rounded-lg capitalize data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
             >
-              Used
+              Terpakai
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -121,7 +121,7 @@ export default function MyTickets() {
                           : ""
                       }
                     >
-                      {ticket.status === "active" ? "Active" : "Used"}
+                      {ticket.status === "active" ? "Aktif" : "Terpakai"}
                     </Badge>
                   </div>
                   <span className="text-sm font-mono text-muted-foreground">
@@ -141,7 +141,7 @@ export default function MyTickets() {
                     <span>{ticket.location}</span>
                   </div>
                   <p className="text-sm">
-                    <span className="text-muted-foreground">Type:</span>{" "}
+                    <span className="text-muted-foreground">Tipe:</span>{" "}
                     <span className="font-medium">{ticket.ticketType}</span>
                   </p>
                 </div>
@@ -155,13 +155,13 @@ export default function MyTickets() {
                     className="flex-1 rounded-xl"
                   >
                     <QrCode className="h-4 w-4 mr-2" />
-                    Show QR
+                    Lihat QR
                   </Button>
                   <Button
                     asChild
                     className="flex-1 gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
                   >
-                    <Link href={`/tickets/${ticket.id}`}>View Details</Link>
+                    <Link href={`/tickets/${ticket.id}`}>Lihat Detail</Link>
                   </Button>
                 </div>
               </CardContent>
@@ -189,14 +189,14 @@ export default function MyTickets() {
                 />
               </div>
               <p className="text-sm text-muted-foreground mb-2">
-                Show this QR code at the venue entrance
+                Tunjukkan kode QR ini di pintu masuk venue
               </p>
               <p className="text-xs font-mono text-muted-foreground mb-6">
                 {selectedTicket?.id}
               </p>
               <Button variant="outline" className="w-full rounded-xl">
                 <Download className="h-4 w-4 mr-2" />
-                Download Ticket
+                Unduh Tiket
               </Button>
             </div>
           </DialogContent>

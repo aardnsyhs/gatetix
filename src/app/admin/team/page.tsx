@@ -16,60 +16,60 @@ import {
 const teamMembers = [
   {
     id: 1,
-    name: "John Admin",
-    email: "john@example.com",
+    name: "Budi Admin",
+    email: "budi@email.com",
     role: "Admin",
     status: "active",
-    lastActive: "2 min ago",
+    lastActive: "2 menit lalu",
   },
   {
     id: 2,
-    name: "Jane Manager",
-    email: "jane@example.com",
+    name: "Siti Manager",
+    email: "siti@email.com",
     role: "Manager",
     status: "active",
-    lastActive: "1 hour ago",
+    lastActive: "1 jam lalu",
   },
   {
     id: 3,
-    name: "Bob Staff",
-    email: "bob@example.com",
+    name: "Ahmad Staff",
+    email: "ahmad@email.com",
     role: "Staff",
     status: "pending",
-    lastActive: "Never",
+    lastActive: "Belum pernah",
   },
   {
     id: 4,
-    name: "Alice Checker",
-    email: "alice@example.com",
-    role: "Check-in Staff",
+    name: "Dewi Checker",
+    email: "dewi@email.com",
+    role: "Staff Check-in",
     status: "active",
-    lastActive: "3 hours ago",
+    lastActive: "3 jam lalu",
   },
 ];
 
 const roles = [
   {
     name: "Admin",
-    description: "Full access to all features",
+    description: "Akses penuh ke semua fitur",
     permissions: 12,
     color: "from-purple-500 to-pink-500",
   },
   {
     name: "Manager",
-    description: "Manage events and orders",
+    description: "Kelola event dan pesanan",
     permissions: 8,
     color: "from-blue-500 to-cyan-500",
   },
   {
     name: "Staff",
-    description: "View and basic operations",
+    description: "Lihat dan operasi dasar",
     permissions: 5,
     color: "from-emerald-500 to-teal-500",
   },
   {
-    name: "Check-in Staff",
-    description: "Check-in only access",
+    name: "Staff Check-in",
+    description: "Akses check-in saja",
     permissions: 2,
     color: "from-orange-500 to-amber-500",
   },
@@ -88,14 +88,14 @@ export default function TeamRoles() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Team & Roles</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Tim & Peran</h1>
           <p className="text-muted-foreground mt-1">
-            Manage team members and permissions
+            Kelola anggota tim dan izin akses
           </p>
         </div>
         <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
           <UserPlus className="h-4 w-4 mr-2" />
-          Invite Member
+          Undang Anggota
         </Button>
       </div>
 
@@ -103,7 +103,7 @@ export default function TeamRoles() {
         <div className="lg:col-span-2 space-y-4">
           <Input
             type="text"
-            placeholder="Search members..."
+            placeholder="Cari anggota..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="max-w-md rounded-xl"
@@ -111,9 +111,9 @@ export default function TeamRoles() {
 
           <Card className="gt-card-glow">
             <CardHeader>
-              <CardTitle>Team Members</CardTitle>
+              <CardTitle>Anggota Tim</CardTitle>
               <p className="text-sm text-muted-foreground">
-                {teamMembers.length} members
+                {teamMembers.length} anggota
               </p>
             </CardHeader>
             <CardContent className="p-0">
@@ -172,15 +172,15 @@ export default function TeamRoles() {
                         >
                           <DropdownMenuItem className="rounded-lg cursor-pointer">
                             <Shield className="h-4 w-4 mr-2" />
-                            Change Role
+                            Ubah Peran
                           </DropdownMenuItem>
                           <DropdownMenuItem className="rounded-lg cursor-pointer">
                             <Mail className="h-4 w-4 mr-2" />
-                            Resend Invite
+                            Kirim Ulang Undangan
                           </DropdownMenuItem>
                           <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
                             <Trash2 className="h-4 w-4 mr-2" />
-                            Remove
+                            Hapus
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -194,8 +194,8 @@ export default function TeamRoles() {
 
         <Card className="gt-card-glow h-fit">
           <CardHeader>
-            <CardTitle>Roles</CardTitle>
-            <p className="text-sm text-muted-foreground">Permission levels</p>
+            <CardTitle>Peran</CardTitle>
+            <p className="text-sm text-muted-foreground">Tingkat izin akses</p>
           </CardHeader>
           <CardContent className="space-y-3">
             {roles.map((role) => (
@@ -216,7 +216,7 @@ export default function TeamRoles() {
                   <span className="font-medium text-foreground">
                     {role.permissions}
                   </span>{" "}
-                  permissions
+                  izin
                 </p>
               </div>
             ))}

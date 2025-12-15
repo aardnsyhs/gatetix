@@ -37,10 +37,12 @@ export default function RegisterPage() {
         />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center text-white">
-            <h2 className="text-4xl font-bold mb-4">Join the community</h2>
+            <h2 className="text-4xl font-bold mb-4">
+              Bergabung dengan komunitas
+            </h2>
             <p className="text-white/80 text-lg max-w-md">
-              Create an account to discover events, manage your tickets, and
-              connect with organizers.
+              Buat akun untuk menemukan event, kelola tiket Anda, dan terhubung
+              dengan penyelenggara.
             </p>
           </div>
         </div>
@@ -55,15 +57,15 @@ export default function RegisterPage() {
             <span className="text-xl font-bold gt-gradient-text">GateTix</span>
           </Link>
 
-          <h1 className="text-3xl font-bold mb-2">Create account</h1>
+          <h1 className="text-3xl font-bold mb-2">Buat Akun</h1>
           <p className="text-muted-foreground mb-8">
-            Get started with your free account
+            Mulai dengan akun gratis Anda
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First name</Label>
+                <Label htmlFor="firstName">Nama Depan</Label>
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
@@ -73,14 +75,14 @@ export default function RegisterPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, firstName: e.target.value })
                     }
-                    placeholder="John"
+                    placeholder="Budi"
                     required
                     className="pl-12 rounded-xl h-12"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last name</Label>
+                <Label htmlFor="lastName">Nama Belakang</Label>
                 <Input
                   id="lastName"
                   type="text"
@@ -88,7 +90,7 @@ export default function RegisterPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, lastName: e.target.value })
                   }
-                  placeholder="Doe"
+                  placeholder="Santoso"
                   required
                   className="rounded-xl h-12"
                 />
@@ -106,7 +108,7 @@ export default function RegisterPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  placeholder="you@example.com"
+                  placeholder="anda@contoh.com"
                   required
                   className="pl-12 rounded-xl h-12"
                 />
@@ -114,7 +116,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Kata Sandi</Label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
@@ -130,7 +132,7 @@ export default function RegisterPage() {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                Must be at least 8 characters
+                Minimal 8 karakter
               </p>
             </div>
 
@@ -146,13 +148,13 @@ export default function RegisterPage() {
                 htmlFor="terms"
                 className="text-sm text-muted-foreground cursor-pointer"
               >
-                I agree to the{" "}
+                Saya setuju dengan{" "}
                 <Link href="#" className="text-primary hover:underline">
-                  Terms of Service
+                  Syarat & Ketentuan
                 </Link>{" "}
-                and{" "}
+                dan{" "}
                 <Link href="#" className="text-primary hover:underline">
-                  Privacy Policy
+                  Kebijakan Privasi
                 </Link>
               </Label>
             </div>
@@ -161,18 +163,18 @@ export default function RegisterPage() {
               type="submit"
               className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl h-12"
             >
-              Create Account
+              Buat Akun
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-8">
-            Already have an account?{" "}
+            Sudah punya akun?{" "}
             <Link
               href="/login"
               className="text-primary font-medium hover:underline"
             >
-              Sign in
+              Masuk
             </Link>
           </p>
         </div>

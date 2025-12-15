@@ -30,9 +30,9 @@ export default function LoginPage() {
             <span className="text-xl font-bold gt-gradient-text">GateTix</span>
           </Link>
 
-          <h1 className="text-3xl font-bold mb-2">Welcome back</h1>
+          <h1 className="text-3xl font-bold mb-2">Selamat Datang Kembali</h1>
           <p className="text-muted-foreground mb-8">
-            Sign in to your account to continue
+            Masuk ke akun Anda untuk melanjutkan
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -47,7 +47,7 @@ export default function LoginPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  placeholder="you@example.com"
+                  placeholder="anda@contoh.com"
                   required
                   className="pl-12 rounded-xl h-12"
                 />
@@ -56,9 +56,9 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Kata Sandi</Label>
                 <Link href="#" className="text-sm text-primary hover:underline">
-                  Forgot password?
+                  Lupa kata sandi?
                 </Link>
               </div>
               <div className="relative">
@@ -87,7 +87,7 @@ export default function LoginPage() {
                 htmlFor="remember"
                 className="text-sm text-muted-foreground cursor-pointer"
               >
-                Remember me
+                Ingat saya
               </Label>
             </div>
 
@@ -95,18 +95,18 @@ export default function LoginPage() {
               type="submit"
               className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl h-12"
             >
-              Sign In
+              Masuk
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-8">
-            Don&apos;t have an account?{" "}
+            Belum punya akun?{" "}
             <Link
               href="/register"
               className="text-primary font-medium hover:underline"
             >
-              Sign up
+              Daftar
             </Link>
           </p>
         </div>
@@ -123,10 +123,10 @@ export default function LoginPage() {
         />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center text-white">
-            <h2 className="text-4xl font-bold mb-4">Your next event awaits</h2>
+            <h2 className="text-4xl font-bold mb-4">Event seru menanti Anda</h2>
             <p className="text-white/80 text-lg max-w-md">
-              Discover amazing events, book tickets instantly, and create
-              unforgettable memories.
+              Temukan event menarik, pesan tiket dengan mudah, dan ciptakan
+              kenangan tak terlupakan.
             </p>
           </div>
         </div>

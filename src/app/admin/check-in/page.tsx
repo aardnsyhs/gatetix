@@ -26,33 +26,33 @@ import {
 const recentCheckIns = [
   {
     id: 1,
-    name: "John Doe",
+    name: "Budi Santoso",
     ticketType: "VIP",
-    time: "6:15 PM",
+    time: "18:15",
     status: "success",
     ticketId: "TKT-001",
   },
   {
     id: 2,
-    name: "Jane Smith",
-    ticketType: "General",
-    time: "6:18 PM",
+    name: "Siti Rahayu",
+    ticketType: "Regular",
+    time: "18:18",
     status: "success",
     ticketId: "TKT-002",
   },
   {
     id: 3,
-    name: "Invalid Ticket",
+    name: "Tiket Tidak Valid",
     ticketType: "—",
-    time: "6:20 PM",
+    time: "18:20",
     status: "failed",
     ticketId: "TKT-XXX",
   },
   {
     id: 4,
-    name: "Bob Wilson",
-    ticketType: "General",
-    time: "6:22 PM",
+    name: "Ahmad Wijaya",
+    ticketType: "Regular",
+    time: "18:22",
     status: "success",
     ticketId: "TKT-003",
   },
@@ -83,9 +83,9 @@ export default function CheckInConsole() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Check-in Console</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Konsol Check-in</h1>
           <p className="text-muted-foreground mt-1">
-            Scan tickets or enter codes manually
+            Scan tiket atau masukkan kode secara manual
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -97,8 +97,8 @@ export default function CheckInConsole() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="summer">Summer Music Festival</SelectItem>
-              <SelectItem value="tech">Tech Conference 2024</SelectItem>
+              <SelectItem value="summer">Jakarta Music Festival</SelectItem>
+              <SelectItem value="tech">Indonesia Tech Summit</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -114,7 +114,7 @@ export default function CheckInConsole() {
                   className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
                 >
                   <Camera className="h-4 w-4 mr-2" />
-                  Camera
+                  Kamera
                 </TabsTrigger>
                 <TabsTrigger
                   value="manual"
@@ -134,18 +134,18 @@ export default function CheckInConsole() {
                       className="h-16 w-16 mx-auto mb-3 animate-pulse"
                       strokeWidth={1.5}
                     />
-                    <p className="font-medium">Point camera at QR code</p>
+                    <p className="font-medium">Arahkan kamera ke QR code</p>
                     <p className="text-sm mt-1 text-white/50">
-                      Position the code within the frame
+                      Posisikan kode di dalam bingkai
                     </p>
                   </div>
                 </div>
               </TabsContent>
               <TabsContent value="manual" className="mt-0 space-y-4">
                 <div className="space-y-2">
-                  <Label>Ticket Code</Label>
+                  <Label>Kode Tiket</Label>
                   <Input
-                    placeholder="Enter ticket code (e.g., TKT-001)"
+                    placeholder="Masukkan kode tiket (cth: TKT-001)"
                     value={ticketCode}
                     onChange={(e) =>
                       setTicketCode(e.target.value.toUpperCase())
@@ -160,7 +160,7 @@ export default function CheckInConsole() {
                   className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl h-12"
                 >
                   <ScanLine className="h-5 w-5 mr-2" />
-                  Validate Ticket
+                  Validasi Tiket
                 </Button>
               </TabsContent>
 
@@ -190,7 +190,9 @@ export default function CheckInConsole() {
                             : "text-destructive"
                         }`}
                       >
-                        {scanResult.success ? "Valid Ticket" : "Invalid Ticket"}
+                        {scanResult.success
+                          ? "Tiket Valid"
+                          : "Tiket Tidak Valid"}
                       </p>
                       {scanResult.success && (
                         <>
@@ -212,8 +214,8 @@ export default function CheckInConsole() {
 
         <Card className="gt-card-glow">
           <CardHeader>
-            <CardTitle>Recent Check-ins</CardTitle>
-            <p className="text-sm text-muted-foreground">Last 10 scans</p>
+            <CardTitle>Check-in Terbaru</CardTitle>
+            <p className="text-sm text-muted-foreground">10 scan terakhir</p>
           </CardHeader>
           <CardContent className="p-0">
             <div className="divide-y divide-border">

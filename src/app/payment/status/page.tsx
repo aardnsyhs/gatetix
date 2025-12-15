@@ -20,25 +20,25 @@ const statusConfig = {
     icon: CheckCircle2,
     gradient: "from-emerald-500 to-teal-500",
     bgColor: "bg-success/10",
-    title: "Payment Successful!",
+    title: "Pembayaran Berhasil!",
     message:
-      "Your tickets have been sent to your email. Get ready for an amazing experience!",
+      "Tiket Anda telah dikirim ke email. Bersiaplah untuk pengalaman yang luar biasa!",
   },
   pending: {
     icon: Clock,
     gradient: "from-amber-500 to-orange-500",
     bgColor: "bg-warning/10",
-    title: "Payment Pending",
+    title: "Pembayaran Tertunda",
     message:
-      "Your payment is being processed. You will receive a confirmation email shortly.",
+      "Pembayaran Anda sedang diproses. Anda akan menerima email konfirmasi segera.",
   },
   failed: {
     icon: XCircle,
     gradient: "from-red-500 to-rose-500",
     bgColor: "bg-destructive/10",
-    title: "Payment Failed",
+    title: "Pembayaran Gagal",
     message:
-      "There was an issue processing your payment. Please try again or use a different payment method.",
+      "Terjadi masalah saat memproses pembayaran Anda. Silakan coba lagi atau gunakan metode pembayaran lain.",
   },
 };
 
@@ -71,13 +71,13 @@ function PaymentStatusContent() {
               >
                 <Link href="/tickets">
                   <Ticket className="h-4 w-4 mr-2" />
-                  View My Tickets
+                  Lihat Tiket Saya
                 </Link>
               </Button>
               <Button asChild variant="outline" className="w-full rounded-xl">
                 <Link href="/">
                   <Home className="h-4 w-4 mr-2" />
-                  Back to Home
+                  Kembali ke Beranda
                 </Link>
               </Button>
             </>
@@ -87,19 +87,19 @@ function PaymentStatusContent() {
               asChild
               className="w-full gt-gradient-primary border-0 hover:opacity-90"
             >
-              <Link href="/orders">View Order Status</Link>
+              <Link href="/orders">Lihat Status Pesanan</Link>
             </Button>
           )}
           {status === "failed" && (
             <>
               <Button className="w-full gt-gradient-primary border-0 hover:opacity-90">
                 <RefreshCw className="h-4 w-4 mr-2" />
-                Try Again
+                Coba Lagi
               </Button>
               <Button asChild variant="outline" className="w-full rounded-xl">
                 <Link href="/">
                   <Home className="h-4 w-4 mr-2" />
-                  Back to Home
+                  Kembali ke Beranda
                 </Link>
               </Button>
             </>
@@ -109,9 +109,9 @@ function PaymentStatusContent() {
         {status === "success" && (
           <div className="mt-8 p-4 rounded-xl bg-muted/50">
             <p className="text-sm text-muted-foreground">
-              Order confirmation has been sent to{" "}
+              Konfirmasi pesanan telah dikirim ke{" "}
               <span className="font-medium text-foreground">
-                john@example.com
+                budi@contoh.com
               </span>
             </p>
           </div>
@@ -128,9 +128,9 @@ function LoadingFallback() {
         <div className="w-24 h-24 rounded-3xl bg-muted flex items-center justify-center mx-auto mb-6">
           <Loader2 className="h-12 w-12 text-muted-foreground animate-spin" />
         </div>
-        <h1 className="text-2xl font-bold mb-3">Loading...</h1>
+        <h1 className="text-2xl font-bold mb-3">Memuat...</h1>
         <p className="text-muted-foreground">
-          Please wait while we check your payment status.
+          Mohon tunggu sementara kami memeriksa status pembayaran Anda.
         </p>
       </CardContent>
     </Card>

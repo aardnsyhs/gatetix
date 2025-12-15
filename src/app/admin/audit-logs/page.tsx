@@ -18,54 +18,54 @@ import { Input } from "@/components/ui/input";
 const auditLogs = [
   {
     id: 1,
-    action: "Event Created",
-    user: "John Admin",
-    target: "Summer Music Festival",
+    action: "Event Dibuat",
+    user: "Budi Admin",
+    target: "Jakarta Music Festival",
     timestamp: "2024-07-10 14:30:00",
     type: "create",
     icon: Plus,
   },
   {
     id: 2,
-    action: "Order Refunded",
-    user: "Jane Manager",
-    target: "Order #1234",
+    action: "Pesanan Direfund",
+    user: "Siti Manager",
+    target: "Pesanan #1234",
     timestamp: "2024-07-10 13:15:00",
     type: "update",
     icon: Edit,
   },
   {
     id: 3,
-    action: "User Invited",
-    user: "John Admin",
-    target: "bob@example.com",
+    action: "Pengguna Diundang",
+    user: "Budi Admin",
+    target: "ahmad@email.com",
     timestamp: "2024-07-10 11:00:00",
     type: "create",
     icon: User,
   },
   {
     id: 4,
-    action: "Promo Code Deleted",
-    user: "Jane Manager",
-    target: "OLDCODE",
+    action: "Kode Promo Dihapus",
+    user: "Siti Manager",
+    target: "KODELAMA",
     timestamp: "2024-07-09 16:45:00",
     type: "delete",
     icon: Trash2,
   },
   {
     id: 5,
-    action: "Settings Updated",
-    user: "John Admin",
-    target: "Payment Settings",
+    action: "Pengaturan Diperbarui",
+    user: "Budi Admin",
+    target: "Pengaturan Pembayaran",
     timestamp: "2024-07-09 10:30:00",
     type: "update",
     icon: Settings,
   },
   {
     id: 6,
-    action: "Event Published",
-    user: "Jane Manager",
-    target: "Tech Conference",
+    action: "Event Dipublikasi",
+    user: "Siti Manager",
+    target: "Indonesia Tech Summit",
     timestamp: "2024-07-08 09:00:00",
     type: "update",
     icon: Calendar,
@@ -99,28 +99,28 @@ export default function AuditLogs() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Audit Logs</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Log Aktivitas</h1>
           <p className="text-muted-foreground mt-1">
-            Track all system activities
+            Lacak semua aktivitas sistem
           </p>
         </div>
         <Button variant="outline" className="rounded-xl">
           <Download className="h-4 w-4 mr-2" />
-          Export Logs
+          Ekspor Log
         </Button>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
         <Input
           type="text"
-          placeholder="Search logs..."
+          placeholder="Cari log..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="flex-1 max-w-md rounded-xl"
         />
         <Button variant="ghost" className="rounded-xl">
           <Filter className="h-4 w-4 mr-2" />
-          Filters
+          Filter
         </Button>
       </div>
 
@@ -173,7 +173,7 @@ export default function AuditLogs() {
               type="button"
               className="text-sm text-primary font-medium hover:underline"
             >
-              Load more logs
+              Muat lebih banyak
             </button>
           </div>
         </CardContent>

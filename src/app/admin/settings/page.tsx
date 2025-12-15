@@ -17,27 +17,27 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 const tabs = [
-  { id: "general", label: "General", icon: Building },
-  { id: "payment", label: "Payment", icon: CreditCard },
-  { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "security", label: "Security", icon: Shield },
+  { id: "general", label: "Umum", icon: Building },
+  { id: "payment", label: "Pembayaran", icon: CreditCard },
+  { id: "notifications", label: "Notifikasi", icon: Bell },
+  { id: "security", label: "Keamanan", icon: Shield },
 ];
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState("general");
-  const [orgName, setOrgName] = useState("My Organization");
-  const [orgEmail, setOrgEmail] = useState("contact@myorg.com");
-  const [orgWebsite, setOrgWebsite] = useState("https://myorg.com");
+  const [orgName, setOrgName] = useState("Organisasi Saya");
+  const [orgEmail, setOrgEmail] = useState("kontak@organisasi.com");
+  const [orgWebsite, setOrgWebsite] = useState("https://organisasi.com");
   const [orgDescription, setOrgDescription] = useState(
-    "Event management company specializing in music festivals and tech conferences."
+    "Perusahaan manajemen event yang mengkhususkan diri dalam festival musik dan konferensi teknologi."
   );
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold">Settings</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Pengaturan</h1>
         <p className="text-muted-foreground mt-1">
-          Manage your organization settings
+          Kelola pengaturan organisasi Anda
         </p>
       </div>
 
@@ -68,14 +68,14 @@ export default function Settings() {
           {activeTab === "general" && (
             <Card className="gt-card-glow">
               <CardHeader>
-                <CardTitle>Organization Details</CardTitle>
+                <CardTitle>Detail Organisasi</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Update your organization information
+                  Perbarui informasi organisasi Anda
                 </p>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <Label className="mb-3 block">Organization Logo</Label>
+                  <Label className="mb-3 block">Logo Organisasi</Label>
                   <div className="flex items-center gap-4">
                     <div className="w-20 h-20 gt-gradient-primary rounded-2xl flex items-center justify-center">
                       <span className="text-2xl font-bold text-white">GT</span>
@@ -83,10 +83,10 @@ export default function Settings() {
                     <div>
                       <Button variant="outline" className="rounded-xl">
                         <Palette className="h-4 w-4 mr-2" />
-                        Change Logo
+                        Ubah Logo
                       </Button>
                       <p className="text-xs text-muted-foreground mt-2">
-                        PNG, JPG up to 2MB
+                        PNG, JPG maksimal 2MB
                       </p>
                     </div>
                   </div>
@@ -94,7 +94,7 @@ export default function Settings() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="orgName">Organization Name</Label>
+                    <Label htmlFor="orgName">Nama Organisasi</Label>
                     <Input
                       id="orgName"
                       value={orgName}
@@ -103,7 +103,7 @@ export default function Settings() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="orgEmail">Contact Email</Label>
+                    <Label htmlFor="orgEmail">Email Kontak</Label>
                     <Input
                       id="orgEmail"
                       type="email"
@@ -130,7 +130,7 @@ export default function Settings() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="orgDescription">Description</Label>
+                  <Label htmlFor="orgDescription">Deskripsi</Label>
                   <Textarea
                     id="orgDescription"
                     value={orgDescription}
@@ -143,7 +143,7 @@ export default function Settings() {
                 <div className="pt-4 border-t border-border">
                   <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
                     <Save className="h-4 w-4 mr-2" />
-                    Save Changes
+                    Simpan Perubahan
                   </Button>
                 </div>
               </CardContent>
@@ -156,14 +156,14 @@ export default function Settings() {
                 <div className="text-center py-12">
                   <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">
-                    Payment Settings
+                    Pengaturan Pembayaran
                   </h3>
                   <p className="text-muted-foreground max-w-sm mx-auto">
-                    Configure payment gateway and payout settings for your
-                    organization.
+                    Konfigurasi gateway pembayaran dan pengaturan pencairan
+                    untuk organisasi Anda.
                   </p>
                   <Button className="mt-6 gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
-                    Connect Payment Gateway
+                    Hubungkan Gateway Pembayaran
                   </Button>
                 </div>
               </CardContent>
@@ -176,10 +176,10 @@ export default function Settings() {
                 <div className="text-center py-12">
                   <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">
-                    Notification Preferences
+                    Preferensi Notifikasi
                   </h3>
                   <p className="text-muted-foreground max-w-sm mx-auto">
-                    Manage email and push notification settings.
+                    Kelola pengaturan email dan notifikasi push.
                   </p>
                 </div>
               </CardContent>
@@ -192,10 +192,10 @@ export default function Settings() {
                 <div className="text-center py-12">
                   <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">
-                    Security Settings
+                    Pengaturan Keamanan
                   </h3>
                   <p className="text-muted-foreground max-w-sm mx-auto">
-                    Manage security and access controls for your organization.
+                    Kelola keamanan dan kontrol akses untuk organisasi Anda.
                   </p>
                 </div>
               </CardContent>
