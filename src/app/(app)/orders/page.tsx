@@ -1,7 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Calendar,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Ticket,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +34,7 @@ const orders = [
     id: "ORD-12345",
     eventName: "Jakarta Music Festival 2024",
     date: "1 Juni 2024",
+    time: "18:00",
     tickets: 2,
     total: 600000,
     status: "completed",
@@ -33,6 +43,7 @@ const orders = [
     id: "ORD-12346",
     eventName: "Indonesia Tech Summit 2024",
     date: "15 Juni 2024",
+    time: "09:00",
     tickets: 1,
     total: 1500000,
     status: "completed",
@@ -41,11 +52,23 @@ const orders = [
     id: "ORD-12347",
     eventName: "Festival Kuliner Nusantara",
     date: "20 Mei 2024",
+    time: "12:00",
     tickets: 3,
     total: 450000,
     status: "refunded",
   },
 ];
+
+const getStatusStyle = (status: string) => {
+  switch (status) {
+    case "completed":
+      return "bg-emerald-500/10 text-emerald-500";
+    case "refunded":
+      return "bg-red-500/10 text-red-500";
+    default:
+      return "";
+  }
+};
 
 export default function OrderHistory() {
   const [selectedOrder, setSelectedOrder] = useState<(typeof orders)[0] | null>(
@@ -214,57 +237,92 @@ export default function OrderHistory() {
           open={!!selectedOrder}
           onOpenChange={() => setSelectedOrder(null)}
         >
-          <SheetContent className="gt-card-glow">
-            <SheetHeader>
-              <SheetTitle>Detail Pesanan</SheetTitle>
-            </SheetHeader>
-            <div className="space-y-6 mt-6">
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">ID Pesanan</p>
-                <p className="font-mono">{selectedOrder?.id}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Event</p>
-                <p className="font-medium">{selectedOrder?.eventName}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Tanggal Pembelian
-                </p>
-                <p>{selectedOrder?.date}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Jumlah Tiket
-                </p>
-                <p>{selectedOrder?.tickets}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Total Pembayaran
-                </p>
-                <p className="text-xl font-bold text-primary">
-                  Rp {selectedOrder?.total.toLocaleString("id-ID")}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Status</p>
+          <SheetContent className="sm:max-w-md overflow-y-auto px-6">
+            <SheetHeader className="pb-4 border-b border-border">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Detail Pesanan
+                  </p>
+                  <SheetTitle className="text-lg font-bold">
+                    {selectedOrder?.id}
+                  </SheetTitle>
+                </div>
                 <Badge
-                  variant={
-                    selectedOrder?.status === "completed"
-                      ? "default"
-                      : "secondary"
-                  }
-                  className={
-                    selectedOrder?.status === "completed"
-                      ? "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
-                      : ""
-                  }
+                  className={`${getStatusStyle(
+                    selectedOrder?.status || ""
+                  )} px-3 py-1`}
                 >
+                  {selectedOrder?.status === "completed" && (
+                    <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />
+                  )}
+                  {selectedOrder?.status === "refunded" && (
+                    <XCircle className="h-3.5 w-3.5 mr-1.5" />
+                  )}
                   {selectedOrder?.status === "completed"
                     ? "Selesai"
                     : "Dikembalikan"}
                 </Badge>
+              </div>
+            </SheetHeader>
+
+            <div className="py-6 space-y-5">
+              {/* Event Info */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-2">
+                  EVENT
+                </p>
+                <Card className="p-4">
+                  <p className="font-semibold">{selectedOrder?.eventName}</p>
+                  <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5" />
+                      {selectedOrder?.date}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5" />
+                      {selectedOrder?.time}
+                    </span>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Order Summary */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-2">
+                  RINGKASAN PESANAN
+                </p>
+                <Card className="divide-y divide-border">
+                  <div className="flex items-center justify-between p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Ticket className="h-4 w-4 text-primary" />
+                      </div>
+                      <span className="text-sm">Jumlah Tiket</span>
+                    </div>
+                    <span className="font-semibold">
+                      {selectedOrder?.tickets} tiket
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-4">
+                    <span className="text-sm text-muted-foreground">
+                      Harga per tiket
+                    </span>
+                    <span className="text-sm">
+                      Rp{" "}
+                      {(
+                        (selectedOrder?.total || 0) /
+                        (selectedOrder?.tickets || 1)
+                      ).toLocaleString("id-ID")}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-muted/30">
+                    <span className="font-medium">Total Pembayaran</span>
+                    <span className="text-lg font-bold text-primary">
+                      Rp {selectedOrder?.total.toLocaleString("id-ID")}
+                    </span>
+                  </div>
+                </Card>
               </div>
             </div>
           </SheetContent>

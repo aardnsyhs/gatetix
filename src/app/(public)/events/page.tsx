@@ -93,7 +93,7 @@ const events = [
 const categories = ["Semua", "Musik", "Bisnis", "Kuliner", "Komunitas"];
 
 export default function EventListing() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredEvents = events.filter((event) => {
