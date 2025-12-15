@@ -88,7 +88,7 @@ export default function Checkout() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Form */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="gt-card-glow">
               <CardHeader>
                 <CardTitle>
                   {step === 1
@@ -226,12 +226,15 @@ export default function Checkout() {
                         type="button"
                         variant="outline"
                         onClick={() => setStep(step - 1)}
-                        className="flex-1"
+                        className="flex-1 rounded-xl"
                       >
                         Back
                       </Button>
                     )}
-                    <Button type="submit" className="flex-1">
+                    <Button
+                      type="submit"
+                      className="flex-1 gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+                    >
                       {step === 3 ? "Complete Purchase" : "Continue"}
                     </Button>
                   </div>
@@ -242,7 +245,7 @@ export default function Checkout() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-24">
+            <Card className="gt-card-glow sticky top-24">
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Ticket className="h-5 w-5 text-primary" />
@@ -287,8 +290,11 @@ export default function Checkout() {
                       value={promoCode}
                       onChange={(e) => setPromoCode(e.target.value)}
                       placeholder="Enter code"
+                      className="rounded-xl"
                     />
-                    <Button variant="outline">Apply</Button>
+                    <Button variant="outline" className="rounded-xl">
+                      Apply
+                    </Button>
                   </div>
                 </div>
               </CardContent>

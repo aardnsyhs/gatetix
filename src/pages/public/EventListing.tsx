@@ -134,13 +134,17 @@ export default function EventListing() {
                 variant={selectedCategory === category ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedCategory(category)}
-                className="rounded-full"
+                className={`rounded-full ${
+                  selectedCategory === category
+                    ? "gt-gradient-primary border-0"
+                    : ""
+                }`}
               >
                 {category}
               </Button>
             ))}
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="rounded-xl">
             <SlidersHorizontal className="h-4 w-4 mr-2" />
             Filters
           </Button>
@@ -159,7 +163,7 @@ export default function EventListing() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {filteredEvents.map((event) => (
             <Link key={event.id} to={`/events/${event.slug}`}>
-              <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
+              <Card className="gt-card-glow overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={event.image}
@@ -205,17 +209,19 @@ export default function EventListing() {
 
         {/* Pagination */}
         <div className="flex justify-center gap-2">
-          <Button variant="outline" size="icon" disabled>
+          <Button variant="outline" size="icon" disabled className="rounded-xl">
             ←
           </Button>
-          <Button size="sm">1</Button>
-          <Button variant="outline" size="sm">
+          <Button size="sm" className="gt-gradient-primary border-0 rounded-xl">
+            1
+          </Button>
+          <Button variant="outline" size="sm" className="rounded-xl">
             2
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="rounded-xl">
             3
           </Button>
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" className="rounded-xl">
             →
           </Button>
         </div>

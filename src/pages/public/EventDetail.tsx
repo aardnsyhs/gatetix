@@ -86,7 +86,7 @@ export default function EventDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            <Card>
+            <Card className="gt-card-glow">
               <CardContent className="p-6 sm:p-8">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
@@ -117,10 +117,18 @@ export default function EventDetail() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="icon">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-xl"
+                    >
                       <Share2 className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="icon">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-xl"
+                    >
                       <Heart className="h-4 w-4" />
                     </Button>
                   </div>
@@ -186,7 +194,7 @@ export default function EventDetail() {
 
           {/* Ticket Selector Sidebar */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-24">
+            <Card className="gt-card-glow sticky top-24">
               <CardContent className="p-6">
                 <div className="flex items-center gap-2 mb-6">
                   <Ticket className="h-5 w-5 text-primary" />
@@ -230,6 +238,7 @@ export default function EventDetail() {
                       size="icon"
                       onClick={() => handleQuantityChange(-1)}
                       disabled={ticketQuantity <= 1}
+                      className="rounded-xl"
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
@@ -241,6 +250,7 @@ export default function EventDetail() {
                       size="icon"
                       onClick={() => handleQuantityChange(1)}
                       disabled={ticketQuantity >= 10}
+                      className="rounded-xl"
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
@@ -271,7 +281,10 @@ export default function EventDetail() {
                 </div>
 
                 <Link to={`/checkout/${slug}`}>
-                  <Button className="w-full" size="lg">
+                  <Button
+                    className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+                    size="lg"
+                  >
                     Continue to Checkout
                   </Button>
                 </Link>
