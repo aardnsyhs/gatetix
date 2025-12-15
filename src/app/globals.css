@@ -1,0 +1,296 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(225 25% 97%);
+  --color-foreground: hsl(225 25% 12%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(225 25% 12%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(225 25% 12%);
+  --color-primary: hsl(231 75% 55%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(195 85% 45%);
+  --color-secondary-foreground: hsl(0 0% 100%);
+  --color-muted: hsl(225 20% 92%);
+  --color-muted-foreground: hsl(225 15% 50%);
+  --color-accent: hsl(231 60% 95%);
+  --color-accent-foreground: hsl(231 75% 40%);
+  --color-destructive: hsl(0 72% 55%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-border: hsl(225 20% 88%);
+  --color-input: hsl(225 20% 88%);
+  --color-ring: hsl(231 75% 55%);
+  --color-success: hsl(155 70% 40%);
+  --color-warning: hsl(40 95% 50%);
+  --radius: 12px;
+}
+
+:root {
+  --gt-blue: 231 75% 55%;
+  --gt-cyan: 195 85% 45%;
+  --gt-purple: 260 70% 55%;
+  --background: 225 25% 97%;
+  --foreground: 225 25% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 225 25% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 225 25% 12%;
+  --primary: 231 75% 55%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 195 85% 45%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 225 20% 92%;
+  --muted-foreground: 225 15% 50%;
+  --accent: 231 60% 95%;
+  --accent-foreground: 231 75% 40%;
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 155 70% 40%;
+  --success-foreground: 0 0% 100%;
+  --warning: 40 95% 50%;
+  --warning-foreground: 225 25% 12%;
+  --border: 225 20% 88%;
+  --input: 225 20% 88%;
+  --ring: 231 75% 55%;
+}
+
+.dark {
+  --background: 225 25% 8%;
+  --foreground: 225 15% 95%;
+  --card: 225 25% 12%;
+  --card-foreground: 225 15% 95%;
+  --popover: 225 25% 12%;
+  --popover-foreground: 225 15% 95%;
+  --primary: 231 75% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 195 85% 50%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 225 20% 18%;
+  --muted-foreground: 225 15% 60%;
+  --accent: 231 50% 20%;
+  --accent-foreground: 231 75% 70%;
+  --border: 225 20% 20%;
+  --input: 225 20% 20%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.gt-gradient-primary {
+  background: linear-gradient(
+    135deg,
+    hsl(231, 75%, 55%) 0%,
+    hsl(195, 85%, 50%) 100%
+  );
+}
+
+.gt-gradient-secondary {
+  background: linear-gradient(
+    135deg,
+    hsl(260, 70%, 55%) 0%,
+    hsl(231, 75%, 55%) 100%
+  );
+}
+
+.gt-gradient-hero {
+  background: linear-gradient(
+    145deg,
+    hsl(231, 75%, 50%) 0%,
+    hsl(260, 70%, 45%) 50%,
+    hsl(195, 85%, 45%) 100%
+  );
+}
+
+.gt-gradient-text {
+  background: linear-gradient(
+    135deg,
+    hsl(231, 75%, 55%) 0%,
+    hsl(195, 85%, 50%) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gt-card {
+  background-color: hsl(var(--card));
+  border-radius: 1rem;
+  border: 1px solid hsl(var(--border) / 0.5);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gt-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.gt-card-flat {
+  background-color: hsl(var(--card));
+  border-radius: 1rem;
+  border: 1px solid hsl(var(--border) / 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.gt-card-glow {
+  background-color: hsl(var(--card));
+  border-radius: 1rem;
+  border: 1px solid hsl(var(--border) / 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gt-card-glow:hover {
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+}
+
+.gt-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: hsl(var(--background) / 0.8);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
+}
+
+.gt-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 1024px) {
+  .gt-section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.gt-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .gt-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gt-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    max-width: 1280px;
+  }
+}
+
+.gt-sidebar {
+  background-color: hsl(var(--card));
+  border-right: 1px solid hsl(var(--border));
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+}
+
+.gt-ticket-card {
+  position: relative;
+}
+
+.gt-ticket-card::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: hsl(var(--background));
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.gt-ticket-card::before {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: hsl(var(--background));
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.transition-smooth {
+  transition: all 0.2s ease-out;
+}
