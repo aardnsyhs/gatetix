@@ -38,6 +38,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { CustomAlert } from "@/components/ui/custom-alert";
 
 const teamMembers = [
   {
@@ -111,6 +112,13 @@ export default function TeamRoles() {
   >(null);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("Staff");
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [successMessage, setSuccessMessage] = useState({
+    title: "",
+    description: "",
+  });
+  const [showResendSuccess, setShowResendSuccess] = useState(false);
+  const [resendEmail, setResendEmail] = useState("");
 
   const filteredMembers = teamMembers.filter(
     (member) =>
@@ -119,26 +127,39 @@ export default function TeamRoles() {
   );
 
   const handleInvite = () => {
-    alert(`Undangan berhasil dikirim ke ${inviteEmail} sebagai ${inviteRole}!`);
+    setSuccessMessage({
+      title: "Undangan Terkirim",
+      description: `Undangan berhasil dikirim ke ${inviteEmail} sebagai ${inviteRole}!`,
+    });
     setIsInviteOpen(false);
+    setShowSuccessDialog(true);
     setInviteEmail("");
     setInviteRole("Staff");
   };
 
   const handleChangeRole = () => {
-    alert(`Peran ${selectedMember?.name} berhasil diubah!`);
+    setSuccessMessage({
+      title: "Peran Diubah",
+      description: `Peran ${selectedMember?.name} berhasil diubah!`,
+    });
     setIsRoleOpen(false);
     setSelectedMember(null);
+    setShowSuccessDialog(true);
   };
 
   const handleResendInvite = (member: (typeof teamMembers)[0]) => {
-    alert(`Undangan berhasil dikirim ulang ke ${member.email}!`);
+    setResendEmail(member.email);
+    setShowResendSuccess(true);
   };
 
   const handleDelete = () => {
-    alert(`${selectedMember?.name} berhasil dihapus dari tim!`);
+    setSuccessMessage({
+      title: "Anggota Dihapus",
+      description: `${selectedMember?.name} berhasil dihapus dari tim!`,
+    });
     setIsDeleteOpen(false);
     setSelectedMember(null);
+    setShowSuccessDialog(true);
   };
 
   return (
@@ -418,6 +439,24 @@ export default function TeamRoles() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Success Dialog */}
+      <CustomAlert
+        open={showSuccessDialog}
+        onOpenChange={setShowSuccessDialog}
+        title={successMessage.title}
+        description={successMessage.description}
+        variant="success"
+      />
+
+      {/* Resend Invite Success Dialog */}
+      <CustomAlert
+        open={showResendSuccess}
+        onOpenChange={setShowResendSuccess}
+        title="Undangan Terkirim Ulang"
+        description={`Undangan berhasil dikirim ulang ke ${resendEmail}!`}
+        variant="success"
+      />
     </div>
   );
 }

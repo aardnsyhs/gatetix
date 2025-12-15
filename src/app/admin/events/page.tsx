@@ -12,7 +12,6 @@ import {
   Eye,
   Edit,
   Trash2,
-  CheckCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,7 +19,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,6 +43,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { CustomAlert } from "@/components/ui/custom-alert";
 
 const events = [
   {
@@ -103,9 +102,9 @@ export default function AdminEvents() {
     location: "",
     capacity: "",
   });
-  const [createSuccess, setCreateSuccess] = useState(false);
-  const [editSuccess, setEditSuccess] = useState(false);
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [showCreateSuccess, setShowCreateSuccess] = useState(false);
+  const [showEditSuccess, setShowEditSuccess] = useState(false);
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
 
   const filteredEvents = events.filter((event) => {
@@ -118,36 +117,27 @@ export default function AdminEvents() {
   });
 
   const handleCreateEvent = () => {
-    setCreateSuccess(true);
-    setTimeout(() => {
-      setCreateSuccess(false);
-      setIsCreateOpen(false);
-      setNewEvent({
-        title: "",
-        date: "",
-        time: "",
-        location: "",
-        capacity: "",
-      });
-    }, 1500);
+    setIsCreateOpen(false);
+    setShowCreateSuccess(true);
+    setNewEvent({
+      title: "",
+      date: "",
+      time: "",
+      location: "",
+      capacity: "",
+    });
   };
 
   const handleEditEvent = () => {
-    setEditSuccess(true);
-    setTimeout(() => {
-      setEditSuccess(false);
-      setIsEditOpen(false);
-      setSelectedEvent(null);
-    }, 1500);
+    setIsEditOpen(false);
+    setSelectedEvent(null);
+    setShowEditSuccess(true);
   };
 
   const handleDeleteEvent = () => {
-    setDeleteSuccess(true);
-    setTimeout(() => {
-      setDeleteSuccess(false);
-      setIsDeleteOpen(false);
-      setSelectedEvent(null);
-    }, 1500);
+    setIsDeleteOpen(false);
+    setSelectedEvent(null);
+    setShowDeleteSuccess(true);
   };
 
   return (
@@ -403,32 +393,21 @@ export default function AdminEvents() {
               />
             </div>
           </div>
-          {createSuccess ? (
-            <div className="flex flex-col items-center justify-center py-8">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-4">
-                <CheckCircle className="h-8 w-8 text-emerald-500" />
-              </div>
-              <p className="text-lg font-semibold text-emerald-500">
-                Event Berhasil Dibuat!
-              </p>
-            </div>
-          ) : (
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsCreateOpen(false)}
-                className="rounded-xl"
-              >
-                Batal
-              </Button>
-              <Button
-                onClick={handleCreateEvent}
-                className="gt-gradient-primary border-0 rounded-xl"
-              >
-                Buat Event
-              </Button>
-            </DialogFooter>
-          )}
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsCreateOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleCreateEvent}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              Buat Event
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
@@ -459,32 +438,21 @@ export default function AdminEvents() {
               />
             </div>
           </div>
-          {editSuccess ? (
-            <div className="flex flex-col items-center justify-center py-8">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-4">
-                <CheckCircle className="h-8 w-8 text-emerald-500" />
-              </div>
-              <p className="text-lg font-semibold text-emerald-500">
-                Event Berhasil Diupdate!
-              </p>
-            </div>
-          ) : (
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsEditOpen(false)}
-                className="rounded-xl"
-              >
-                Batal
-              </Button>
-              <Button
-                onClick={handleEditEvent}
-                className="gt-gradient-primary border-0 rounded-xl"
-              >
-                Simpan Perubahan
-              </Button>
-            </DialogFooter>
-          )}
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleEditEvent}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              Simpan Perubahan
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
@@ -509,6 +477,33 @@ export default function AdminEvents() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Create Success Alert */}
+      <CustomAlert
+        open={showCreateSuccess}
+        onOpenChange={setShowCreateSuccess}
+        title="Event Berhasil Dibuat"
+        description="Event baru telah berhasil dibuat!"
+        variant="success"
+      />
+
+      {/* Edit Success Alert */}
+      <CustomAlert
+        open={showEditSuccess}
+        onOpenChange={setShowEditSuccess}
+        title="Event Berhasil Diupdate"
+        description="Perubahan event telah berhasil disimpan!"
+        variant="success"
+      />
+
+      {/* Delete Success Alert */}
+      <CustomAlert
+        open={showDeleteSuccess}
+        onOpenChange={setShowDeleteSuccess}
+        title="Event Berhasil Dihapus"
+        description="Event telah berhasil dihapus!"
+        variant="success"
+      />
     </div>
   );
 }

@@ -38,6 +38,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { CustomAlert } from "@/components/ui/custom-alert";
 
 const promoCodes = [
   {
@@ -98,6 +99,11 @@ export default function PromoCodes() {
     usageLimit: "",
     expires: "",
   });
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [successMessage, setSuccessMessage] = useState({
+    title: "",
+    description: "",
+  });
 
   const filteredCodes = promoCodes.filter((code) =>
     code.code.toLowerCase().includes(searchQuery.toLowerCase())
@@ -110,8 +116,12 @@ export default function PromoCodes() {
   };
 
   const handleCreatePromo = () => {
-    alert(`Kode promo "${newPromo.code}" berhasil dibuat!`);
+    setSuccessMessage({
+      title: "Kode Promo Dibuat",
+      description: `Kode promo "${newPromo.code}" berhasil dibuat!`,
+    });
     setIsCreateOpen(false);
+    setShowSuccessDialog(true);
     setNewPromo({
       code: "",
       discount: "",
@@ -122,15 +132,23 @@ export default function PromoCodes() {
   };
 
   const handleEditPromo = () => {
-    alert(`Kode promo "${selectedPromo?.code}" berhasil diupdate!`);
+    setSuccessMessage({
+      title: "Kode Promo Diupdate",
+      description: `Kode promo "${selectedPromo?.code}" berhasil diupdate!`,
+    });
     setIsEditOpen(false);
     setSelectedPromo(null);
+    setShowSuccessDialog(true);
   };
 
   const handleDeletePromo = () => {
-    alert(`Kode promo "${selectedPromo?.code}" berhasil dihapus!`);
+    setSuccessMessage({
+      title: "Kode Promo Dihapus",
+      description: `Kode promo "${selectedPromo?.code}" berhasil dihapus!`,
+    });
     setIsDeleteOpen(false);
     setSelectedPromo(null);
+    setShowSuccessDialog(true);
   };
 
   const getStatusStyle = (status: string) => {
@@ -436,6 +454,15 @@ export default function PromoCodes() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Success Dialog */}
+      <CustomAlert
+        open={showSuccessDialog}
+        onOpenChange={setShowSuccessDialog}
+        title={successMessage.title}
+        description={successMessage.description}
+        variant="success"
+      />
     </div>
   );
 }

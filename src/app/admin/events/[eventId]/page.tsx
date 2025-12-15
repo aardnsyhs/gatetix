@@ -38,6 +38,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { CustomAlert } from "@/components/ui/custom-alert";
 
 export default function EventDetailAdmin({
   params,
@@ -49,6 +50,9 @@ export default function EventDetailAdmin({
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  const [showCopySuccess, setShowCopySuccess] = useState(false);
+  const [showEditSuccess, setShowEditSuccess] = useState(false);
+
   const handleShare = async () => {
     const url = `${window.location.origin}/events/jakarta-music-festival-2024`;
     if (navigator.share) {
@@ -59,18 +63,18 @@ export default function EventDetailAdmin({
       });
     } else {
       await navigator.clipboard.writeText(url);
-      alert("Link event berhasil disalin!");
+      setShowCopySuccess(true);
     }
   };
 
   const handleDelete = () => {
-    alert("Event berhasil dihapus!");
+    setIsDeleteOpen(false);
     router.push("/admin/events");
   };
 
   const handleEdit = () => {
-    alert("Event berhasil diupdate!");
     setIsEditOpen(false);
+    setShowEditSuccess(true);
   };
 
   const event = {
@@ -431,6 +435,24 @@ export default function EventDetailAdmin({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Copy Link Success Dialog */}
+      <CustomAlert
+        open={showCopySuccess}
+        onOpenChange={setShowCopySuccess}
+        title="Link Disalin"
+        description="Link event berhasil disalin ke clipboard!"
+        variant="info"
+      />
+
+      {/* Edit Success Dialog */}
+      <CustomAlert
+        open={showEditSuccess}
+        onOpenChange={setShowEditSuccess}
+        title="Event Diupdate"
+        description="Event berhasil diupdate!"
+        variant="success"
+      />
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { CustomAlert } from "@/components/ui/custom-alert";
 
 const tabs = [
   { id: "general", label: "Umum", icon: Building },
@@ -31,6 +32,9 @@ export default function Settings() {
   const [orgDescription, setOrgDescription] = useState(
     "Perusahaan manajemen event yang mengkhususkan diri dalam festival musik dan konferensi teknologi."
   );
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [showLogoSuccess, setShowLogoSuccess] = useState(false);
+  const [showComingSoon, setShowComingSoon] = useState(false);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -88,8 +92,7 @@ export default function Settings() {
                           const input = document.createElement("input");
                           input.type = "file";
                           input.accept = "image/*";
-                          input.onchange = () =>
-                            alert("Logo berhasil diupload!");
+                          input.onchange = () => setShowLogoSuccess(true);
                           input.click();
                         }}
                       >
@@ -154,7 +157,7 @@ export default function Settings() {
                 <div className="pt-4 border-t border-border">
                   <Button
                     className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
-                    onClick={() => alert("Pengaturan berhasil disimpan!")}
+                    onClick={() => setShowSuccessDialog(true)}
                   >
                     <Save className="h-4 w-4 mr-2" />
                     Simpan Perubahan
@@ -178,7 +181,7 @@ export default function Settings() {
                   </p>
                   <Button
                     className="mt-6 gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
-                    onClick={() => alert("Fitur ini akan segera tersedia!")}
+                    onClick={() => setShowComingSoon(true)}
                   >
                     Hubungkan Gateway Pembayaran
                   </Button>
@@ -220,6 +223,33 @@ export default function Settings() {
           )}
         </div>
       </div>
+
+      {/* Success Dialog */}
+      <CustomAlert
+        open={showSuccessDialog}
+        onOpenChange={setShowSuccessDialog}
+        title="Berhasil Disimpan"
+        description="Pengaturan berhasil disimpan!"
+        variant="success"
+      />
+
+      {/* Logo Upload Success Dialog */}
+      <CustomAlert
+        open={showLogoSuccess}
+        onOpenChange={setShowLogoSuccess}
+        title="Logo Diupload"
+        description="Logo berhasil diupload!"
+        variant="success"
+      />
+
+      {/* Coming Soon Dialog */}
+      <CustomAlert
+        open={showComingSoon}
+        onOpenChange={setShowComingSoon}
+        title="Segera Hadir"
+        description="Fitur ini akan segera tersedia!"
+        variant="warning"
+      />
     </div>
   );
 }

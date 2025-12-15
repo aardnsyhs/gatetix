@@ -17,11 +17,15 @@ import {
   Calendar,
   Ticket,
 } from "lucide-react";
+import { CustomAlert } from "@/components/ui/custom-alert";
 
 export default function Checkout() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [promoCode, setPromoCode] = useState("");
+  const [showPromoSuccess, setShowPromoSuccess] = useState(false);
+  const [showPromoError, setShowPromoError] = useState(false);
+  const [promoMessage, setPromoMessage] = useState("");
 
   const orderSummary = {
     eventName: "Jakarta Music Festival 2024",
@@ -299,13 +303,17 @@ export default function Checkout() {
                       className="rounded-xl"
                       onClick={() => {
                         if (promoCode === "MERDEKA20") {
-                          alert("Kode promo berhasil diterapkan! Diskon 20%");
+                          setPromoMessage(
+                            "Kode promo berhasil diterapkan! Diskon 20%"
+                          );
+                          setShowPromoSuccess(true);
                         } else if (promoCode === "SELAMATDATANG") {
-                          alert(
+                          setPromoMessage(
                             "Kode promo berhasil diterapkan! Diskon Rp 25.000"
                           );
+                          setShowPromoSuccess(true);
                         } else if (promoCode) {
-                          alert("Kode promo tidak valid atau sudah kadaluarsa");
+                          setShowPromoError(true);
                         }
                       }}
                     >
@@ -318,6 +326,24 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+
+      {/* Promo Success Dialog */}
+      <CustomAlert
+        open={showPromoSuccess}
+        onOpenChange={setShowPromoSuccess}
+        title="Kode Promo Diterapkan"
+        description={promoMessage}
+        variant="success"
+      />
+
+      {/* Promo Error Dialog */}
+      <CustomAlert
+        open={showPromoError}
+        onOpenChange={setShowPromoError}
+        title="Kode Promo Tidak Valid"
+        description="Kode promo tidak valid atau sudah kadaluarsa"
+        variant="error"
+      />
     </div>
   );
 }

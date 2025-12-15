@@ -31,7 +31,7 @@ import {
   DialogFooter,
   DialogDescription,
 } from "@/components/ui/dialog";
-
+import { CustomAlert } from "@/components/ui/custom-alert";
 const attendees = [
   {
     id: 1,
@@ -90,6 +90,7 @@ export default function AdminAttendees() {
   const [isEmailOpen, setIsEmailOpen] = useState(false);
   const [emailSubject, setEmailSubject] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
+  const [showEmailSuccess, setShowEmailSuccess] = useState(false);
 
   const filteredAttendees = attendees.filter(
     (attendee) =>
@@ -133,10 +134,8 @@ export default function AdminAttendees() {
   };
 
   const handleSendEmail = () => {
-    alert(
-      `Email berhasil dikirim ke ${attendees.length} peserta!\n\nSubjek: ${emailSubject}`
-    );
     setIsEmailOpen(false);
+    setShowEmailSuccess(true);
     setEmailSubject("");
     setEmailMessage("");
   };
@@ -355,6 +354,15 @@ export default function AdminAttendees() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Email Success Dialog */}
+      <CustomAlert
+        open={showEmailSuccess}
+        onOpenChange={setShowEmailSuccess}
+        title="Email Terkirim"
+        description={`Email berhasil dikirim ke ${attendees.length} peserta!`}
+        variant="success"
+      />
     </div>
   );
 }

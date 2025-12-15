@@ -48,15 +48,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { CustomAlert } from "@/components/ui/custom-alert";
 
 const orders = [
   {
@@ -483,49 +475,22 @@ export default function AdminOrders() {
       </Sheet>
 
       {/* Print Success Dialog */}
-      <AlertDialog open={showPrintSuccess} onOpenChange={setShowPrintSuccess}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <div className="mx-auto w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mb-2">
-              <CheckCircle2 className="h-6 w-6 text-emerald-500" />
-            </div>
-            <AlertDialogTitle className="text-center">
-              Invoice Siap Dicetak
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-center">
-              Invoice telah disiapkan dan siap untuk dicetak. Silakan periksa
-              printer Anda.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="sm:justify-center">
-            <AlertDialogAction className="gt-gradient-primary border-0 rounded-xl">
-              Tutup
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <CustomAlert
+        open={showPrintSuccess}
+        onOpenChange={setShowPrintSuccess}
+        title="Invoice Siap Dicetak"
+        description="Invoice telah disiapkan dan siap untuk dicetak. Silakan periksa printer Anda."
+        variant="success"
+      />
 
       {/* Email Success Dialog */}
-      <AlertDialog open={showEmailSuccess} onOpenChange={setShowEmailSuccess}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <div className="mx-auto w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mb-2">
-              <Mail className="h-6 w-6 text-emerald-500" />
-            </div>
-            <AlertDialogTitle className="text-center">
-              Email Terkirim
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-center">
-              Invoice telah berhasil dikirim ke email pelanggan.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="sm:justify-center">
-            <AlertDialogAction className="gt-gradient-primary border-0 rounded-xl">
-              Tutup
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <CustomAlert
+        open={showEmailSuccess}
+        onOpenChange={setShowEmailSuccess}
+        title="Email Terkirim"
+        description="Invoice telah berhasil dikirim ke email pelanggan."
+        variant="success"
+      />
 
       {/* Filter Dialog */}
       <Dialog
