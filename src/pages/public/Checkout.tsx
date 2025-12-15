@@ -1,217 +1,311 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { Check, CreditCard } from 'lucide-react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Check,
+  CreditCard,
+  User,
+  Mail,
+  Phone,
+  Lock,
+  Calendar,
+  Ticket,
+} from "lucide-react";
 
 export default function Checkout() {
-  const { eventId } = useParams();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [promoCode, setPromoCode] = useState('');
+  const [promoCode, setPromoCode] = useState("");
 
   const orderSummary = {
-    eventName: 'Summer Music Festival 2024',
-    ticketType: 'General Admission',
+    eventName: "Summer Music Festival 2024",
+    ticketType: "General Admission",
     quantity: 2,
     price: 49,
     serviceFee: 9.8,
   };
 
-  const total = (orderSummary.price * orderSummary.quantity + orderSummary.serviceFee).toFixed(2);
+  const total = (
+    orderSummary.price * orderSummary.quantity +
+    orderSummary.serviceFee
+  ).toFixed(2);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 3) {
       setStep(step + 1);
     } else {
-      navigate('/payment/status?status=success');
+      navigate("/payment/status?status=success");
     }
   };
 
+  const steps = [
+    { num: 1, label: "Details" },
+    { num: 2, label: "Payment" },
+    { num: 3, label: "Confirm" },
+  ];
+
   return (
     <div className="bg-background min-h-screen py-8 lg:py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+      <div className="gt-container max-w-5xl">
         {/* Progress Steps */}
-        <div className="mb-8">
-          <div className="flex items-center justify-center">
-            {[1, 2, 3].map((s) => (
-              <React.Fragment key={s}>
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-smooth ${
-                      step >= s
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground'
-                    }`}
-                  >
-                    {step > s ? <Check className="h-5 w-5" strokeWidth={2} /> : s}
-                  </div>
-                  <span className="text-xs mt-2 font-body text-foreground">
-                    {s === 1 ? 'Details' : s === 2 ? 'Payment' : 'Confirm'}
-                  </span>
+        <div className="flex items-center justify-center mb-12">
+          {steps.map((s, index) => (
+            <div key={s.num} className="flex items-center">
+              <div className="flex flex-col items-center">
+                <div
+                  className={`w-12 h-12 rounded-2xl flex items-center justify-center font-semibold transition-smooth ${
+                    step >= s.num
+                      ? "gt-gradient-primary text-white shadow-lg shadow-primary/25"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {step > s.num ? <Check className="h-5 w-5" /> : s.num}
                 </div>
-                {s < 3 && (
-                  <div
-                    className={`w-16 sm:w-24 h-1 mx-2 transition-smooth ${
-                      step > s ? 'bg-primary' : 'bg-muted'
-                    }`}
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
+                <span
+                  className={`text-sm mt-2 font-medium ${
+                    step >= s.num ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  {s.label}
+                </span>
+              </div>
+              {index < steps.length - 1 && (
+                <div
+                  className={`w-16 sm:w-24 h-1 mx-3 rounded-full transition-smooth ${
+                    step > s.num ? "gt-gradient-primary" : "bg-muted"
+                  }`}
+                />
+              )}
+            </div>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Form */}
           <div className="lg:col-span-2">
-            <Card className="bg-card border-border">
-              <CardHeader>
-                <CardTitle className="text-foreground">
-                  {step === 1 ? 'Your Details' : step === 2 ? 'Payment Information' : 'Review Order'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {step === 1 && (
-                    <>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="firstName" className="text-foreground">First Name</Label>
-                          <Input id="firstName" required className="bg-background text-foreground border-input" />
-                        </div>
-                        <div>
-                          <Label htmlFor="lastName" className="text-foreground">Last Name</Label>
-                          <Input id="lastName" required className="bg-background text-foreground border-input" />
-                        </div>
-                      </div>
-                      <div>
-                        <Label htmlFor="email" className="text-foreground">Email</Label>
-                        <Input id="email" type="email" required className="bg-background text-foreground border-input" />
-                      </div>
-                      <div>
-                        <Label htmlFor="phone" className="text-foreground">Phone Number</Label>
-                        <Input id="phone" type="tel" required className="bg-background text-foreground border-input" />
-                      </div>
-                    </>
-                  )}
+            <div className="gt-card-flat p-6 sm:p-8">
+              <h2 className="text-xl font-semibold mb-6">
+                {step === 1
+                  ? "Your Details"
+                  : step === 2
+                  ? "Payment Information"
+                  : "Review Order"}
+              </h2>
 
-                  {step === 2 && (
-                    <>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {step === 1 && (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="cardNumber" className="text-foreground">Card Number</Label>
+                        <label className="block text-sm font-medium mb-2">
+                          First Name
+                        </label>
                         <div className="relative">
-                          <Input id="cardNumber" placeholder="1234 5678 9012 3456" required className="bg-background text-foreground border-input pl-10" />
-                          <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" strokeWidth={2} />
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="expiry" className="text-foreground">Expiry Date</Label>
-                          <Input id="expiry" placeholder="MM/YY" required className="bg-background text-foreground border-input" />
-                        </div>
-                        <div>
-                          <Label htmlFor="cvv" className="text-foreground">CVV</Label>
-                          <Input id="cvv" placeholder="123" required className="bg-background text-foreground border-input" />
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                          <input
+                            type="text"
+                            required
+                            className="gt-input pl-12"
+                            placeholder="John"
+                          />
                         </div>
                       </div>
                       <div>
-                        <Label htmlFor="cardName" className="text-foreground">Name on Card</Label>
-                        <Input id="cardName" required className="bg-background text-foreground border-input" />
-                      </div>
-                    </>
-                  )}
-
-                  {step === 3 && (
-                    <div className="space-y-4">
-                      <div className="p-4 bg-muted rounded-lg">
-                        <h4 className="font-body font-medium mb-2 text-foreground">Contact Information</h4>
-                        <p className="text-sm text-muted-foreground font-body">John Doe</p>
-                        <p className="text-sm text-muted-foreground font-body">john.doe@example.com</p>
-                        <p className="text-sm text-muted-foreground font-body">+1 (555) 123-4567</p>
-                      </div>
-                      <div className="p-4 bg-muted rounded-lg">
-                        <h4 className="font-body font-medium mb-2 text-foreground">Payment Method</h4>
-                        <p className="text-sm text-muted-foreground font-body">Card ending in 3456</p>
+                        <label className="block text-sm font-medium mb-2">
+                          Last Name
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          className="gt-input"
+                          placeholder="Doe"
+                        />
                       </div>
                     </div>
-                  )}
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Email
+                      </label>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <input
+                          type="email"
+                          required
+                          className="gt-input pl-12"
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Phone Number
+                      </label>
+                      <div className="relative">
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <input
+                          type="tel"
+                          required
+                          className="gt-input pl-12"
+                          placeholder="+1 (555) 123-4567"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
 
-                  <div className="flex gap-4 pt-4">
-                    {step > 1 && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setStep(step - 1)}
-                        className="flex-1 bg-background text-foreground border-border hover:bg-accent hover:text-accent-foreground"
-                      >
-                        Back
-                      </Button>
-                    )}
-                    <Button type="submit" className="flex-1 bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground">
-                      {step === 3 ? 'Complete Purchase' : 'Continue'}
-                    </Button>
+                {step === 2 && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Card Number
+                      </label>
+                      <div className="relative">
+                        <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <input
+                          type="text"
+                          required
+                          className="gt-input pl-12"
+                          placeholder="1234 5678 9012 3456"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          Expiry Date
+                        </label>
+                        <div className="relative">
+                          <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                          <input
+                            type="text"
+                            required
+                            className="gt-input pl-12"
+                            placeholder="MM/YY"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          CVV
+                        </label>
+                        <div className="relative">
+                          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                          <input
+                            type="text"
+                            required
+                            className="gt-input pl-12"
+                            placeholder="123"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Name on Card
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        className="gt-input"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                  </>
+                )}
+
+                {step === 3 && (
+                  <div className="space-y-4">
+                    <div className="p-5 rounded-xl bg-muted/50">
+                      <h4 className="font-medium mb-3">Contact Information</h4>
+                      <div className="space-y-1 text-sm text-muted-foreground">
+                        <p>John Doe</p>
+                        <p>john.doe@example.com</p>
+                        <p>+1 (555) 123-4567</p>
+                      </div>
+                    </div>
+                    <div className="p-5 rounded-xl bg-muted/50">
+                      <h4 className="font-medium mb-3">Payment Method</h4>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-6 bg-gradient-to-r from-blue-600 to-blue-400 rounded" />
+                        <span className="text-sm text-muted-foreground">
+                          Card ending in 3456
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </form>
-              </CardContent>
-            </Card>
+                )}
+
+                <div className="flex gap-4 pt-4">
+                  {step > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => setStep(step - 1)}
+                      className="gt-btn-outline flex-1 py-3"
+                    >
+                      Back
+                    </button>
+                  )}
+                  <button type="submit" className="gt-btn-primary flex-1 py-3">
+                    {step === 3 ? "Complete Purchase" : "Continue"}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <Card className="bg-card border-border sticky top-24">
-              <CardHeader>
-                <CardTitle className="text-foreground">Order Summary</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <h4 className="font-body font-medium mb-2 text-card-foreground">{orderSummary.eventName}</h4>
-                  <p className="text-sm text-muted-foreground font-body">
-                    {orderSummary.ticketType} × {orderSummary.quantity}
-                  </p>
+            <div className="gt-card-flat p-6 sticky top-24">
+              <div className="flex items-center gap-2 mb-6">
+                <Ticket className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-semibold">Order Summary</h3>
+              </div>
+
+              <div className="mb-6">
+                <h4 className="font-medium mb-2">{orderSummary.eventName}</h4>
+                <p className="text-sm text-muted-foreground">
+                  {orderSummary.ticketType} × {orderSummary.quantity}
+                </p>
+              </div>
+
+              <div className="gt-divider" />
+
+              <div className="space-y-2 mb-6">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span>
+                    ${(orderSummary.price * orderSummary.quantity).toFixed(2)}
+                  </span>
                 </div>
-
-                <Separator />
-
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground font-body">Subtotal</span>
-                    <span className="font-body text-foreground">${(orderSummary.price * orderSummary.quantity).toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground font-body">Service Fee</span>
-                    <span className="font-body text-foreground">${orderSummary.serviceFee.toFixed(2)}</span>
-                  </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Service Fee</span>
+                  <span>${orderSummary.serviceFee.toFixed(2)}</span>
                 </div>
+              </div>
 
-                <Separator />
+              <div className="gt-divider" />
 
-                <div className="flex justify-between text-lg font-body font-medium">
-                  <span className="text-foreground">Total</span>
-                  <span className="text-primary">${total}</span>
+              <div className="flex justify-between text-lg font-bold mb-6">
+                <span>Total</span>
+                <span className="text-primary">${total}</span>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Promo Code
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                    placeholder="Enter code"
+                    className="gt-input flex-1"
+                  />
+                  <button className="gt-btn-outline">Apply</button>
                 </div>
-
-                <div className="pt-4">
-                  <Label htmlFor="promo" className="text-foreground">Promo Code</Label>
-                  <div className="flex gap-2 mt-2">
-                    <Input
-                      id="promo"
-                      value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
-                      placeholder="Enter code"
-                      className="bg-background text-foreground border-input"
-                    />
-                    <Button variant="outline" className="bg-background text-foreground border-border hover:bg-accent hover:text-accent-foreground">
-                      Apply
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </div>
