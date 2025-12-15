@@ -28,40 +28,40 @@ import {
 const events = [
   {
     id: 1,
-    title: "Summer Music Festival 2024",
-    date: "July 15, 2024",
-    time: "6:00 PM",
-    location: "Central Park, NY",
+    title: "Jakarta Music Festival 2024",
+    date: "15 Juli 2024",
+    time: "18:00 WIB",
+    location: "Gelora Bung Karno, Jakarta",
     status: "published",
     ticketsSold: 450,
     capacity: 1000,
-    revenue: "$22,050",
+    revenue: "Rp 67.500.000",
     image:
       "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=200&fit=crop",
   },
   {
     id: 2,
-    title: "Tech Conference 2024",
-    date: "August 20, 2024",
-    time: "9:00 AM",
-    location: "Convention Center, SF",
+    title: "Indonesia Tech Summit 2024",
+    date: "20 Agustus 2024",
+    time: "09:00 WIB",
+    location: "ICE BSD, Tangerang",
     status: "draft",
     ticketsSold: 0,
     capacity: 500,
-    revenue: "$0",
+    revenue: "Rp 0",
     image:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=200&fit=crop",
   },
   {
     id: 3,
-    title: "Food & Wine Expo",
-    date: "September 5, 2024",
-    time: "12:00 PM",
-    location: "Downtown, LA",
+    title: "Festival Kuliner Nusantara",
+    date: "5 September 2024",
+    time: "12:00 WIB",
+    location: "Senayan Park, Jakarta",
     status: "published",
     ticketsSold: 280,
     capacity: 400,
-    revenue: "$9,800",
+    revenue: "Rp 21.000.000",
     image:
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=200&fit=crop",
   },
@@ -79,14 +79,14 @@ export default function AdminEvents() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Events</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Event</h1>
           <p className="text-muted-foreground mt-1">
-            Manage your events and ticket sales
+            Kelola event dan penjualan tiket Anda
           </p>
         </div>
         <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
           <Plus className="h-4 w-4 mr-2" />
-          Create Event
+          Buat Event
         </Button>
       </div>
 
@@ -94,7 +94,7 @@ export default function AdminEvents() {
       <div className="flex flex-col sm:flex-row gap-4">
         <Input
           type="text"
-          placeholder="Search events..."
+          placeholder="Cari event..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="flex-1 max-w-md rounded-xl"
@@ -105,19 +105,19 @@ export default function AdminEvents() {
               value="all"
               className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
             >
-              All
+              Semua
             </TabsTrigger>
             <TabsTrigger
               value="published"
               className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
             >
-              Published
+              Dipublikasi
             </TabsTrigger>
             <TabsTrigger
               value="draft"
               className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
             >
-              Draft
+              Draf
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -228,7 +228,7 @@ export default function AdminEvents() {
                     </DropdownMenuItem>
                     <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
+                      Hapus
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

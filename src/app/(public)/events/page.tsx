@@ -18,79 +18,79 @@ import {
 const events = [
   {
     id: 1,
-    title: "Summer Music Festival 2024",
-    date: "July 15, 2024",
-    location: "Central Park, NY",
-    category: "Music",
+    title: "Jakarta Music Festival 2024",
+    date: "15 Juli 2024",
+    location: "Gelora Bung Karno, Jakarta",
+    category: "Musik",
     image:
       "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=300&fit=crop",
-    price: "From $49",
-    slug: "summer-music-festival-2024",
+    price: "Mulai Rp 150.000",
+    slug: "jakarta-music-festival-2024",
     attendees: 450,
   },
   {
     id: 2,
-    title: "Tech Conference 2024",
-    date: "August 20, 2024",
-    location: "Convention Center, SF",
-    category: "Business",
+    title: "Indonesia Tech Summit 2024",
+    date: "20 Agustus 2024",
+    location: "ICE BSD, Tangerang",
+    category: "Bisnis",
     image:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop",
-    price: "From $199",
-    slug: "tech-conference-2024",
+    price: "Mulai Rp 500.000",
+    slug: "indonesia-tech-summit-2024",
     attendees: 280,
   },
   {
     id: 3,
-    title: "Food & Wine Expo",
-    date: "September 5, 2024",
-    location: "Downtown, LA",
-    category: "Food & Drink",
+    title: "Festival Kuliner Nusantara",
+    date: "5 September 2024",
+    location: "Senayan Park, Jakarta",
+    category: "Kuliner",
     image:
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop",
-    price: "From $35",
-    slug: "food-wine-expo",
+    price: "Mulai Rp 75.000",
+    slug: "festival-kuliner-nusantara",
     attendees: 180,
   },
   {
     id: 4,
-    title: "Art Gallery Opening",
-    date: "October 10, 2024",
-    location: "Museum District, Chicago",
-    category: "Community",
+    title: "Pameran Seni Rupa Indonesia",
+    date: "10 Oktober 2024",
+    location: "Museum MACAN, Jakarta",
+    category: "Komunitas",
     image:
       "https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?w=400&h=300&fit=crop",
-    price: "Free",
-    slug: "art-gallery-opening",
+    price: "Gratis",
+    slug: "pameran-seni-rupa-indonesia",
     attendees: 120,
   },
   {
     id: 5,
-    title: "Jazz Night Live",
-    date: "November 12, 2024",
-    location: "Blue Note, NYC",
-    category: "Music",
+    title: "Jazz Gunung Bromo 2024",
+    date: "12 November 2024",
+    location: "Gunung Bromo, Jawa Timur",
+    category: "Musik",
     image:
       "https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=400&h=300&fit=crop",
-    price: "From $65",
-    slug: "jazz-night-live",
+    price: "Mulai Rp 250.000",
+    slug: "jazz-gunung-bromo-2024",
     attendees: 95,
   },
   {
     id: 6,
-    title: "Startup Pitch Competition",
-    date: "December 1, 2024",
-    location: "Tech Hub, Austin",
-    category: "Business",
+    title: "Startup Weekend Jakarta",
+    date: "1 Desember 2024",
+    location: "Block71, Jakarta",
+    category: "Bisnis",
     image:
       "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400&h=300&fit=crop",
-    price: "From $25",
-    slug: "startup-pitch-competition",
+    price: "Mulai Rp 100.000",
+    slug: "startup-weekend-jakarta",
     attendees: 200,
   },
 ];
 
-const categories = ["All", "Music", "Business", "Food & Drink", "Community"];
+const categories = ["Semua", "Musik", "Bisnis", "Kuliner", "Komunitas"];
 
 export default function EventListing() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -98,7 +98,7 @@ export default function EventListing() {
 
   const filteredEvents = events.filter((event) => {
     const matchesCategory =
-      selectedCategory === "All" || event.category === selectedCategory;
+      selectedCategory === "Semua" || event.category === selectedCategory;
     const matchesSearch = event.title
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -110,15 +110,15 @@ export default function EventListing() {
       {/* Hero Header */}
       <div className="gt-gradient-primary py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Browse Events</h1>
+          <h1 className="text-4xl font-bold text-white mb-4">Jelajahi Event</h1>
           <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-            Discover amazing events happening near you
+            Temukan event-event seru yang sedang berlangsung
           </p>
           <div className="relative max-w-lg mx-auto">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 z-10" />
             <Input
               type="text"
-              placeholder="Search events..."
+              placeholder="Cari event..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-12 h-14 rounded-2xl border-0 shadow-xl bg-white text-foreground placeholder:text-gray-400"
@@ -149,17 +149,17 @@ export default function EventListing() {
           </div>
           <Button variant="outline" size="sm" className="rounded-xl">
             <SlidersHorizontal className="h-4 w-4 mr-2" />
-            Filters
+            Filter
           </Button>
         </div>
 
         {/* Results Count */}
         <p className="text-sm text-muted-foreground mb-6">
-          Showing{" "}
+          Menampilkan{" "}
           <span className="font-semibold text-foreground">
             {filteredEvents.length}
           </span>{" "}
-          events
+          event
         </p>
 
         {/* Event Grid */}
@@ -203,7 +203,7 @@ export default function EventListing() {
                       {event.price}
                     </span>
                     <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
-                      Get tickets →
+                      Beli tiket →
                     </span>
                   </div>
                 </CardContent>

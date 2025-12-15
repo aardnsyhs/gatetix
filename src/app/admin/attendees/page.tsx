@@ -25,39 +25,39 @@ import {
 const attendees = [
   {
     id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    event: "Summer Music Festival",
+    name: "Budi Santoso",
+    email: "budi@email.com",
+    event: "Jakarta Music Festival",
     ticketType: "VIP",
     checkedIn: true,
-    checkInTime: "6:15 PM",
+    checkInTime: "18:15",
     gate: "Gate A",
   },
   {
     id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    event: "Summer Music Festival",
-    ticketType: "General",
+    name: "Siti Rahayu",
+    email: "siti@email.com",
+    event: "Jakarta Music Festival",
+    ticketType: "Regular",
     checkedIn: true,
-    checkInTime: "6:30 PM",
+    checkInTime: "18:30",
     gate: "Gate B",
   },
   {
     id: 3,
-    name: "Bob Wilson",
-    email: "bob@example.com",
-    event: "Summer Music Festival",
-    ticketType: "General",
+    name: "Ahmad Wijaya",
+    email: "ahmad@email.com",
+    event: "Jakarta Music Festival",
+    ticketType: "Regular",
     checkedIn: false,
     checkInTime: null,
     gate: null,
   },
   {
     id: 4,
-    name: "Alice Brown",
-    email: "alice@example.com",
-    event: "Summer Music Festival",
+    name: "Dewi Lestari",
+    email: "dewi@email.com",
+    event: "Jakarta Music Festival",
     ticketType: "VIP",
     checkedIn: false,
     checkInTime: null,
@@ -65,12 +65,12 @@ const attendees = [
   },
   {
     id: 5,
-    name: "Charlie Davis",
-    email: "charlie@example.com",
-    event: "Summer Music Festival",
-    ticketType: "General",
+    name: "Rudi Hermawan",
+    email: "rudi@email.com",
+    event: "Jakarta Music Festival",
+    ticketType: "Regular",
     checkedIn: true,
-    checkInTime: "7:00 PM",
+    checkInTime: "19:00",
     gate: "Gate A",
   },
 ];
@@ -89,19 +89,19 @@ export default function AdminAttendees() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Attendees</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Peserta</h1>
           <p className="text-muted-foreground mt-1">
-            View and manage event attendees
+            Lihat dan kelola peserta event
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="ghost" className="rounded-xl">
             <Mail className="h-4 w-4 mr-2" />
-            Email All
+            Email Semua
           </Button>
           <Button variant="outline" className="rounded-xl">
             <Download className="h-4 w-4 mr-2" />
-            Export
+            Ekspor
           </Button>
         </div>
       </div>
@@ -109,13 +109,13 @@ export default function AdminAttendees() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="gt-card-glow">
           <CardContent className="p-5">
-            <p className="text-sm text-muted-foreground">Total Attendees</p>
+            <p className="text-sm text-muted-foreground">Total Peserta</p>
             <p className="text-3xl font-bold mt-1">{attendees.length}</p>
           </CardContent>
         </Card>
         <Card className="gt-card-glow">
           <CardContent className="p-5">
-            <p className="text-sm text-muted-foreground">Checked In</p>
+            <p className="text-sm text-muted-foreground">Sudah Check-in</p>
             <p className="text-3xl font-bold mt-1 text-emerald-500">
               {checkedInCount}
             </p>
@@ -123,7 +123,7 @@ export default function AdminAttendees() {
         </Card>
         <Card className="gt-card-glow">
           <CardContent className="p-5">
-            <p className="text-sm text-muted-foreground">Check-in Rate</p>
+            <p className="text-sm text-muted-foreground">Tingkat Check-in</p>
             <p className="text-3xl font-bold mt-1">
               {Math.round((checkedInCount / attendees.length) * 100)}%
             </p>
@@ -133,7 +133,7 @@ export default function AdminAttendees() {
 
       <Input
         type="text"
-        placeholder="Search attendees..."
+        placeholder="Cari peserta..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="max-w-md rounded-xl"
@@ -143,11 +143,11 @@ export default function AdminAttendees() {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead>Attendee</TableHead>
+              <TableHead>Peserta</TableHead>
               <TableHead>Event</TableHead>
-              <TableHead>Ticket Type</TableHead>
+              <TableHead>Jenis Tiket</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Check-in Time</TableHead>
+              <TableHead>Waktu Check-in</TableHead>
               <TableHead>Gate</TableHead>
             </TableRow>
           </TableHeader>
@@ -189,12 +189,12 @@ export default function AdminAttendees() {
                   {attendee.checkedIn ? (
                     <span className="flex items-center gap-1.5 text-emerald-500">
                       <CheckCircle className="h-4 w-4" />
-                      <span className="text-sm font-medium">Checked In</span>
+                      <span className="text-sm font-medium">Sudah Masuk</span>
                     </span>
                   ) : (
                     <span className="flex items-center gap-1.5 text-muted-foreground">
                       <XCircle className="h-4 w-4" />
-                      <span className="text-sm">Not Checked In</span>
+                      <span className="text-sm">Belum Masuk</span>
                     </span>
                   )}
                 </TableCell>
@@ -211,8 +211,8 @@ export default function AdminAttendees() {
 
         <div className="flex items-center justify-between p-4 border-t border-border">
           <p className="text-sm text-muted-foreground">
-            Showing <span className="font-medium">1-5</span> of{" "}
-            <span className="font-medium">5</span> attendees
+            Menampilkan <span className="font-medium">1-5</span> dari{" "}
+            <span className="font-medium">5</span> peserta
           </p>
           <div className="flex items-center gap-2">
             <Button

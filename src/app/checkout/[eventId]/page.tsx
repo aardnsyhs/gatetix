@@ -24,16 +24,14 @@ export default function Checkout() {
   const [promoCode, setPromoCode] = useState("");
 
   const orderSummary = {
-    eventName: "Summer Music Festival 2024",
-    ticketType: "General Admission",
+    eventName: "Jakarta Music Festival 2024",
+    ticketType: "Regular",
     quantity: 2,
-    price: 49,
-    serviceFee: 9.8,
+    price: 150000,
+    serviceFee: 30000,
   };
-  const total = (
-    orderSummary.price * orderSummary.quantity +
-    orderSummary.serviceFee
-  ).toFixed(2);
+  const total =
+    orderSummary.price * orderSummary.quantity + orderSummary.serviceFee;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,9 +43,9 @@ export default function Checkout() {
   };
 
   const steps = [
-    { num: 1, label: "Details" },
-    { num: 2, label: "Payment" },
-    { num: 3, label: "Confirm" },
+    { num: 1, label: "Data Diri" },
+    { num: 2, label: "Pembayaran" },
+    { num: 3, label: "Konfirmasi" },
   ];
 
   return (
@@ -93,10 +91,10 @@ export default function Checkout() {
               <CardHeader>
                 <CardTitle>
                   {step === 1
-                    ? "Your Details"
+                    ? "Data Diri Anda"
                     : step === 2
-                    ? "Payment Information"
-                    : "Review Order"}
+                    ? "Informasi Pembayaran"
+                    : "Tinjau Pesanan"}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -105,20 +103,20 @@ export default function Checkout() {
                     <>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="firstName">First Name</Label>
+                          <Label htmlFor="firstName">Nama Depan</Label>
                           <div className="relative">
                             <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
                               id="firstName"
                               required
                               className="pl-10"
-                              placeholder="John"
+                              placeholder="Budi"
                             />
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="lastName">Last Name</Label>
-                          <Input id="lastName" required placeholder="Doe" />
+                          <Label htmlFor="lastName">Nama Belakang</Label>
+                          <Input id="lastName" required placeholder="Santoso" />
                         </div>
                       </div>
                       <div className="space-y-2">
@@ -130,12 +128,12 @@ export default function Checkout() {
                             type="email"
                             required
                             className="pl-10"
-                            placeholder="john@example.com"
+                            placeholder="budi@email.com"
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number</Label>
+                        <Label htmlFor="phone">Nomor Telepon</Label>
                         <div className="relative">
                           <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <Input
@@ -143,7 +141,7 @@ export default function Checkout() {
                             type="tel"
                             required
                             className="pl-10"
-                            placeholder="+1 (555) 123-4567"
+                            placeholder="+62 812 3456 7890"
                           />
                         </div>
                       </div>
@@ -152,7 +150,7 @@ export default function Checkout() {
                   {step === 2 && (
                     <>
                       <div className="space-y-2">
-                        <Label htmlFor="cardNumber">Card Number</Label>
+                        <Label htmlFor="cardNumber">Nomor Kartu</Label>
                         <div className="relative">
                           <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <Input
@@ -165,7 +163,7 @@ export default function Checkout() {
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="expiry">Expiry Date</Label>
+                          <Label htmlFor="expiry">Tanggal Kadaluarsa</Label>
                           <div className="relative">
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
@@ -190,29 +188,31 @@ export default function Checkout() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="cardName">Name on Card</Label>
-                        <Input id="cardName" required placeholder="John Doe" />
+                        <Label htmlFor="cardName">Nama di Kartu</Label>
+                        <Input
+                          id="cardName"
+                          required
+                          placeholder="Budi Santoso"
+                        />
                       </div>
                     </>
                   )}
                   {step === 3 && (
                     <div className="space-y-4">
                       <div className="p-5 rounded-xl bg-muted/50">
-                        <h4 className="font-medium mb-3">
-                          Contact Information
-                        </h4>
+                        <h4 className="font-medium mb-3">Informasi Kontak</h4>
                         <div className="space-y-1 text-sm text-muted-foreground">
-                          <p>John Doe</p>
-                          <p>john.doe@example.com</p>
-                          <p>+1 (555) 123-4567</p>
+                          <p>Budi Santoso</p>
+                          <p>budi@email.com</p>
+                          <p>+62 812 3456 7890</p>
                         </div>
                       </div>
                       <div className="p-5 rounded-xl bg-muted/50">
-                        <h4 className="font-medium mb-3">Payment Method</h4>
+                        <h4 className="font-medium mb-3">Metode Pembayaran</h4>
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-6 bg-gradient-to-r from-blue-600 to-blue-400 rounded" />
                           <span className="text-sm text-muted-foreground">
-                            Card ending in 3456
+                            Kartu berakhiran 3456
                           </span>
                         </div>
                       </div>
@@ -226,14 +226,14 @@ export default function Checkout() {
                         onClick={() => setStep(step - 1)}
                         className="flex-1 rounded-xl"
                       >
-                        Back
+                        Kembali
                       </Button>
                     )}
                     <Button
                       type="submit"
                       className="flex-1 gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
                     >
-                      {step === 3 ? "Complete Purchase" : "Continue"}
+                      {step === 3 ? "Selesaikan Pembelian" : "Lanjutkan"}
                     </Button>
                   </div>
                 </form>
@@ -247,7 +247,7 @@ export default function Checkout() {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Ticket className="h-5 w-5 text-primary" />
-                  <CardTitle>Order Summary</CardTitle>
+                  <CardTitle>Ringkasan Pesanan</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -262,31 +262,38 @@ export default function Checkout() {
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>
-                      ${(orderSummary.price * orderSummary.quantity).toFixed(2)}
+                      Rp{" "}
+                      {(
+                        orderSummary.price * orderSummary.quantity
+                      ).toLocaleString("id-ID")}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Service Fee</span>
-                    <span>${orderSummary.serviceFee.toFixed(2)}</span>
+                    <span className="text-muted-foreground">Biaya Layanan</span>
+                    <span>
+                      Rp {orderSummary.serviceFee.toLocaleString("id-ID")}
+                    </span>
                   </div>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-primary">${total}</span>
+                  <span className="text-primary">
+                    Rp {total.toLocaleString("id-ID")}
+                  </span>
                 </div>
                 <div className="pt-4">
-                  <Label htmlFor="promo">Promo Code</Label>
+                  <Label htmlFor="promo">Kode Promo</Label>
                   <div className="flex gap-2 mt-2">
                     <Input
                       id="promo"
                       value={promoCode}
                       onChange={(e) => setPromoCode(e.target.value)}
-                      placeholder="Enter code"
+                      placeholder="Masukkan kode"
                       className="rounded-xl"
                     />
                     <Button variant="outline" className="rounded-xl">
-                      Apply
+                      Terapkan
                     </Button>
                   </div>
                 </div>

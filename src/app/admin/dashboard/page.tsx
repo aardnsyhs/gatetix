@@ -15,23 +15,23 @@ import { Badge } from "@/components/ui/badge";
 
 const stats = [
   {
-    title: "Total Revenue",
-    value: "$38,400",
+    title: "Total Pendapatan",
+    value: "Rp 576.000.000",
     change: "+12.5%",
     trend: "up",
     icon: DollarSign,
     color: "from-blue-500 to-cyan-500",
   },
   {
-    title: "Tickets Sold",
-    value: "1,234",
+    title: "Tiket Terjual",
+    value: "1.234",
     change: "+8.2%",
     trend: "up",
     icon: Ticket,
     color: "from-purple-500 to-pink-500",
   },
   {
-    title: "Total Attendees",
+    title: "Total Peserta",
     value: "892",
     change: "+15.3%",
     trend: "up",
@@ -39,7 +39,7 @@ const stats = [
     color: "from-emerald-500 to-teal-500",
   },
   {
-    title: "Check-in Rate",
+    title: "Tingkat Check-in",
     value: "72%",
     change: "-2.1%",
     trend: "down",
@@ -51,59 +51,59 @@ const stats = [
 const recentOrders = [
   {
     id: "ORD-001",
-    customer: "Sarah Wilson",
-    event: "Summer Festival",
-    amount: "$147",
+    customer: "Budi Santoso",
+    event: "Jakarta Music Festival",
+    amount: "Rp 450.000",
     status: "completed",
-    time: "2 min ago",
+    time: "2 menit lalu",
   },
   {
     id: "ORD-002",
-    customer: "Mike Johnson",
-    event: "Tech Conference",
-    amount: "$299",
+    customer: "Siti Rahayu",
+    event: "Tech Summit",
+    amount: "Rp 1.000.000",
     status: "completed",
-    time: "15 min ago",
+    time: "15 menit lalu",
   },
   {
     id: "ORD-003",
-    customer: "Emily Davis",
-    event: "Food Expo",
-    amount: "$75",
+    customer: "Ahmad Wijaya",
+    event: "Festival Kuliner",
+    amount: "Rp 150.000",
     status: "pending",
-    time: "1 hour ago",
+    time: "1 jam lalu",
   },
   {
     id: "ORD-004",
-    customer: "James Brown",
-    event: "Summer Festival",
-    amount: "$294",
+    customer: "Dewi Lestari",
+    event: "Jakarta Music Festival",
+    amount: "Rp 900.000",
     status: "completed",
-    time: "2 hours ago",
+    time: "2 jam lalu",
   },
 ];
 
 const upcomingEvents = [
   {
-    name: "Summer Music Festival",
-    date: "Jul 15",
+    name: "Jakarta Music Festival",
+    date: "15 Jul",
     sold: 450,
     capacity: 1000,
-    revenue: "$22,050",
+    revenue: "Rp 67.500.000",
   },
   {
-    name: "Tech Conference 2024",
-    date: "Aug 20",
+    name: "Indonesia Tech Summit",
+    date: "20 Ags",
     sold: 280,
     capacity: 500,
-    revenue: "$55,720",
+    revenue: "Rp 140.000.000",
   },
   {
-    name: "Food & Wine Expo",
-    date: "Sep 5",
+    name: "Festival Kuliner Nusantara",
+    date: "5 Sep",
     sold: 180,
     capacity: 400,
-    revenue: "$6,300",
+    revenue: "Rp 13.500.000",
   },
 ];
 
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground mt-1">
-          Welcome back! Here&apos;s what&apos;s happening today.
+          Selamat datang! Berikut ringkasan hari ini.
         </p>
       </div>
 
@@ -145,7 +145,7 @@ export default function AdminDashboard() {
                       )}
                       <span className="font-medium">{stat.change}</span>
                       <span className="text-muted-foreground">
-                        vs last week
+                        vs minggu lalu
                       </span>
                     </div>
                   </div>
@@ -167,9 +167,9 @@ export default function AdminDashboard() {
         <Card className="lg:col-span-2 gt-card-glow">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>Recent Orders</CardTitle>
+              <CardTitle>Pesanan Terbaru</CardTitle>
               <p className="text-sm text-muted-foreground">
-                Latest ticket purchases
+                Pembelian tiket terbaru
               </p>
             </div>
             <Button variant="ghost" size="icon" className="rounded-xl">
@@ -225,7 +225,7 @@ export default function AdminDashboard() {
                 type="button"
                 className="text-sm text-primary font-medium hover:underline"
               >
-                View all orders →
+                Lihat semua pesanan →
               </button>
             </div>
           </CardContent>
@@ -234,8 +234,10 @@ export default function AdminDashboard() {
         {/* Upcoming Events */}
         <Card className="gt-card-glow">
           <CardHeader>
-            <CardTitle>Upcoming Events</CardTitle>
-            <p className="text-sm text-muted-foreground">Your next events</p>
+            <CardTitle>Event Mendatang</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Event yang akan datang
+            </p>
           </CardHeader>
           <CardContent className="space-y-4">
             {upcomingEvents.map((event, index) => (
@@ -256,7 +258,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Tickets sold</span>
+                    <span className="text-muted-foreground">Tiket terjual</span>
                     <span className="font-medium">
                       {event.sold} / {event.capacity}
                     </span>

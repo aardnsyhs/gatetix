@@ -21,59 +21,59 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 const categories = [
-  { icon: Music, label: "Music", color: "from-purple-500 to-pink-500" },
+  { icon: Music, label: "Musik", color: "from-purple-500 to-pink-500" },
   {
     icon: Utensils,
-    label: "Food & Drink",
+    label: "Kuliner",
     color: "from-orange-500 to-amber-500",
   },
-  { icon: Briefcase, label: "Business", color: "from-blue-500 to-cyan-500" },
-  { icon: Heart, label: "Community", color: "from-rose-500 to-red-500" },
+  { icon: Briefcase, label: "Bisnis", color: "from-blue-500 to-cyan-500" },
+  { icon: Heart, label: "Komunitas", color: "from-rose-500 to-red-500" },
 ];
 
 const trendingEvents = [
   {
     id: 1,
-    title: "Summer Music Festival 2024",
-    date: "July 15, 2024",
-    location: "Central Park, NY",
+    title: "Jakarta Music Festival 2024",
+    date: "15 Juli 2024",
+    location: "Gelora Bung Karno, Jakarta",
     image:
       "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=300&fit=crop",
-    price: "From $49",
-    slug: "summer-music-festival-2024",
+    price: "Mulai Rp 150.000",
+    slug: "jakarta-music-festival-2024",
     attendees: 450,
   },
   {
     id: 2,
-    title: "Tech Conference 2024",
-    date: "August 20, 2024",
-    location: "Convention Center, SF",
+    title: "Indonesia Tech Summit 2024",
+    date: "20 Agustus 2024",
+    location: "ICE BSD, Tangerang",
     image:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop",
-    price: "From $199",
-    slug: "tech-conference-2024",
+    price: "Mulai Rp 500.000",
+    slug: "indonesia-tech-summit-2024",
     attendees: 280,
   },
   {
     id: 3,
-    title: "Food & Wine Expo",
-    date: "September 5, 2024",
-    location: "Downtown, LA",
+    title: "Festival Kuliner Nusantara",
+    date: "5 September 2024",
+    location: "Senayan Park, Jakarta",
     image:
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop",
-    price: "From $35",
-    slug: "food-wine-expo",
+    price: "Mulai Rp 75.000",
+    slug: "festival-kuliner-nusantara",
     attendees: 180,
   },
   {
     id: 4,
-    title: "Art Gallery Opening",
-    date: "October 10, 2024",
-    location: "Museum District, Chicago",
+    title: "Pameran Seni Rupa Indonesia",
+    date: "10 Oktober 2024",
+    location: "Museum MACAN, Jakarta",
     image:
       "https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?w=400&h=300&fit=crop",
-    price: "Free",
-    slug: "art-gallery-opening",
+    price: "Gratis",
+    slug: "pameran-seni-rupa-indonesia",
     attendees: 120,
   },
 ];
@@ -81,18 +81,18 @@ const trendingEvents = [
 const features = [
   {
     icon: Zap,
-    title: "Instant Tickets",
-    description: "Get your tickets delivered instantly to your email",
+    title: "Tiket Instan",
+    description: "Dapatkan tiket langsung dikirim ke email Anda",
   },
   {
     icon: Users,
-    title: "Easy Check-in",
-    description: "Seamless QR code scanning for quick entry",
+    title: "Check-in Mudah",
+    description: "Scan QR code untuk masuk dengan cepat",
   },
   {
     icon: Star,
-    title: "Best Events",
-    description: "Curated selection of top events near you",
+    title: "Event Terbaik",
+    description: "Pilihan event terbaik di sekitar Anda",
   },
 ];
 
@@ -116,21 +116,21 @@ export default function LandingPage() {
               className="bg-white/10 backdrop-blur-sm text-white/90 mb-6 px-4 py-2"
             >
               <Star className="h-4 w-4 mr-2" />
-              Trusted by 10,000+ event organizers
+              Dipercaya 10.000+ penyelenggara event
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Discover Amazing<span className="block">Events Near You</span>
+              Temukan Event<span className="block">Seru di Sekitarmu</span>
             </h1>
             <p className="text-lg sm:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-              Find and book tickets to concerts, conferences, festivals, and
-              more. Your next unforgettable experience is just a click away.
+              Cari dan pesan tiket konser, konferensi, festival, dan lainnya.
+              Pengalaman tak terlupakan hanya dengan satu klik.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   type="text"
-                  placeholder="Search for events, artists, venues..."
+                  placeholder="Cari event, artis, venue..."
                   className="w-full pl-12 pr-4 py-6 rounded-2xl bg-white text-foreground placeholder:text-muted-foreground border-0 shadow-xl h-14"
                 />
               </div>
@@ -139,7 +139,7 @@ export default function LandingPage() {
                 size="lg"
                 className="bg-white text-primary hover:bg-white/90 rounded-2xl shadow-xl h-14 px-8"
               >
-                <Link href="/events">Explore Events</Link>
+                <Link href="/events">Jelajahi Event</Link>
               </Button>
             </div>
           </div>
@@ -164,11 +164,10 @@ export default function LandingPage() {
         <div className="gt-container">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Browse by Category
+              Jelajahi Kategori
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Explore events across different categories and find what interests
-              you
+              Temukan event berdasarkan kategori yang kamu minati
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
@@ -202,17 +201,17 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
             <div>
               <h2 className="text-3xl sm:text-4xl font-bold mb-2">
-                Trending Events
+                Event Populer
               </h2>
               <p className="text-muted-foreground">
-                Don&apos;t miss out on the hottest events
+                Jangan lewatkan event-event terpopuler
               </p>
             </div>
             <Link
               href="/events"
               className="text-primary font-medium hover:underline flex items-center gap-1"
             >
-              View all events
+              Lihat semua event
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -234,7 +233,7 @@ export default function LandingPage() {
                         variant="secondary"
                         className="bg-white/20 backdrop-blur-sm text-white border-0"
                       >
-                        {event.attendees} attending
+                        {event.attendees} peserta
                       </Badge>
                     </div>
                   </div>
@@ -257,7 +256,7 @@ export default function LandingPage() {
                         {event.price}
                       </span>
                       <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
-                        Get tickets →
+                        Beli tiket →
                       </span>
                     </div>
                   </CardContent>
@@ -303,18 +302,18 @@ export default function LandingPage() {
             />
             <div className="relative z-10">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Ready to Create Your Own Event?
+                Siap Buat Event Sendiri?
               </h2>
               <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-                Join thousands of organizers using GateTix to manage their
-                events and sell tickets effortlessly.
+                Bergabung dengan ribuan penyelenggara yang menggunakan GateTix
+                untuk mengelola event dan menjual tiket dengan mudah.
               </p>
               <Button
                 asChild
                 size="lg"
                 className="bg-white text-primary hover:bg-white/90 rounded-2xl shadow-xl h-14 px-8"
               >
-                <Link href="/admin/dashboard">Get Started Free</Link>
+                <Link href="/admin/dashboard">Mulai Gratis</Link>
               </Button>
             </div>
           </div>

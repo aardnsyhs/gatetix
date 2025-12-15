@@ -18,55 +18,55 @@ import {
 const orders = [
   {
     id: "ORD-001",
-    customer: "John Doe",
-    email: "john@example.com",
-    event: "Summer Music Festival",
+    customer: "Budi Santoso",
+    email: "budi@email.com",
+    event: "Jakarta Music Festival",
     tickets: 2,
-    amount: 147,
+    amount: 450000,
     status: "completed",
     date: "2024-07-10",
     time: "14:30",
   },
   {
     id: "ORD-002",
-    customer: "Jane Smith",
-    email: "jane@example.com",
-    event: "Tech Conference",
+    customer: "Siti Rahayu",
+    email: "siti@email.com",
+    event: "Tech Summit",
     tickets: 1,
-    amount: 199,
+    amount: 500000,
     status: "completed",
     date: "2024-07-09",
     time: "09:15",
   },
   {
     id: "ORD-003",
-    customer: "Bob Wilson",
-    email: "bob@example.com",
-    event: "Food & Wine Expo",
+    customer: "Ahmad Wijaya",
+    email: "ahmad@email.com",
+    event: "Festival Kuliner",
     tickets: 3,
-    amount: 105,
+    amount: 225000,
     status: "pending",
     date: "2024-07-08",
     time: "16:45",
   },
   {
     id: "ORD-004",
-    customer: "Alice Brown",
-    email: "alice@example.com",
-    event: "Summer Music Festival",
+    customer: "Dewi Lestari",
+    email: "dewi@email.com",
+    event: "Jakarta Music Festival",
     tickets: 4,
-    amount: 588,
+    amount: 1800000,
     status: "refunded",
     date: "2024-07-07",
     time: "11:20",
   },
   {
     id: "ORD-005",
-    customer: "Charlie Davis",
-    email: "charlie@example.com",
-    event: "Tech Conference",
+    customer: "Rudi Hermawan",
+    email: "rudi@email.com",
+    event: "Tech Summit",
     tickets: 2,
-    amount: 398,
+    amount: 1000000,
     status: "completed",
     date: "2024-07-06",
     time: "13:00",
@@ -99,28 +99,28 @@ export default function AdminOrders() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Orders</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Pesanan</h1>
           <p className="text-muted-foreground mt-1">
-            View and manage all ticket orders
+            Lihat dan kelola semua pesanan tiket
           </p>
         </div>
         <Button variant="outline" className="rounded-xl">
           <Download className="h-4 w-4 mr-2" />
-          Export CSV
+          Ekspor CSV
         </Button>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
         <Input
           type="text"
-          placeholder="Search orders..."
+          placeholder="Cari pesanan..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="flex-1 max-w-md rounded-xl"
         />
         <Button variant="ghost" className="rounded-xl">
           <Filter className="h-4 w-4 mr-2" />
-          Filters
+          Filter
         </Button>
       </div>
 
@@ -128,13 +128,13 @@ export default function AdminOrders() {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead>Order ID</TableHead>
-              <TableHead>Customer</TableHead>
+              <TableHead>ID Pesanan</TableHead>
+              <TableHead>Pelanggan</TableHead>
               <TableHead>Event</TableHead>
-              <TableHead>Tickets</TableHead>
-              <TableHead>Amount</TableHead>
+              <TableHead>Tiket</TableHead>
+              <TableHead>Jumlah</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Date</TableHead>
+              <TableHead>Tanggal</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -168,11 +168,13 @@ export default function AdminOrders() {
                     variant="secondary"
                     className="bg-primary/10 text-primary"
                   >
-                    {order.tickets} tickets
+                    {order.tickets} tiket
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <span className="font-semibold">${order.amount}</span>
+                  <span className="font-semibold">
+                    Rp {order.amount.toLocaleString("id-ID")}
+                  </span>
                 </TableCell>
                 <TableCell>
                   <Badge className={getStatusStyle(order.status)}>
@@ -203,8 +205,8 @@ export default function AdminOrders() {
 
         <div className="flex items-center justify-between p-4 border-t border-border">
           <p className="text-sm text-muted-foreground">
-            Showing <span className="font-medium">1-5</span> of{" "}
-            <span className="font-medium">24</span> orders
+            Menampilkan <span className="font-medium">1-5</span> dari{" "}
+            <span className="font-medium">24</span> pesanan
           </p>
           <div className="flex items-center gap-2">
             <Button

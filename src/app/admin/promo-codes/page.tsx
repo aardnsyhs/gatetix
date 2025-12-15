@@ -16,7 +16,7 @@ import {
 const promoCodes = [
   {
     id: 1,
-    code: "SUMMER20",
+    code: "MERDEKA20",
     discount: "20%",
     type: "percentage",
     usageLimit: 100,
@@ -27,7 +27,7 @@ const promoCodes = [
   {
     id: 2,
     code: "EARLYBIRD",
-    discount: "$10",
+    discount: "Rp 50.000",
     type: "fixed",
     usageLimit: 50,
     used: 50,
@@ -46,8 +46,8 @@ const promoCodes = [
   },
   {
     id: 4,
-    code: "WELCOME",
-    discount: "$5",
+    code: "SELAMATDATANG",
+    discount: "Rp 25.000",
     type: "fixed",
     usageLimit: 500,
     used: 234,
@@ -85,20 +85,20 @@ export default function PromoCodes() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Promo Codes</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Kode Promo</h1>
           <p className="text-muted-foreground mt-1">
-            Create and manage discount codes
+            Buat dan kelola kode diskon
           </p>
         </div>
         <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
           <Plus className="h-4 w-4 mr-2" />
-          Create Code
+          Buat Kode
         </Button>
       </div>
 
       <Input
         type="text"
-        placeholder="Search promo codes..."
+        placeholder="Cari kode promo..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="max-w-md rounded-xl"
@@ -143,7 +143,7 @@ export default function PromoCodes() {
                     </DropdownMenuItem>
                     <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
+                      Hapus
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -161,7 +161,7 @@ export default function PromoCodes() {
 
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Usage</span>
+                    <span className="text-muted-foreground">Penggunaan</span>
                     <span className="font-medium">
                       {promo.used} / {promo.usageLimit}
                     </span>
@@ -178,7 +178,7 @@ export default function PromoCodes() {
 
                 <div className="pt-3 border-t border-dashed border-border">
                   <p className="text-xs text-muted-foreground">
-                    Expires:{" "}
+                    Berakhir:{" "}
                     <span className="font-medium text-foreground">
                       {promo.expires}
                     </span>

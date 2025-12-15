@@ -28,41 +28,41 @@ export default function EventDetail({
   const [ticketQuantity, setTicketQuantity] = useState(1);
 
   const event = {
-    title: "Summer Music Festival 2024",
-    date: "July 15, 2024",
-    time: "6:00 PM - 11:00 PM",
-    location: "Central Park, New York, NY",
+    title: "Jakarta Music Festival 2024",
+    date: "15 Juli 2024",
+    time: "18:00 - 23:00 WIB",
+    location: "Gelora Bung Karno, Jakarta",
     image:
       "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1200&h=600&fit=crop",
     description:
-      "Join us for an unforgettable evening of live music featuring top artists from around the world. Experience multiple stages, food vendors, and an electric atmosphere that will leave you wanting more.",
+      "Bergabunglah dalam malam musik yang tak terlupakan dengan penampilan artis-artis top dari seluruh Indonesia. Nikmati berbagai panggung, area kuliner, dan atmosfer yang akan membuat Anda ingin kembali lagi.",
     tickets: [
       {
         id: 1,
-        name: "General Admission",
-        price: 49,
+        name: "Regular",
+        price: 150000,
         available: 150,
-        description: "Access to all general areas",
+        description: "Akses ke semua area umum",
       },
       {
         id: 2,
-        name: "VIP Pass",
-        price: 149,
+        name: "VIP",
+        price: 500000,
         available: 50,
-        description: "VIP lounge access + free drinks",
+        description: "Akses lounge VIP + minuman gratis",
       },
       {
         id: 3,
-        name: "Premium Package",
-        price: 299,
+        name: "Premium",
+        price: 1500000,
         available: 20,
-        description: "Front row + meet & greet",
+        description: "Baris depan + meet & greet",
       },
     ],
-    lineup: ["Artist One", "Artist Two", "Artist Three", "Artist Four"],
+    lineup: ["Tulus", "Raisa", "Hindia", "Pamungkas"],
     venue: {
-      name: "Central Park Main Stage",
-      address: "123 Park Avenue, New York, NY 10001",
+      name: "Stadion Utama GBK",
+      address: "Jl. Pintu Satu Senayan, Jakarta Pusat 10270",
       capacity: 5000,
     },
     attendees: 450,
@@ -102,10 +102,10 @@ export default function EventDetail({
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <Badge>Music</Badge>
+                      <Badge>Musik</Badge>
                       <span className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Users className="h-4 w-4" />
-                        {event.attendees} attending
+                        {event.attendees} peserta
                       </span>
                     </div>
                     <h1 className="text-2xl sm:text-3xl font-bold mb-4">
@@ -147,22 +147,20 @@ export default function EventDetail({
                 {/* Tabs */}
                 <Tabs defaultValue="overview" className="w-full">
                   <TabsList className="w-full justify-start">
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
+                    <TabsTrigger value="overview">Ringkasan</TabsTrigger>
                     <TabsTrigger value="lineup">Lineup</TabsTrigger>
-                    <TabsTrigger value="venue">Venue</TabsTrigger>
+                    <TabsTrigger value="venue">Lokasi</TabsTrigger>
                   </TabsList>
                   <TabsContent value="overview" className="mt-6">
                     <h3 className="text-lg font-semibold mb-4">
-                      About This Event
+                      Tentang Event Ini
                     </h3>
                     <p className="text-muted-foreground leading-relaxed">
                       {event.description}
                     </p>
                   </TabsContent>
                   <TabsContent value="lineup" className="mt-6">
-                    <h3 className="text-lg font-semibold mb-4">
-                      Featured Artists
-                    </h3>
+                    <h3 className="text-lg font-semibold mb-4">Artis Tampil</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {event.lineup.map((artist, index) => (
                         <Card key={index}>
@@ -175,7 +173,7 @@ export default function EventDetail({
                   </TabsContent>
                   <TabsContent value="venue" className="mt-6">
                     <h3 className="text-lg font-semibold mb-4">
-                      Venue Information
+                      Informasi Lokasi
                     </h3>
                     <div className="space-y-4">
                       <div>
@@ -187,12 +185,12 @@ export default function EventDetail({
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Users className="h-5 w-5" />
                         <span>
-                          Capacity: {event.venue.capacity.toLocaleString()}
+                          Kapasitas: {event.venue.capacity.toLocaleString()}
                         </span>
                       </div>
                       <div className="w-full h-64 bg-muted rounded-xl flex items-center justify-center">
                         <span className="text-muted-foreground">
-                          Map placeholder
+                          Peta lokasi
                         </span>
                       </div>
                     </div>
@@ -208,7 +206,7 @@ export default function EventDetail({
               <CardContent className="p-6">
                 <div className="flex items-center gap-2 mb-6">
                   <Ticket className="h-5 w-5 text-primary" />
-                  <h3 className="text-lg font-semibold">Select Tickets</h3>
+                  <h3 className="text-lg font-semibold">Pilih Tiket</h3>
                 </div>
 
                 <div className="space-y-3 mb-6">
@@ -225,14 +223,14 @@ export default function EventDetail({
                       <div className="flex justify-between items-start mb-1">
                         <p className="font-medium">{ticket.name}</p>
                         <p className="font-bold text-primary">
-                          ${ticket.price}
+                          Rp {ticket.price.toLocaleString("id-ID")}
                         </p>
                       </div>
                       <p className="text-sm text-muted-foreground">
                         {ticket.description}
                       </p>
                       <p className="text-xs text-muted-foreground mt-2">
-                        {ticket.available} available
+                        {ticket.available} tersedia
                       </p>
                     </div>
                   ))}
@@ -240,7 +238,7 @@ export default function EventDetail({
 
                 <div className="mb-6">
                   <label className="block text-sm font-medium mb-3">
-                    Quantity
+                    Jumlah
                   </label>
                   <div className="flex items-center gap-4">
                     <Button
@@ -271,21 +269,28 @@ export default function EventDetail({
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
                     <span>
-                      ${(selectedTicket.price * ticketQuantity).toFixed(2)}
+                      Rp{" "}
+                      {(selectedTicket.price * ticketQuantity).toLocaleString(
+                        "id-ID"
+                      )}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Service Fee</span>
+                    <span className="text-muted-foreground">Biaya Layanan</span>
                     <span>
-                      $
-                      {(selectedTicket.price * ticketQuantity * 0.1).toFixed(2)}
+                      Rp{" "}
+                      {Math.round(
+                        selectedTicket.price * ticketQuantity * 0.1
+                      ).toLocaleString("id-ID")}
                     </span>
                   </div>
                   <div className="flex justify-between text-lg font-bold pt-2 border-t">
                     <span>Total</span>
                     <span className="text-primary">
-                      $
-                      {(selectedTicket.price * ticketQuantity * 1.1).toFixed(2)}
+                      Rp{" "}
+                      {Math.round(
+                        selectedTicket.price * ticketQuantity * 1.1
+                      ).toLocaleString("id-ID")}
                     </span>
                   </div>
                 </div>
@@ -295,7 +300,7 @@ export default function EventDetail({
                     className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
                     size="lg"
                   >
-                    Continue to Checkout
+                    Lanjut ke Pembayaran
                   </Button>
                 </Link>
               </CardContent>

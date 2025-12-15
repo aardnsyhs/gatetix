@@ -26,22 +26,22 @@ export default function EventDetailAdmin({
   const { eventId } = use(params);
   const event = {
     id: eventId,
-    title: "Summer Music Festival 2024",
-    date: "July 15, 2024",
-    time: "6:00 PM - 11:00 PM",
-    location: "Central Park, New York, NY",
+    title: "Jakarta Music Festival 2024",
+    date: "15 Juli 2024",
+    time: "18:00 - 23:00 WIB",
+    location: "Gelora Bung Karno, Jakarta",
     status: "published",
     ticketsSold: 450,
     capacity: 1000,
-    revenue: "$22,050",
+    revenue: "Rp 67.500.000",
     image:
       "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1200&h=600&fit=crop",
     description:
-      "Join us for an unforgettable evening of live music featuring top artists from around the world.",
+      "Bergabunglah dalam malam musik yang tak terlupakan dengan penampilan artis-artis top dari seluruh Indonesia.",
     tickets: [
-      { name: "General Admission", price: 49, sold: 350, capacity: 800 },
-      { name: "VIP Pass", price: 149, sold: 80, capacity: 150 },
-      { name: "Premium Package", price: 299, sold: 20, capacity: 50 },
+      { name: "Regular", price: 150000, sold: 350, capacity: 800 },
+      { name: "VIP", price: 500000, sold: 80, capacity: 150 },
+      { name: "Premium", price: 1500000, sold: 20, capacity: 50 },
     ],
   };
 
@@ -52,7 +52,7 @@ export default function EventDetailAdmin({
           <Button asChild variant="ghost" className="rounded-xl">
             <Link href="/admin/events">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
+              Kembali
             </Link>
           </Button>
           <div>
@@ -76,7 +76,7 @@ export default function EventDetailAdmin({
         <div className="flex gap-2">
           <Button variant="outline" className="rounded-xl">
             <Share2 className="h-4 w-4 mr-2" />
-            Share
+            Bagikan
           </Button>
           <Button variant="outline" className="rounded-xl">
             <Edit className="h-4 w-4 mr-2" />
@@ -100,7 +100,7 @@ export default function EventDetailAdmin({
                 <Users className="h-5 w-5 text-blue-500" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Tickets Sold</p>
+                <p className="text-sm text-muted-foreground">Tiket Terjual</p>
                 <p className="text-2xl font-bold">{event.ticketsSold}</p>
               </div>
             </div>
@@ -113,7 +113,7 @@ export default function EventDetailAdmin({
                 <DollarSign className="h-5 w-5 text-emerald-500" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Revenue</p>
+                <p className="text-sm text-muted-foreground">Pendapatan</p>
                 <p className="text-2xl font-bold">{event.revenue}</p>
               </div>
             </div>
@@ -126,7 +126,7 @@ export default function EventDetailAdmin({
                 <Calendar className="h-5 w-5 text-purple-500" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Capacity</p>
+                <p className="text-sm text-muted-foreground">Kapasitas</p>
                 <p className="text-2xl font-bold">{event.capacity}</p>
               </div>
             </div>
@@ -139,7 +139,7 @@ export default function EventDetailAdmin({
                 <MapPin className="h-5 w-5 text-orange-500" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Fill Rate</p>
+                <p className="text-sm text-muted-foreground">Tingkat Terisi</p>
                 <p className="text-2xl font-bold">
                   {Math.round((event.ticketsSold / event.capacity) * 100)}%
                 </p>
@@ -156,19 +156,19 @@ export default function EventDetailAdmin({
             value="overview"
             className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
           >
-            Overview
+            Ringkasan
           </TabsTrigger>
           <TabsTrigger
             value="tickets"
             className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
           >
-            Tickets
+            Tiket
           </TabsTrigger>
           <TabsTrigger
             value="attendees"
             className="rounded-lg data-[state=active]:gt-gradient-primary data-[state=active]:text-white"
           >
-            Attendees
+            Peserta
           </TabsTrigger>
         </TabsList>
 
@@ -176,7 +176,7 @@ export default function EventDetailAdmin({
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-2 gt-card-glow">
               <CardHeader>
-                <CardTitle>Event Details</CardTitle>
+                <CardTitle>Detail Event</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="aspect-video rounded-xl overflow-hidden relative">
@@ -189,19 +189,21 @@ export default function EventDetailAdmin({
                   />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Description</h3>
+                  <h3 className="font-semibold mb-2">Deskripsi</h3>
                   <p className="text-muted-foreground">{event.description}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Date & Time</p>
+                    <p className="text-sm text-muted-foreground">
+                      Tanggal & Waktu
+                    </p>
                     <p className="font-medium">{event.date}</p>
                     <p className="text-sm text-muted-foreground">
                       {event.time}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Location</p>
+                    <p className="text-sm text-muted-foreground">Lokasi</p>
                     <p className="font-medium">{event.location}</p>
                   </div>
                 </div>
@@ -210,14 +212,14 @@ export default function EventDetailAdmin({
 
             <Card className="gt-card-glow">
               <CardHeader>
-                <CardTitle>Sales Progress</CardTitle>
+                <CardTitle>Progress Penjualan</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="text-center py-4">
                   <p className="text-4xl font-bold text-primary">
                     {Math.round((event.ticketsSold / event.capacity) * 100)}%
                   </p>
-                  <p className="text-muted-foreground">of tickets sold</p>
+                  <p className="text-muted-foreground">tiket terjual</p>
                 </div>
                 <div className="h-3 bg-muted rounded-full overflow-hidden">
                   <div
@@ -229,10 +231,10 @@ export default function EventDetailAdmin({
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">
-                    {event.ticketsSold} sold
+                    {event.ticketsSold} terjual
                   </span>
                   <span className="text-muted-foreground">
-                    {event.capacity - event.ticketsSold} remaining
+                    {event.capacity - event.ticketsSold} tersisa
                   </span>
                 </div>
               </CardContent>
@@ -243,7 +245,7 @@ export default function EventDetailAdmin({
         <TabsContent value="tickets">
           <Card className="gt-card-glow">
             <CardHeader>
-              <CardTitle>Ticket Types</CardTitle>
+              <CardTitle>Jenis Tiket</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {event.tickets.map((ticket, index) => (
@@ -254,7 +256,7 @@ export default function EventDetailAdmin({
                   <div>
                     <p className="font-medium">{ticket.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      ${ticket.price} per ticket
+                      Rp {ticket.price.toLocaleString("id-ID")} per tiket
                     </p>
                   </div>
                   <div className="text-right">
@@ -280,15 +282,15 @@ export default function EventDetailAdmin({
           <Card className="gt-card-glow">
             <CardContent className="p-6 text-center">
               <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Attendee List</h3>
+              <h3 className="text-lg font-semibold mb-2">Daftar Peserta</h3>
               <p className="text-muted-foreground mb-4">
-                View and manage all attendees for this event
+                Lihat dan kelola semua peserta untuk event ini
               </p>
               <Button
                 asChild
                 className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
               >
-                <Link href="/admin/attendees">View All Attendees</Link>
+                <Link href="/admin/attendees">Lihat Semua Peserta</Link>
               </Button>
             </CardContent>
           </Card>

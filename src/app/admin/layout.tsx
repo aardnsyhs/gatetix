@@ -33,14 +33,14 @@ import {
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
-  { icon: Calendar, label: "Events", path: "/admin/events" },
-  { icon: ShoppingCart, label: "Orders", path: "/admin/orders" },
-  { icon: Users, label: "Attendees", path: "/admin/attendees" },
+  { icon: Calendar, label: "Event", path: "/admin/events" },
+  { icon: ShoppingCart, label: "Pesanan", path: "/admin/orders" },
+  { icon: Users, label: "Peserta", path: "/admin/attendees" },
   { icon: ScanLine, label: "Check-in", path: "/admin/check-in" },
-  { icon: Tag, label: "Promo Codes", path: "/admin/promo-codes" },
-  { icon: UserCog, label: "Team & Roles", path: "/admin/team" },
-  { icon: FileText, label: "Audit Logs", path: "/admin/audit-logs" },
-  { icon: Settings, label: "Settings", path: "/admin/settings" },
+  { icon: Tag, label: "Kode Promo", path: "/admin/promo-codes" },
+  { icon: UserCog, label: "Tim & Peran", path: "/admin/team" },
+  { icon: FileText, label: "Log Aktivitas", path: "/admin/audit-logs" },
+  { icon: Settings, label: "Pengaturan", path: "/admin/settings" },
 ];
 
 export default function AdminLayout({
@@ -115,10 +115,10 @@ export default function AdminLayout({
             <div className="p-4 border-t border-border">
               <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
                 <div className="w-10 h-10 rounded-full gt-gradient-primary flex items-center justify-center text-white text-sm font-medium">
-                  JD
+                  BS
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">John Doe</p>
+                  <p className="text-sm font-medium truncate">Budi Santoso</p>
                   <p className="text-xs text-muted-foreground truncate">
                     Admin
                   </p>
@@ -145,7 +145,7 @@ export default function AdminLayout({
             <div className="hidden md:block">
               <Input
                 type="text"
-                placeholder="Search anything..."
+                placeholder="Cari sesuatu..."
                 className="w-72 rounded-xl"
               />
             </div>
@@ -161,26 +161,26 @@ export default function AdminLayout({
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="rounded-xl">
                   <span className="text-sm font-medium hidden sm:block mr-2">
-                    My Organization
+                    Organisasi Saya
                   </span>
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 rounded-xl">
                 <DropdownMenuLabel>
-                  <p className="font-medium">My Organization</p>
+                  <p className="font-medium">Organisasi Saya</p>
                   <p className="text-xs text-muted-foreground font-normal">
-                    john@example.com
+                    budi@email.com
                   </p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="rounded-lg cursor-pointer">
                   <Settings className="h-4 w-4 mr-2" />
-                  Settings
+                  Pengaturan
                 </DropdownMenuItem>
                 <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
                   <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
+                  Keluar
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

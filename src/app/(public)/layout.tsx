@@ -7,9 +7,9 @@ import { Menu, X, Ticket, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "Browse Events", path: "/events" },
-  { label: "My Tickets", path: "/tickets" },
-  { label: "Help", path: "/help" },
+  { label: "Jelajahi Event", path: "/events" },
+  { label: "Tiket Saya", path: "/tickets" },
+  { label: "Bantuan", path: "/help" },
 ];
 
 export default function PublicLayout({
@@ -56,14 +56,14 @@ export default function PublicLayout({
               <Button asChild variant="ghost" className="rounded-xl">
                 <Link href="/login">
                   <User className="h-4 w-4 mr-2" />
-                  Sign In
+                  Masuk
                 </Link>
               </Button>
               <Button
                 asChild
                 className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
               >
-                <Link href="/admin/dashboard">Organizer Portal</Link>
+                <Link href="/admin/dashboard">Portal Penyelenggara</Link>
               </Button>
             </div>
 
@@ -109,7 +109,7 @@ export default function PublicLayout({
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <User className="h-4 w-4 mr-2" />
-                      Sign In
+                      Masuk
                     </Link>
                   </Button>
                   <Button
@@ -120,7 +120,7 @@ export default function PublicLayout({
                       href="/admin/dashboard"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Organizer Portal
+                      Portal Penyelenggara
                     </Link>
                   </Button>
                 </div>
@@ -145,18 +145,18 @@ export default function PublicLayout({
                 </span>
               </Link>
               <p className="text-sm text-muted-foreground">
-                The modern ticketing platform for events of all sizes.
+                Platform tiket modern untuk event berbagai skala.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
+              <h4 className="font-semibold mb-4">Produk</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
-                    Features
+                    Fitur
                   </Link>
                 </li>
                 <li>
@@ -164,7 +164,7 @@ export default function PublicLayout({
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
-                    Pricing
+                    Harga
                   </Link>
                 </li>
                 <li>
@@ -172,20 +172,20 @@ export default function PublicLayout({
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
-                    Integrations
+                    Integrasi
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Company</h4>
+              <h4 className="font-semibold mb-4">Perusahaan</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
-                    About
+                    Tentang Kami
                   </Link>
                 </li>
                 <li>
@@ -201,20 +201,20 @@ export default function PublicLayout({
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
-                    Careers
+                    Karir
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
+              <h4 className="font-semibold mb-4">Dukungan</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link
                     href="/help"
                     className="hover:text-foreground transition-smooth"
                   >
-                    Help Center
+                    Pusat Bantuan
                   </Link>
                 </li>
                 <li>
@@ -222,7 +222,7 @@ export default function PublicLayout({
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
-                    Contact
+                    Kontak
                   </Link>
                 </li>
                 <li>
@@ -230,14 +230,14 @@ export default function PublicLayout({
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
-                    Privacy
+                    Privasi
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} GateTix. All rights reserved.
+            © {new Date().getFullYear()} GateTix. Hak cipta dilindungi.
           </div>
         </div>
       </footer>
