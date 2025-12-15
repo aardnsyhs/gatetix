@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, use } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,12 @@ import {
   Ticket,
 } from "lucide-react";
 
-export default function EventDetail({ params }: { params: { slug: string } }) {
+export default function EventDetail({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = use(params);
   const [ticketQuantity, setTicketQuantity] = useState(1);
 
   const event = {
@@ -285,7 +290,7 @@ export default function EventDetail({ params }: { params: { slug: string } }) {
                   </div>
                 </div>
 
-                <Link href={`/checkout/${params.slug}`}>
+                <Link href={`/checkout/${slug}`}>
                   <Button
                     className="w-full gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
                     size="lg"

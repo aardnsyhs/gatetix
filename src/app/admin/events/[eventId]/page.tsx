@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -20,10 +21,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function EventDetailAdmin({
   params,
 }: {
-  params: { eventId: string };
+  params: Promise<{ eventId: string }>;
 }) {
+  const { eventId } = use(params);
   const event = {
-    id: params.eventId,
+    id: eventId,
     title: "Summer Music Festival 2024",
     date: "July 15, 2024",
     time: "6:00 PM - 11:00 PM",

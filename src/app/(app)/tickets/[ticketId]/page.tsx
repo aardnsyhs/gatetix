@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -20,10 +21,11 @@ import { Separator } from "@/components/ui/separator";
 export default function TicketDetail({
   params,
 }: {
-  params: { ticketId: string };
+  params: Promise<{ ticketId: string }>;
 }) {
+  const { ticketId } = use(params);
   const ticket = {
-    id: params.ticketId,
+    id: ticketId,
     eventName: "Summer Music Festival 2024",
     date: "July 15, 2024",
     time: "6:00 PM - 11:00 PM",
@@ -36,7 +38,7 @@ export default function TicketDetail({
     status: "active",
     qrCode:
       "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
-      params.ticketId,
+      ticketId,
     holder: "John Doe",
     email: "john.doe@example.com",
   };
