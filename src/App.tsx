@@ -5,6 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import ScrollToTop from "@/components/ScrollToTop";
 
 // Layouts
 import PublicLayout from "@/layouts/PublicLayout";
@@ -43,6 +44,7 @@ import Settings from "@/pages/admin/Settings";
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen bg-background text-foreground">
         <Routes>
           {/* Public Routes */}
