@@ -54,12 +54,12 @@ export default function AdminLayout({
   const isActive = (path: string) => pathname === path;
 
   return (
-    <div className="min-h-screen flex bg-background">
+    <div className="h-screen flex bg-background overflow-hidden">
       {/* Sidebar */}
       <aside
         className={`gt-sidebar fixed inset-y-0 left-0 z-50 transition-all duration-300 ${
           sidebarOpen ? "w-64" : "w-20"
-        } lg:relative`}
+        }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -130,9 +130,13 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div
+        className={`flex-1 flex flex-col h-screen transition-all duration-300 ${
+          sidebarOpen ? "ml-64" : "ml-20"
+        }`}
+      >
         {/* Topbar */}
-        <header className="gt-navbar h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+        <header className="gt-navbar h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 flex-shrink-0">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
@@ -188,7 +192,9 @@ export default function AdminLayout({
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+          {children}
+        </main>
       </div>
     </div>
   );
