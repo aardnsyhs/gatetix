@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, MapPin, QrCode, Download } from "lucide-react";
@@ -56,6 +56,10 @@ export default function MyTickets() {
     (typeof tickets)[0] | null
   >(null);
   const [filter, setFilter] = useState<"all" | "active" | "used">("all");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const filteredTickets =
     filter === "all" ? tickets : tickets.filter((t) => t.status === filter);

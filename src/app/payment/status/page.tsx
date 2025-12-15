@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -45,6 +45,10 @@ const statusConfig = {
 function PaymentStatusContent() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status") || "success";
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const config =
     statusConfig[status as keyof typeof statusConfig] || statusConfig.success;

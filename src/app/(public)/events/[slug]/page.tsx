@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,10 @@ export default function EventDetail({
   const { slug } = use(params);
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [isShared, setIsShared] = useState(false);
 
   const handleShare = async () => {

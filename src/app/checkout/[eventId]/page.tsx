@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +26,10 @@ export default function Checkout() {
   const [showPromoSuccess, setShowPromoSuccess] = useState(false);
   const [showPromoError, setShowPromoError] = useState(false);
   const [promoMessage, setPromoMessage] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const orderSummary = {
     eventName: "Jakarta Music Festival 2024",

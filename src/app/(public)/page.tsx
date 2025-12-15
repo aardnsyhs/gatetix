@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -97,6 +98,9 @@ const features = [
 ];
 
 export default function LandingPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="bg-background">
       {/* Hero Section */}
@@ -209,6 +213,7 @@ export default function LandingPage() {
             </div>
             <Link
               href="/events"
+              scroll={true}
               className="text-primary font-medium hover:underline flex items-center gap-1"
             >
               Lihat semua event

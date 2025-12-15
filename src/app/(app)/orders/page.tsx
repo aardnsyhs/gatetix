@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Calendar,
   Eye,
@@ -74,6 +74,10 @@ export default function OrderHistory() {
   const [selectedOrder, setSelectedOrder] = useState<(typeof orders)[0] | null>(
     null
   );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="bg-background min-h-screen py-8 lg:py-12">

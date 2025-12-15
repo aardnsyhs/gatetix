@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -24,6 +24,11 @@ export default function TicketDetail({
   params: Promise<{ ticketId: string }>;
 }) {
   const { ticketId } = use(params);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const ticket = {
     id: ticketId,
     eventName: "Summer Music Festival 2024",
