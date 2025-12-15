@@ -1,110 +1,164 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { Ticket } from 'lucide-react';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Ticket, Mail, Lock, User, ArrowRight } from "lucide-react";
 
 export default function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/tickets');
+    navigate("/tickets");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-2 py-12 px-4">
-      <Card className="w-full max-w-md bg-card border-border">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <Ticket className="h-12 w-12 text-primary" strokeWidth={2} />
-          </div>
-          <CardTitle className="text-2xl font-sans font-bold text-card-foreground">Create Account</CardTitle>
-          <p className="text-sm text-muted-foreground font-body">Join GateTix today</p>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="firstName" className="text-foreground">First Name</Label>
-                <Input
-                  id="firstName"
-                  value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  required
-                  className="bg-background text-foreground border-input"
-                />
-              </div>
-              <div>
-                <Label htmlFor="lastName" className="text-foreground">Last Name</Label>
-                <Input
-                  id="lastName"
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  required
-                  className="bg-background text-foreground border-input"
-                />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="email" className="text-foreground">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                className="bg-background text-foreground border-input"
-              />
-            </div>
-            <div>
-              <Label htmlFor="password" className="text-foreground">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                required
-                className="bg-background text-foreground border-input"
-              />
-            </div>
-            <div>
-              <Label htmlFor="confirmPassword" className="text-foreground">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                required
-                className="bg-background text-foreground border-input"
-              />
-            </div>
-            <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground">
-              Create Account
-            </Button>
-          </form>
-
-          <div className="mt-6">
-            <Separator className="my-4" />
-            <p className="text-center text-sm text-muted-foreground font-body">
-              Already have an account?{' '}
-              <Link to="/login" className="text-primary hover:underline">
-                Sign in
-              </Link>
+    <div className="min-h-screen flex">
+      {/* Left Side - Image */}
+      <div className="hidden lg:block lg:w-1/2 relative">
+        <div className="absolute inset-0 gt-gradient-secondary" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1920')] bg-cover bg-center opacity-30" />
+        <div className="absolute inset-0 flex items-center justify-center p-12">
+          <div className="text-center text-white">
+            <h2 className="text-4xl font-bold mb-4">Join the community</h2>
+            <p className="text-white/80 text-lg max-w-md">
+              Create an account to discover events, manage your tickets, and
+              connect with organizers.
             </p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      {/* Right Side - Form */}
+      <div className="flex-1 flex items-center justify-center p-8">
+        <div className="w-full max-w-md">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 mb-8">
+            <div className="w-10 h-10 gt-gradient-primary rounded-xl flex items-center justify-center">
+              <Ticket className="h-5 w-5 text-white" strokeWidth={2.5} />
+            </div>
+            <span className="text-xl font-bold gt-gradient-text">GateTix</span>
+          </Link>
+
+          <h1 className="text-3xl font-bold mb-2">Create account</h1>
+          <p className="text-muted-foreground mb-8">
+            Get started with your free account
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  First name
+                </label>
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <input
+                    type="text"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
+                    placeholder="John"
+                    required
+                    className="gt-input pl-12"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Last name
+                </label>
+                <input
+                  type="text"
+                  value={formData.lastName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lastName: e.target.value })
+                  }
+                  placeholder="Doe"
+                  required
+                  className="gt-input"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Email</label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  placeholder="you@example.com"
+                  required
+                  className="gt-input pl-12"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Password</label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <input
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  placeholder="••••••••"
+                  required
+                  className="gt-input pl-12"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Must be at least 8 characters
+              </p>
+            </div>
+
+            <div className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                id="terms"
+                className="rounded border-border mt-1"
+                required
+              />
+              <label htmlFor="terms" className="text-sm text-muted-foreground">
+                I agree to the{" "}
+                <a href="#" className="text-primary hover:underline">
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a href="#" className="text-primary hover:underline">
+                  Privacy Policy
+                </a>
+              </label>
+            </div>
+
+            <button type="submit" className="gt-btn-primary w-full py-3">
+              Create Account
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-muted-foreground mt-8">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-primary font-medium hover:underline"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

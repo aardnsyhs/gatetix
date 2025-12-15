@@ -1,15 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Search, MoreVertical, UserPlus } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { UserPlus, MoreVertical, Shield, Mail, Trash2 } from "lucide-react";
 
 const teamMembers = [
   {
@@ -18,7 +8,7 @@ const teamMembers = [
     email: "john@example.com",
     role: "Admin",
     status: "active",
-    avatar: "JA",
+    lastActive: "2 min ago",
   },
   {
     id: 2,
@@ -26,7 +16,7 @@ const teamMembers = [
     email: "jane@example.com",
     role: "Manager",
     status: "active",
-    avatar: "JM",
+    lastActive: "1 hour ago",
   },
   {
     id: 3,
@@ -34,7 +24,15 @@ const teamMembers = [
     email: "bob@example.com",
     role: "Staff",
     status: "pending",
-    avatar: "BS",
+    lastActive: "Never",
+  },
+  {
+    id: 4,
+    name: "Alice Checker",
+    email: "alice@example.com",
+    role: "Check-in Staff",
+    status: "active",
+    lastActive: "3 hours ago",
   },
 ];
 
@@ -43,13 +41,31 @@ const roles = [
     name: "Admin",
     description: "Full access to all features",
     permissions: 12,
+    color: "from-purple-500 to-pink-500",
   },
-  { name: "Manager", description: "Manage events and orders", permissions: 8 },
-  { name: "Staff", description: "Check-in and view attendees", permissions: 4 },
+  {
+    name: "Manager",
+    description: "Manage events and orders",
+    permissions: 8,
+    color: "from-blue-500 to-cyan-500",
+  },
+  {
+    name: "Staff",
+    description: "View and basic operations",
+    permissions: 5,
+    color: "from-emerald-500 to-teal-500",
+  },
+  {
+    name: "Check-in Staff",
+    description: "Check-in only access",
+    permissions: 2,
+    color: "from-orange-500 to-amber-500",
+  },
 ];
 
 export default function TeamRoles() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeMenu, setActiveMenu] = useState<number | null>(null);
 
   const filteredMembers = teamMembers.filter(
     (member) =>
@@ -58,123 +74,141 @@ export default function TeamRoles() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-sans font-bold text-foreground">
-            Team & Roles
-          </h1>
-          <p className="text-muted-foreground font-body">
+          <h1 className="text-2xl sm:text-3xl font-bold">Team & Roles</h1>
+          <p className="text-muted-foreground mt-1">
             Manage team members and permissions
           </p>
         </div>
-        <Button className="bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground">
-          <UserPlus className="mr-2 h-4 w-4" strokeWidth={2} />
+        <button className="gt-btn-primary">
+          <UserPlus className="h-4 w-4 mr-2" />
           Invite Member
-        </Button>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Team Members */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="relative max-w-md">
-            <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"
-              strokeWidth={2}
-            />
-            <Input
-              placeholder="Search members..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-background text-foreground border-input"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Search members..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="gt-input-search max-w-md"
+          />
 
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <CardTitle className="text-card-foreground">
-                Team Members
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
+          <div className="gt-card-flat">
+            <div className="p-5 border-b border-border">
+              <h2 className="text-lg font-semibold">Team Members</h2>
+              <p className="text-sm text-muted-foreground">
+                {teamMembers.length} members
+              </p>
+            </div>
+            <div className="divide-y divide-border">
               {filteredMembers.map((member) => (
                 <div
                   key={member.id}
-                  className="flex items-center justify-between p-3 rounded-lg bg-muted"
+                  className="p-4 flex items-center justify-between hover:bg-muted/30 transition-smooth"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-body font-medium">
-                      {member.avatar}
+                  <div className="flex items-center gap-4">
+                    <div className="gt-avatar">
+                      {member.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
                     </div>
                     <div>
-                      <p className="font-body font-medium text-foreground">
-                        {member.name}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium">{member.name}</p>
+                        {member.status === "pending" && (
+                          <span className="gt-badge gt-badge-warning">
+                            Pending
+                          </span>
+                        )}
+                      </div>
                       <p className="text-sm text-muted-foreground">
                         {member.email}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge
-                      variant={
-                        member.status === "active" ? "default" : "secondary"
-                      }
-                    >
-                      {member.role}
-                    </Badge>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="bg-transparent text-foreground hover:bg-accent"
-                        >
-                          <MoreVertical className="h-4 w-4" strokeWidth={2} />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        align="end"
-                        className="bg-popover text-popover-foreground"
+                  <div className="flex items-center gap-3">
+                    <div className="text-right hidden sm:block">
+                      <span className="gt-badge gt-badge-primary">
+                        {member.role}
+                      </span>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {member.lastActive}
+                      </p>
+                    </div>
+                    <div className="relative">
+                      <button
+                        className="gt-icon-btn"
+                        onClick={() =>
+                          setActiveMenu(
+                            activeMenu === member.id ? null : member.id
+                          )
+                        }
                       >
-                        <DropdownMenuItem className="cursor-pointer">
-                          Change Role
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer text-destructive">
-                          Remove
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                        <MoreVertical className="h-4 w-4" />
+                      </button>
+                      {activeMenu === member.id && (
+                        <div className="gt-dropdown absolute right-0 top-full mt-1 w-44 py-1 animate-scale-in z-10">
+                          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-smooth">
+                            <Shield className="h-4 w-4" />
+                            Change Role
+                          </button>
+                          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-smooth">
+                            <Mail className="h-4 w-4" />
+                            Resend Invite
+                          </button>
+                          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-smooth">
+                            <Trash2 className="h-4 w-4" />
+                            Remove
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* Roles */}
-        <Card className="bg-card border-border h-fit">
-          <CardHeader>
-            <CardTitle className="text-card-foreground">Roles</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
+        <div className="gt-card-flat h-fit">
+          <div className="p-5 border-b border-border">
+            <h2 className="text-lg font-semibold">Roles</h2>
+            <p className="text-sm text-muted-foreground">Permission levels</p>
+          </div>
+          <div className="p-4 space-y-3">
             {roles.map((role) => (
-              <div key={role.name} className="p-3 rounded-lg bg-muted">
-                <div className="flex items-center justify-between mb-1">
-                  <p className="font-body font-medium text-foreground">
-                    {role.name}
-                  </p>
-                  <Badge variant="outline">
-                    {role.permissions} permissions
-                  </Badge>
+              <div
+                key={role.name}
+                className="p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-smooth"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <div
+                    className={`w-3 h-3 rounded-full bg-gradient-to-r ${role.color}`}
+                  />
+                  <p className="font-medium">{role.name}</p>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-2">
                   {role.description}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  <span className="font-medium text-foreground">
+                    {role.permissions}
+                  </span>{" "}
+                  permissions
                 </p>
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

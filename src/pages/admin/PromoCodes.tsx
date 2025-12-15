@@ -1,23 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Plus, Search, Copy, MoreVertical } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Plus, Copy, MoreVertical, Edit, Trash2, Check } from "lucide-react";
 
 const promoCodes = [
   {
@@ -50,137 +32,154 @@ const promoCodes = [
     status: "active",
     expires: "2024-12-31",
   },
+  {
+    id: 4,
+    code: "WELCOME",
+    discount: "$5",
+    type: "fixed",
+    usageLimit: 500,
+    used: 234,
+    status: "active",
+    expires: "2024-12-31",
+  },
 ];
 
 export default function PromoCodes() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [activeMenu, setActiveMenu] = useState<number | null>(null);
 
   const filteredCodes = promoCodes.filter((code) =>
     code.code.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getStatusVariant = (status: string) => {
+  const copyCode = (id: number, code: string) => {
+    navigator.clipboard.writeText(code);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const getStatusStyle = (status: string) => {
     switch (status) {
       case "active":
-        return "default";
+        return "gt-badge-success";
       case "exhausted":
-        return "secondary";
+        return "gt-badge-muted";
       case "expired":
-        return "destructive";
+        return "gt-badge-danger";
       default:
-        return "outline";
+        return "gt-badge-muted";
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-sans font-bold text-foreground">
-            Promo Codes
-          </h1>
-          <p className="text-muted-foreground font-body">
+          <h1 className="text-2xl sm:text-3xl font-bold">Promo Codes</h1>
+          <p className="text-muted-foreground mt-1">
             Create and manage discount codes
           </p>
         </div>
-        <Button className="bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground">
-          <Plus className="mr-2 h-4 w-4" strokeWidth={2} />
+        <button className="gt-btn-primary">
+          <Plus className="h-4 w-4 mr-2" />
           Create Code
-        </Button>
+        </button>
       </div>
 
-      <div className="relative max-w-md">
-        <Search
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"
-          strokeWidth={2}
-        />
-        <Input
-          placeholder="Search promo codes..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 bg-background text-foreground border-input"
-        />
-      </div>
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search promo codes..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="gt-input-search max-w-md"
+      />
 
-      <Card className="bg-card border-border">
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border">
-                <TableHead className="text-muted-foreground">Code</TableHead>
-                <TableHead className="text-muted-foreground">
-                  Discount
-                </TableHead>
-                <TableHead className="text-muted-foreground">Usage</TableHead>
-                <TableHead className="text-muted-foreground">Status</TableHead>
-                <TableHead className="text-muted-foreground">Expires</TableHead>
-                <TableHead className="text-muted-foreground"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredCodes.map((promo) => (
-                <TableRow key={promo.id} className="border-border">
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <code className="px-2 py-1 bg-muted rounded text-sm font-mono text-foreground">
-                        {promo.code}
-                      </code>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6 bg-transparent text-muted-foreground hover:text-foreground"
-                      >
-                        <Copy className="h-3 w-3" strokeWidth={2} />
-                      </Button>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-foreground">
-                    {promo.discount}
-                  </TableCell>
-                  <TableCell className="text-foreground">
+      {/* Promo Codes Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {filteredCodes.map((promo) => (
+          <div key={promo.id} className="gt-card-flat p-5">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <code className="px-3 py-1.5 bg-muted rounded-lg text-sm font-mono font-semibold">
+                  {promo.code}
+                </code>
+                <button
+                  onClick={() => copyCode(promo.id, promo.code)}
+                  className="gt-icon-btn"
+                >
+                  {copiedId === promo.id ? (
+                    <Check className="h-4 w-4 text-success" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              <div className="relative">
+                <button
+                  className="gt-icon-btn"
+                  onClick={() =>
+                    setActiveMenu(activeMenu === promo.id ? null : promo.id)
+                  }
+                >
+                  <MoreVertical className="h-4 w-4" />
+                </button>
+                {activeMenu === promo.id && (
+                  <div className="gt-dropdown absolute right-0 top-full mt-1 w-36 py-1 animate-scale-in z-10">
+                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-muted transition-smooth">
+                      <Edit className="h-4 w-4" />
+                      Edit
+                    </button>
+                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-smooth">
+                      <Trash2 className="h-4 w-4" />
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-primary">
+                  {promo.discount}
+                </span>
+                <span className={`gt-badge ${getStatusStyle(promo.status)}`}>
+                  {promo.status}
+                </span>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Usage</span>
+                  <span className="font-medium">
                     {promo.used} / {promo.usageLimit}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={getStatusVariant(promo.status)}>
-                      {promo.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
+                  </span>
+                </div>
+                <div className="gt-progress">
+                  <div
+                    className="gt-progress-bar"
+                    style={{
+                      width: `${(promo.used / promo.usageLimit) * 100}%`,
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-dashed border-border">
+                <p className="text-xs text-muted-foreground">
+                  Expires:{" "}
+                  <span className="font-medium text-foreground">
                     {promo.expires}
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="bg-transparent text-foreground hover:bg-accent"
-                        >
-                          <MoreVertical className="h-4 w-4" strokeWidth={2} />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        align="end"
-                        className="bg-popover text-popover-foreground"
-                      >
-                        <DropdownMenuItem className="cursor-pointer">
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
-                          Deactivate
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer text-destructive">
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

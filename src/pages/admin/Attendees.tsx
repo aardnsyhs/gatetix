@@ -1,17 +1,12 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Search, Download, CheckCircle, XCircle } from "lucide-react";
+  Download,
+  CheckCircle,
+  XCircle,
+  Mail,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 const attendees = [
   {
@@ -22,6 +17,7 @@ const attendees = [
     ticketType: "VIP",
     checkedIn: true,
     checkInTime: "6:15 PM",
+    gate: "Gate A",
   },
   {
     id: 2,
@@ -31,6 +27,7 @@ const attendees = [
     ticketType: "General",
     checkedIn: true,
     checkInTime: "6:30 PM",
+    gate: "Gate B",
   },
   {
     id: 3,
@@ -40,6 +37,7 @@ const attendees = [
     ticketType: "General",
     checkedIn: false,
     checkInTime: null,
+    gate: null,
   },
   {
     id: 4,
@@ -49,6 +47,17 @@ const attendees = [
     ticketType: "VIP",
     checkedIn: false,
     checkInTime: null,
+    gate: null,
+  },
+  {
+    id: 5,
+    name: "Charlie Davis",
+    email: "charlie@example.com",
+    event: "Summer Music Festival",
+    ticketType: "General",
+    checkedIn: true,
+    checkInTime: "7:00 PM",
+    gate: "Gate A",
   },
 ];
 
@@ -61,96 +70,148 @@ export default function AdminAttendees() {
       attendee.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const checkedInCount = attendees.filter((a) => a.checkedIn).length;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-sans font-bold text-foreground">
-            Attendees
-          </h1>
-          <p className="text-muted-foreground font-body">
+          <h1 className="text-2xl sm:text-3xl font-bold">Attendees</h1>
+          <p className="text-muted-foreground mt-1">
             View and manage event attendees
           </p>
         </div>
-        <Button
-          variant="outline"
-          className="bg-background text-foreground border-border hover:bg-accent"
-        >
-          <Download className="mr-2 h-4 w-4" strokeWidth={2} />
-          Export List
-        </Button>
+        <div className="flex gap-2">
+          <button className="gt-btn-ghost">
+            <Mail className="h-4 w-4 mr-2" />
+            Email All
+          </button>
+          <button className="gt-btn-outline">
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </button>
+        </div>
       </div>
 
-      <div className="relative max-w-md">
-        <Search
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"
-          strokeWidth={2}
-        />
-        <Input
-          placeholder="Search attendees..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 bg-background text-foreground border-input"
-        />
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="gt-card-flat p-5">
+          <p className="text-sm text-muted-foreground">Total Attendees</p>
+          <p className="text-3xl font-bold mt-1">{attendees.length}</p>
+        </div>
+        <div className="gt-card-flat p-5">
+          <p className="text-sm text-muted-foreground">Checked In</p>
+          <p className="text-3xl font-bold mt-1 text-success">
+            {checkedInCount}
+          </p>
+        </div>
+        <div className="gt-card-flat p-5">
+          <p className="text-sm text-muted-foreground">Check-in Rate</p>
+          <p className="text-3xl font-bold mt-1">
+            {Math.round((checkedInCount / attendees.length) * 100)}%
+          </p>
+        </div>
       </div>
 
-      <Card className="bg-card border-border">
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border">
-                <TableHead className="text-muted-foreground">Name</TableHead>
-                <TableHead className="text-muted-foreground">Event</TableHead>
-                <TableHead className="text-muted-foreground">
-                  Ticket Type
-                </TableHead>
-                <TableHead className="text-muted-foreground">Status</TableHead>
-                <TableHead className="text-muted-foreground">
-                  Check-in Time
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search attendees..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="gt-input-search max-w-md"
+      />
+
+      {/* Attendees Table */}
+      <div className="gt-card-flat overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="gt-table">
+            <thead>
+              <tr>
+                <th>Attendee</th>
+                <th>Event</th>
+                <th>Ticket Type</th>
+                <th>Status</th>
+                <th>Check-in Time</th>
+                <th>Gate</th>
+              </tr>
+            </thead>
+            <tbody>
               {filteredAttendees.map((attendee) => (
-                <TableRow key={attendee.id} className="border-border">
-                  <TableCell>
-                    <div>
-                      <p className="font-body font-medium text-foreground">
-                        {attendee.name}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {attendee.email}
-                      </p>
+                <tr key={attendee.id}>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="gt-avatar text-xs">
+                        {attendee.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </div>
+                      <div>
+                        <p className="font-medium">{attendee.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {attendee.email}
+                        </p>
+                      </div>
                     </div>
-                  </TableCell>
-                  <TableCell className="text-foreground">
-                    {attendee.event}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{attendee.ticketType}</Badge>
-                  </TableCell>
-                  <TableCell>
+                  </td>
+                  <td>{attendee.event}</td>
+                  <td>
+                    <span
+                      className={`gt-badge ${
+                        attendee.ticketType === "VIP"
+                          ? "gt-badge-primary"
+                          : "gt-badge-muted"
+                      }`}
+                    >
+                      {attendee.ticketType}
+                    </span>
+                  </td>
+                  <td>
                     {attendee.checkedIn ? (
-                      <span className="flex items-center text-success">
-                        <CheckCircle className="mr-1 h-4 w-4" strokeWidth={2} />
-                        Checked In
+                      <span className="flex items-center gap-1.5 text-success">
+                        <CheckCircle className="h-4 w-4" />
+                        <span className="text-sm font-medium">Checked In</span>
                       </span>
                     ) : (
-                      <span className="flex items-center text-muted-foreground">
-                        <XCircle className="mr-1 h-4 w-4" strokeWidth={2} />
-                        Not Checked In
+                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                        <XCircle className="h-4 w-4" />
+                        <span className="text-sm">Not Checked In</span>
                       </span>
                     )}
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {attendee.checkInTime || "-"}
-                  </TableCell>
-                </TableRow>
+                  </td>
+                  <td className="text-muted-foreground">
+                    {attendee.checkInTime || "—"}
+                  </td>
+                  <td className="text-muted-foreground">
+                    {attendee.gate || "—"}
+                  </td>
+                </tr>
               ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between p-4 border-t border-border">
+          <p className="text-sm text-muted-foreground">
+            Showing <span className="font-medium">1-5</span> of{" "}
+            <span className="font-medium">5</span> attendees
+          </p>
+          <div className="flex items-center gap-2">
+            <button className="gt-icon-btn" disabled>
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button className="w-8 h-8 rounded-lg bg-primary text-white text-sm font-medium">
+              1
+            </button>
+            <button className="gt-icon-btn" disabled>
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Search, Download, Filter } from "lucide-react";
+import {
+  Download,
+  Filter,
+  Calendar,
+  User,
+  Settings,
+  Trash2,
+  Plus,
+  Edit,
+} from "lucide-react";
 
 const auditLogs = [
   {
@@ -13,6 +18,7 @@ const auditLogs = [
     target: "Summer Music Festival",
     timestamp: "2024-07-10 14:30:00",
     type: "create",
+    icon: Plus,
   },
   {
     id: 2,
@@ -21,6 +27,7 @@ const auditLogs = [
     target: "Order #1234",
     timestamp: "2024-07-10 13:15:00",
     type: "update",
+    icon: Edit,
   },
   {
     id: 3,
@@ -29,6 +36,7 @@ const auditLogs = [
     target: "bob@example.com",
     timestamp: "2024-07-10 11:00:00",
     type: "create",
+    icon: User,
   },
   {
     id: 4,
@@ -37,6 +45,7 @@ const auditLogs = [
     target: "OLDCODE",
     timestamp: "2024-07-09 16:45:00",
     type: "delete",
+    icon: Trash2,
   },
   {
     id: 5,
@@ -45,6 +54,16 @@ const auditLogs = [
     target: "Payment Settings",
     timestamp: "2024-07-09 10:30:00",
     type: "update",
+    icon: Settings,
+  },
+  {
+    id: 6,
+    action: "Event Published",
+    user: "Jane Manager",
+    target: "Tech Conference",
+    timestamp: "2024-07-08 09:00:00",
+    type: "update",
+    icon: Calendar,
   },
 ];
 
@@ -58,92 +77,99 @@ export default function AuditLogs() {
       log.target.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const getTypeVariant = (type: string) => {
+  const getTypeStyle = (type: string) => {
     switch (type) {
       case "create":
-        return "default";
+        return "bg-success/10 text-success";
       case "update":
-        return "secondary";
+        return "bg-info/10 text-info";
       case "delete":
-        return "destructive";
+        return "bg-destructive/10 text-destructive";
       default:
-        return "outline";
+        return "bg-muted text-muted-foreground";
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-sans font-bold text-foreground">
-            Audit Logs
-          </h1>
-          <p className="text-muted-foreground font-body">
+          <h1 className="text-2xl sm:text-3xl font-bold">Audit Logs</h1>
+          <p className="text-muted-foreground mt-1">
             Track all system activities
           </p>
         </div>
-        <Button
-          variant="outline"
-          className="bg-background text-foreground border-border hover:bg-accent"
-        >
-          <Download className="mr-2 h-4 w-4" strokeWidth={2} />
+        <button className="gt-btn-outline">
+          <Download className="h-4 w-4 mr-2" />
           Export Logs
-        </Button>
+        </button>
       </div>
 
-      <div className="flex gap-2 max-w-md">
-        <div className="relative flex-1">
-          <Search
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground"
-            strokeWidth={2}
-          />
-          <Input
-            placeholder="Search logs..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-background text-foreground border-input"
-          />
-        </div>
-        <Button
-          variant="outline"
-          className="bg-background text-foreground border-border hover:bg-accent"
-        >
-          <Filter className="h-4 w-4" strokeWidth={2} />
-        </Button>
+      {/* Search & Filters */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <input
+          type="text"
+          placeholder="Search logs..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="gt-input-search flex-1 max-w-md"
+        />
+        <button className="gt-btn-ghost">
+          <Filter className="h-4 w-4 mr-2" />
+          Filters
+        </button>
       </div>
 
-      <Card className="bg-card border-border">
-        <CardContent className="p-0">
-          <div className="divide-y divide-border">
-            {filteredLogs.map((log) => (
+      {/* Logs Timeline */}
+      <div className="gt-card-flat">
+        <div className="divide-y divide-border">
+          {filteredLogs.map((log) => {
+            const Icon = log.icon;
+            return (
               <div
                 key={log.id}
-                className="p-4 hover:bg-muted/50 transition-smooth"
+                className="p-5 hover:bg-muted/30 transition-smooth"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-body font-medium text-foreground">
-                        {log.action}
-                      </span>
-                      <Badge variant={getTypeVariant(log.type)}>
-                        {log.type}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      by <span className="text-foreground">{log.user}</span> on{" "}
-                      <span className="text-foreground">{log.target}</span>
-                    </p>
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getTypeStyle(
+                      log.type
+                    )}`}
+                  >
+                    <Icon className="h-5 w-5" />
                   </div>
-                  <span className="text-sm text-muted-foreground">
-                    {log.timestamp}
-                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="font-medium">{log.action}</p>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                          by{" "}
+                          <span className="text-foreground font-medium">
+                            {log.user}
+                          </span>{" "}
+                          on{" "}
+                          <span className="text-foreground">{log.target}</span>
+                        </p>
+                      </div>
+                      <time className="text-sm text-muted-foreground whitespace-nowrap">
+                        {log.timestamp}
+                      </time>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            );
+          })}
+        </div>
+
+        {/* Load More */}
+        <div className="p-4 border-t border-border text-center">
+          <button className="text-sm text-primary font-medium hover:underline">
+            Load more logs
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
