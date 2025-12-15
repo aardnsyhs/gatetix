@@ -39,6 +39,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { CustomAlert } from "@/components/ui/custom-alert";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const teamMembers = [
   {
@@ -198,92 +199,100 @@ export default function TeamRoles() {
               </p>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="divide-y divide-border">
-                {filteredMembers.map((member) => (
-                  <div
-                    key={member.id}
-                    className="p-4 flex items-center justify-between hover:bg-muted/30 transition-smooth"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
-                        {member.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium">{member.name}</p>
-                          {member.status === "pending" && (
-                            <Badge
-                              variant="secondary"
-                              className="bg-amber-500/10 text-amber-500"
-                            >
-                              Pending
-                            </Badge>
-                          )}
+              {filteredMembers.length === 0 ? (
+                <EmptyState
+                  variant="team"
+                  searchQuery={searchQuery}
+                  onReset={() => setSearchQuery("")}
+                />
+              ) : (
+                <div className="divide-y divide-border">
+                  {filteredMembers.map((member) => (
+                    <div
+                      key={member.id}
+                      className="p-4 flex items-center justify-between hover:bg-muted/30 transition-smooth"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
+                          {member.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          {member.email}
-                        </p>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{member.name}</p>
+                            {member.status === "pending" && (
+                              <Badge
+                                variant="secondary"
+                                className="bg-amber-500/10 text-amber-500"
+                              >
+                                Pending
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            {member.email}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="text-right hidden sm:block">
+                          <Badge className="bg-primary/10 text-primary">
+                            {member.role}
+                          </Badge>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {member.lastActive}
+                          </p>
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="rounded-xl"
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent
+                            align="end"
+                            className="rounded-xl w-44"
+                          >
+                            <DropdownMenuItem
+                              className="rounded-lg cursor-pointer"
+                              onClick={() => {
+                                setSelectedMember(member);
+                                setIsRoleOpen(true);
+                              }}
+                            >
+                              <Shield className="h-4 w-4 mr-2" />
+                              Ubah Peran
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="rounded-lg cursor-pointer"
+                              onClick={() => handleResendInvite(member)}
+                            >
+                              <Mail className="h-4 w-4 mr-2" />
+                              Kirim Ulang Undangan
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
+                              onClick={() => {
+                                setSelectedMember(member);
+                                setIsDeleteOpen(true);
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Hapus
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-right hidden sm:block">
-                        <Badge className="bg-primary/10 text-primary">
-                          {member.role}
-                        </Badge>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {member.lastActive}
-                        </p>
-                      </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="rounded-xl"
-                          >
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          align="end"
-                          className="rounded-xl w-44"
-                        >
-                          <DropdownMenuItem
-                            className="rounded-lg cursor-pointer"
-                            onClick={() => {
-                              setSelectedMember(member);
-                              setIsRoleOpen(true);
-                            }}
-                          >
-                            <Shield className="h-4 w-4 mr-2" />
-                            Ubah Peran
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="rounded-lg cursor-pointer"
-                            onClick={() => handleResendInvite(member)}
-                          >
-                            <Mail className="h-4 w-4 mr-2" />
-                            Kirim Ulang Undangan
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
-                            onClick={() => {
-                              setSelectedMember(member);
-                              setIsDeleteOpen(true);
-                            }}
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Hapus
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

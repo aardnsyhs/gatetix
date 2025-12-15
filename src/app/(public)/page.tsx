@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Search,
@@ -98,9 +99,22 @@ const features = [
 ];
 
 export default function LandingPage() {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/events?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push("/events");
+    }
+  };
+
   return (
     <div className="bg-background">
       {/* Hero Section */}
@@ -129,23 +143,28 @@ export default function LandingPage() {
               Cari dan pesan tiket konser, konferensi, festival, dan lainnya.
               Pengalaman tak terlupakan hanya dengan satu klik.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+            <form
+              onSubmit={handleSearch}
+              className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto"
+            >
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   type="text"
-                  placeholder="Cari event, artis, venue..."
+                  placeholder="Cari event..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-6 rounded-2xl bg-white text-foreground placeholder:text-muted-foreground border-0 shadow-xl h-14"
                 />
               </div>
               <Button
-                asChild
+                type="submit"
                 size="lg"
                 className="bg-white text-primary hover:bg-white/90 rounded-2xl shadow-xl h-14 px-8"
               >
-                <Link href="/events">Jelajahi Event</Link>
+                Jelajahi Event
               </Button>
-            </div>
+            </form>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">

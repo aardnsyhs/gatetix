@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Calendar,
@@ -80,9 +80,21 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [globalSearch, setGlobalSearch] = useState("");
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (path: string) => pathname === path;
+
+  const handleGlobalSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && globalSearch.trim()) {
+      // Redirect to events page with search query
+      router.push(
+        `/admin/events?search=${encodeURIComponent(globalSearch.trim())}`
+      );
+      setGlobalSearch("");
+    }
+  };
 
   return (
     <div className="h-screen flex bg-background overflow-hidden">
@@ -180,7 +192,10 @@ export default function AdminLayout({
             <div className="hidden md:block">
               <Input
                 type="text"
-                placeholder="Cari sesuatu..."
+                placeholder="Cari event..."
+                value={globalSearch}
+                onChange={(e) => setGlobalSearch(e.target.value)}
+                onKeyDown={handleGlobalSearch}
                 className="w-72 rounded-xl"
               />
             </div>

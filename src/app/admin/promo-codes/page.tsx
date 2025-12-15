@@ -39,6 +39,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { CustomAlert } from "@/components/ui/custom-alert";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const promoCodes = [
   {
@@ -188,103 +189,111 @@ export default function PromoCodes() {
         className="max-w-md rounded-xl"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {filteredCodes.map((promo) => (
-          <Card key={promo.id} className="gt-card-glow">
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <code className="px-3 py-1.5 bg-muted rounded-lg text-sm font-mono font-semibold">
-                    {promo.code}
-                  </code>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => copyCode(promo.id, promo.code)}
-                    className="rounded-xl h-8 w-8"
-                  >
-                    {copiedId === promo.id ? (
-                      <Check className="h-4 w-4 text-emerald-500" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+      {filteredCodes.length === 0 ? (
+        <EmptyState
+          variant="promo"
+          searchQuery={searchQuery}
+          onReset={() => setSearchQuery("")}
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {filteredCodes.map((promo) => (
+            <Card key={promo.id} className="gt-card-glow">
+              <CardContent className="p-5">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <code className="px-3 py-1.5 bg-muted rounded-lg text-sm font-mono font-semibold">
+                      {promo.code}
+                    </code>
                     <Button
                       variant="ghost"
                       size="icon"
+                      onClick={() => copyCode(promo.id, promo.code)}
                       className="rounded-xl h-8 w-8"
                     >
-                      <MoreVertical className="h-4 w-4" />
+                      {copiedId === promo.id ? (
+                        <Check className="h-4 w-4 text-emerald-500" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
                     </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="rounded-xl">
-                    <DropdownMenuItem
-                      className="rounded-lg cursor-pointer"
-                      onClick={() => {
-                        setSelectedPromo(promo);
-                        setIsEditOpen(true);
-                      }}
-                    >
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
-                      onClick={() => {
-                        setSelectedPromo(promo);
-                        setIsDeleteOpen(true);
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Hapus
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-primary">
-                    {promo.discount}
-                  </span>
-                  <Badge className={getStatusStyle(promo.status)}>
-                    {promo.status}
-                  </Badge>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Penggunaan</span>
-                    <span className="font-medium">
-                      {promo.used} / {promo.usageLimit}
-                    </span>
                   </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div
-                      className="h-full gt-gradient-primary rounded-full"
-                      style={{
-                        width: `${(promo.used / promo.usageLimit) * 100}%`,
-                      }}
-                    />
-                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-xl h-8 w-8"
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="rounded-xl">
+                      <DropdownMenuItem
+                        className="rounded-lg cursor-pointer"
+                        onClick={() => {
+                          setSelectedPromo(promo);
+                          setIsEditOpen(true);
+                        }}
+                      >
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
+                        onClick={() => {
+                          setSelectedPromo(promo);
+                          setIsDeleteOpen(true);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Hapus
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
 
-                <div className="pt-3 border-t border-dashed border-border">
-                  <p className="text-xs text-muted-foreground">
-                    Berakhir:{" "}
-                    <span className="font-medium text-foreground">
-                      {promo.expires}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-primary">
+                      {promo.discount}
                     </span>
-                  </p>
+                    <Badge className={getStatusStyle(promo.status)}>
+                      {promo.status}
+                    </Badge>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Penggunaan</span>
+                      <span className="font-medium">
+                        {promo.used} / {promo.usageLimit}
+                      </span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full gt-gradient-primary rounded-full"
+                        style={{
+                          width: `${(promo.used / promo.usageLimit) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-dashed border-border">
+                    <p className="text-xs text-muted-foreground">
+                      Berakhir:{" "}
+                      <span className="font-medium text-foreground">
+                        {promo.expires}
+                      </span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Create Promo Dialog */}
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>

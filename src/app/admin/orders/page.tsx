@@ -48,6 +48,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { EmptyState } from "@/components/ui/empty-state";
 import { CustomAlert } from "@/components/ui/custom-alert";
 
 const orders = [
@@ -222,118 +223,131 @@ export default function AdminOrders() {
         </Button>
       </div>
 
-      <Card className="gt-card-glow overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead>ID Pesanan</TableHead>
-              <TableHead>Pelanggan</TableHead>
-              <TableHead>Event</TableHead>
-              <TableHead>Tiket</TableHead>
-              <TableHead>Jumlah</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Tanggal</TableHead>
-              <TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredOrders.map((order) => (
-              <TableRow key={order.id} className="group">
-                <TableCell>
-                  <span className="font-mono text-sm font-medium">
-                    {order.id}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
-                      {order.customer
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
+      {filteredOrders.length === 0 ? (
+        <Card className="gt-card-glow">
+          <EmptyState
+            variant="orders"
+            searchQuery={searchQuery}
+            onReset={() => {
+              setSearchQuery("");
+              setStatusFilter("all");
+            }}
+          />
+        </Card>
+      ) : (
+        <Card className="gt-card-glow overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>ID Pesanan</TableHead>
+                <TableHead>Pelanggan</TableHead>
+                <TableHead>Event</TableHead>
+                <TableHead>Tiket</TableHead>
+                <TableHead>Jumlah</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Tanggal</TableHead>
+                <TableHead></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredOrders.map((order) => (
+                <TableRow key={order.id} className="group">
+                  <TableCell>
+                    <span className="font-mono text-sm font-medium">
+                      {order.id}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
+                        {order.customer
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </div>
+                      <div>
+                        <p className="font-medium">{order.customer}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {order.email}
+                        </p>
+                      </div>
                     </div>
+                  </TableCell>
+                  <TableCell>{order.event}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="secondary"
+                      className="bg-primary/10 text-primary"
+                    >
+                      {order.tickets} tiket
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-semibold">
+                      Rp {order.amount.toLocaleString("id-ID")}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={getStatusStyle(order.status)}>
+                      {order.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
                     <div>
-                      <p className="font-medium">{order.customer}</p>
+                      <p className="text-sm">{order.date}</p>
                       <p className="text-xs text-muted-foreground">
-                        {order.email}
+                        {order.time}
                       </p>
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>{order.event}</TableCell>
-                <TableCell>
-                  <Badge
-                    variant="secondary"
-                    className="bg-primary/10 text-primary"
-                  >
-                    {order.tickets} tiket
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <span className="font-semibold">
-                    Rp {order.amount.toLocaleString("id-ID")}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <Badge className={getStatusStyle(order.status)}>
-                    {order.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div>
-                    <p className="text-sm">{order.date}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {order.time}
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"
-                    onClick={() => setSelectedOrder(order)}
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"
+                      onClick={() => setSelectedOrder(order)}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
 
-        <div className="flex items-center justify-between p-4 border-t border-border">
-          <p className="text-sm text-muted-foreground">
-            Menampilkan <span className="font-medium">1-5</span> dari{" "}
-            <span className="font-medium">24</span> pesanan
-          </p>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              disabled
-              className="rounded-xl"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              size="icon"
-              className="gt-gradient-primary border-0 rounded-xl"
-            >
-              1
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-xl">
-              2
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-xl">
-              3
-            </Button>
-            <Button variant="outline" size="icon" className="rounded-xl">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+          <div className="flex items-center justify-between p-4 border-t border-border">
+            <p className="text-sm text-muted-foreground">
+              Menampilkan <span className="font-medium">1-5</span> dari{" "}
+              <span className="font-medium">24</span> pesanan
+            </p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                disabled
+                className="rounded-xl"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                size="icon"
+                className="gt-gradient-primary border-0 rounded-xl"
+              >
+                1
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-xl">
+                2
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-xl">
+                3
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-xl">
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      )}
 
       {/* Order Detail Sheet */}
       <Sheet open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>

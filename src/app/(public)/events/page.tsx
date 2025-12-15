@@ -30,6 +30,7 @@ import {
   Search,
   X,
 } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const events = [
   {
@@ -126,6 +127,7 @@ const priceRanges = [
 export default function EventListing() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
+  const searchFromUrl = searchParams.get("search");
 
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [searchQuery, setSearchQuery] = useState("");
@@ -153,6 +155,13 @@ export default function EventListing() {
       setSelectedCategory(categoryFromUrl);
     }
   }, [categoryFromUrl]);
+
+  // Set search query from URL parameter
+  useEffect(() => {
+    if (searchFromUrl) {
+      setSearchQuery(searchFromUrl);
+    }
+  }, [searchFromUrl]);
 
   const applyFilters = () => {
     setAppliedLocation(tempLocation);
@@ -385,54 +394,72 @@ export default function EventListing() {
         </p>
 
         {/* Event Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {filteredEvents.map((event) => (
-            <Link key={event.id} href={`/events/${event.slug}`}>
-              <Card className="gt-card-glow overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={event.image}
-                    alt={event.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <Badge className="absolute top-3 left-3" variant="secondary">
-                    {event.category}
-                  </Badge>
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1 text-white/90 text-sm">
-                    <Users className="h-4 w-4" />
-                    <span>{event.attendees} attending</span>
-                  </div>
-                </div>
-                <CardContent className="p-5">
-                  <h3 className="font-semibold text-lg mb-3 group-hover:text-primary transition-colors line-clamp-1">
-                    {event.title}
-                  </h3>
-                  <div className="space-y-2 text-sm text-muted-foreground mb-4">
-                    <div className="flex items-center gap-2">
-                      <CalendarIcon className="h-4 w-4" />
-                      <span>{event.date}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4" />
-                      <span>{event.location}</span>
+        {filteredEvents.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {filteredEvents.map((event) => (
+              <Link key={event.id} href={`/events/${event.slug}`}>
+                <Card className="gt-card-glow overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={event.image}
+                      alt={event.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <Badge
+                      className="absolute top-3 left-3"
+                      variant="secondary"
+                    >
+                      {event.category}
+                    </Badge>
+                    <div className="absolute bottom-3 left-3 flex items-center gap-1 text-white/90 text-sm">
+                      <Users className="h-4 w-4" />
+                      <span>{event.attendees} attending</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-dashed">
-                    <span className="font-bold text-primary text-lg">
-                      {event.price}
-                    </span>
-                    <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
-                      Beli tiket →
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
+                  <CardContent className="p-5">
+                    <h3 className="font-semibold text-lg mb-3 group-hover:text-primary transition-colors line-clamp-1">
+                      {event.title}
+                    </h3>
+                    <div className="space-y-2 text-sm text-muted-foreground mb-4">
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon className="h-4 w-4" />
+                        <span>{event.date}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4" />
+                        <span>{event.location}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-dashed">
+                      <span className="font-bold text-primary text-lg">
+                        {event.price}
+                      </span>
+                      <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
+                        Beli tiket →
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="mb-12">
+            <EmptyState
+              variant="events"
+              searchQuery={searchQuery}
+              onReset={() => {
+                setSearchQuery("");
+                resetFilters();
+                setSelectedCategory("Semua");
+              }}
+              showResetButton={!!(searchQuery || hasActiveFilters)}
+            />
+          </div>
+        )}
 
         {/* Pagination */}
         <div className="flex justify-center gap-2">

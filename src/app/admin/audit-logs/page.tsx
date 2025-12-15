@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const allAuditLogs = [
   {
@@ -213,63 +214,77 @@ export default function AuditLogs() {
         </Button>
       </div>
 
-      <Card className="gt-card-glow">
-        <CardContent className="p-0">
-          <div className="divide-y divide-border">
-            {visibleLogs.map((log) => {
-              const Icon = log.icon;
-              return (
-                <div
-                  key={log.id}
-                  className="p-5 hover:bg-muted/30 transition-smooth"
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getTypeStyle(
-                        log.type
-                      )}`}
-                    >
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="font-medium">{log.action}</p>
-                          <p className="text-sm text-muted-foreground mt-0.5">
-                            by{" "}
-                            <span className="text-foreground font-medium">
-                              {log.user}
-                            </span>{" "}
-                            on{" "}
-                            <span className="text-foreground">
-                              {log.target}
-                            </span>
-                          </p>
+      {filteredLogs.length === 0 ? (
+        <Card className="gt-card-glow">
+          <EmptyState
+            variant="logs"
+            searchQuery={searchQuery}
+            onReset={() => {
+              setSearchQuery("");
+              setTypeFilter("all");
+            }}
+          />
+        </Card>
+      ) : (
+        <Card className="gt-card-glow">
+          <CardContent className="p-0">
+            <div className="divide-y divide-border">
+              {visibleLogs.map((log) => {
+                const Icon = log.icon;
+                return (
+                  <div
+                    key={log.id}
+                    className="p-5 hover:bg-muted/30 transition-smooth"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${getTypeStyle(
+                          log.type
+                        )}`}
+                      >
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <p className="font-medium">{log.action}</p>
+                            <p className="text-sm text-muted-foreground mt-0.5">
+                              by{" "}
+                              <span className="text-foreground font-medium">
+                                {log.user}
+                              </span>{" "}
+                              on{" "}
+                              <span className="text-foreground">
+                                {log.target}
+                              </span>
+                            </p>
+                          </div>
+                          <time className="text-sm text-muted-foreground whitespace-nowrap">
+                            {log.timestamp}
+                          </time>
                         </div>
-                        <time className="text-sm text-muted-foreground whitespace-nowrap">
-                          {log.timestamp}
-                        </time>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {visibleCount < filteredLogs.length && (
-            <div className="p-4 border-t border-border text-center">
-              <Button
-                variant="ghost"
-                onClick={handleLoadMore}
-                className="text-sm text-primary font-medium hover:underline"
-              >
-                Muat lebih banyak ({filteredLogs.length - visibleCount} tersisa)
-              </Button>
+                );
+              })}
             </div>
-          )}
-        </CardContent>
-      </Card>
+
+            {visibleCount < filteredLogs.length && (
+              <div className="p-4 border-t border-border text-center">
+                <Button
+                  variant="ghost"
+                  onClick={handleLoadMore}
+                  className="text-sm text-primary font-medium hover:underline"
+                >
+                  Muat lebih banyak ({filteredLogs.length - visibleCount}{" "}
+                  tersisa)
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Filter Dialog */}
       <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>

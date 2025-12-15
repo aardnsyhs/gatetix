@@ -32,6 +32,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { CustomAlert } from "@/components/ui/custom-alert";
+import { EmptyState } from "@/components/ui/empty-state";
 const attendees = [
   {
     id: 1,
@@ -202,107 +203,117 @@ export default function AdminAttendees() {
         className="max-w-md rounded-xl"
       />
 
-      <Card className="gt-card-glow overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead>Peserta</TableHead>
-              <TableHead>Event</TableHead>
-              <TableHead>Jenis Tiket</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Waktu Check-in</TableHead>
-              <TableHead>Gate</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredAttendees.map((attendee) => (
-              <TableRow key={attendee.id}>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
-                      {attendee.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </div>
-                    <div>
-                      <p className="font-medium">{attendee.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {attendee.email}
-                      </p>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>{attendee.event}</TableCell>
-                <TableCell>
-                  <Badge
-                    variant={
-                      attendee.ticketType === "VIP" ? "default" : "secondary"
-                    }
-                    className={
-                      attendee.ticketType === "VIP"
-                        ? "bg-primary/10 text-primary"
-                        : ""
-                    }
-                  >
-                    {attendee.ticketType}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  {attendee.checkedIn ? (
-                    <span className="flex items-center gap-1.5 text-emerald-500">
-                      <CheckCircle className="h-4 w-4" />
-                      <span className="text-sm font-medium">Sudah Masuk</span>
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1.5 text-muted-foreground">
-                      <XCircle className="h-4 w-4" />
-                      <span className="text-sm">Belum Masuk</span>
-                    </span>
-                  )}
-                </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {attendee.checkInTime || "—"}
-                </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {attendee.gate || "—"}
-                </TableCell>
+      {filteredAttendees.length === 0 ? (
+        <Card className="gt-card-glow">
+          <EmptyState
+            variant="attendees"
+            searchQuery={searchQuery}
+            onReset={() => setSearchQuery("")}
+          />
+        </Card>
+      ) : (
+        <Card className="gt-card-glow overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Peserta</TableHead>
+                <TableHead>Event</TableHead>
+                <TableHead>Jenis Tiket</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Waktu Check-in</TableHead>
+                <TableHead>Gate</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredAttendees.map((attendee) => (
+                <TableRow key={attendee.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full gt-gradient-primary flex items-center justify-center text-white text-xs font-medium">
+                        {attendee.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </div>
+                      <div>
+                        <p className="font-medium">{attendee.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {attendee.email}
+                        </p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>{attendee.event}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        attendee.ticketType === "VIP" ? "default" : "secondary"
+                      }
+                      className={
+                        attendee.ticketType === "VIP"
+                          ? "bg-primary/10 text-primary"
+                          : ""
+                      }
+                    >
+                      {attendee.ticketType}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {attendee.checkedIn ? (
+                      <span className="flex items-center gap-1.5 text-emerald-500">
+                        <CheckCircle className="h-4 w-4" />
+                        <span className="text-sm font-medium">Sudah Masuk</span>
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1.5 text-muted-foreground">
+                        <XCircle className="h-4 w-4" />
+                        <span className="text-sm">Belum Masuk</span>
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {attendee.checkInTime || "—"}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {attendee.gate || "—"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
 
-        <div className="flex items-center justify-between p-4 border-t border-border">
-          <p className="text-sm text-muted-foreground">
-            Menampilkan <span className="font-medium">1-5</span> dari{" "}
-            <span className="font-medium">5</span> peserta
-          </p>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              disabled
-              className="rounded-xl"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              size="icon"
-              className="gt-gradient-primary border-0 rounded-xl"
-            >
-              1
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              disabled
-              className="rounded-xl"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+          <div className="flex items-center justify-between p-4 border-t border-border">
+            <p className="text-sm text-muted-foreground">
+              Menampilkan <span className="font-medium">1-5</span> dari{" "}
+              <span className="font-medium">5</span> peserta
+            </p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                disabled
+                className="rounded-xl"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                size="icon"
+                className="gt-gradient-primary border-0 rounded-xl"
+              >
+                1
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                disabled
+                className="rounded-xl"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      )}
 
       {/* Email Dialog */}
       <Dialog open={isEmailOpen} onOpenChange={setIsEmailOpen}>

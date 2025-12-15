@@ -21,6 +21,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const faqs = [
   {
@@ -109,30 +110,40 @@ export default function HelpCenter() {
           <h2 className="text-2xl font-bold mb-8">
             Pertanyaan yang Sering Diajukan
           </h2>
-          <Accordion type="single" collapsible className="space-y-4">
-            {filteredFaqs.map((faq, index) => {
-              const Icon = faq.icon;
-              return (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index}`}
-                  className="gt-card-glow border-0 rounded-2xl overflow-hidden px-0"
-                >
-                  <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-muted/30 transition-smooth">
-                    <div className="flex items-center gap-4 text-left">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Icon className="h-5 w-5 text-primary" />
+          {filteredFaqs.length === 0 ? (
+            <EmptyState
+              variant="faq"
+              searchQuery={searchQuery}
+              onReset={() => setSearchQuery("")}
+            />
+          ) : (
+            <Accordion type="single" collapsible className="space-y-4">
+              {filteredFaqs.map((faq, index) => {
+                const Icon = faq.icon;
+                return (
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className="gt-card-glow border-0 rounded-2xl overflow-hidden px-0"
+                  >
+                    <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-muted/30 transition-smooth">
+                      <div className="flex items-center gap-4 text-left">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Icon className="h-5 w-5 text-primary" />
+                        </div>
+                        <span className="font-medium">{faq.question}</span>
                       </div>
-                      <span className="font-medium">{faq.question}</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-5 pb-5">
-                    <p className="text-muted-foreground pl-14">{faq.answer}</p>
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-5 pb-5">
+                      <p className="text-muted-foreground pl-14">
+                        {faq.answer}
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          )}
         </div>
 
         {/* Contact Form */}

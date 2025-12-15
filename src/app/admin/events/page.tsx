@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -44,6 +45,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { CustomAlert } from "@/components/ui/custom-alert";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const events = [
   {
@@ -88,6 +90,9 @@ const events = [
 ];
 
 export default function AdminEvents() {
+  const searchParams = useSearchParams();
+  const searchFromUrl = searchParams.get("search");
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -106,6 +111,13 @@ export default function AdminEvents() {
   const [showEditSuccess, setShowEditSuccess] = useState(false);
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
+
+  // Set search query from URL parameter
+  useEffect(() => {
+    if (searchFromUrl) {
+      setSearchQuery(searchFromUrl);
+    }
+  }, [searchFromUrl]);
 
   const filteredEvents = events.filter((event) => {
     const matchesSearch = event.title
@@ -193,131 +205,142 @@ export default function AdminEvents() {
       </div>
 
       {/* Events Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {filteredEvents.map((event) => (
-          <Card key={event.id} className="gt-card-glow overflow-hidden group">
-            {/* Event Image */}
-            <div className="relative h-40 overflow-hidden">
-              <Image
-                src={event.image}
-                alt={event.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              <div className="absolute top-3 right-3">
-                <Badge
-                  variant={
-                    event.status === "published" ? "default" : "secondary"
-                  }
-                  className={
-                    event.status === "published"
-                      ? "bg-emerald-500/10 text-emerald-500"
-                      : ""
-                  }
-                >
-                  {event.status}
-                </Badge>
-              </div>
-              <div className="absolute bottom-3 left-3 right-3">
-                <h3 className="text-white font-semibold text-lg line-clamp-1">
-                  {event.title}
-                </h3>
-              </div>
-            </div>
-
-            {/* Event Details */}
-            <CardContent className="p-5">
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4" />
-                  <span>
-                    {event.date} • {event.time}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  <span>{event.location}</span>
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="flex items-center justify-between py-3 border-t border-dashed border-border">
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">
-                    <span className="font-semibold">{event.ticketsSold}</span>
-                    <span className="text-muted-foreground">
-                      {" "}
-                      / {event.capacity}
-                    </span>
-                  </span>
-                </div>
-                <span className="font-semibold text-primary">
-                  {event.revenue}
-                </span>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="h-2 bg-muted rounded-full overflow-hidden mt-2">
-                <div
-                  className="h-full gt-gradient-primary rounded-full"
-                  style={{
-                    width: `${(event.ticketsSold / event.capacity) * 100}%`,
-                  }}
+      {filteredEvents.length === 0 ? (
+        <EmptyState
+          variant="events"
+          searchQuery={searchQuery}
+          onReset={() => {
+            setSearchQuery("");
+            setStatusFilter("all");
+          }}
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredEvents.map((event) => (
+            <Card key={event.id} className="gt-card-glow overflow-hidden group">
+              {/* Event Image */}
+              <div className="relative h-40 overflow-hidden">
+                <Image
+                  src={event.image}
+                  alt={event.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  unoptimized
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute top-3 right-3">
+                  <Badge
+                    variant={
+                      event.status === "published" ? "default" : "secondary"
+                    }
+                    className={
+                      event.status === "published"
+                        ? "bg-emerald-500/10 text-emerald-500"
+                        : ""
+                    }
+                  >
+                    {event.status}
+                  </Badge>
+                </div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <h3 className="text-white font-semibold text-lg line-clamp-1">
+                    {event.title}
+                  </h3>
+                </div>
               </div>
 
-              {/* Actions */}
-              <div className="flex items-center gap-2 mt-4">
-                <Button
-                  asChild
-                  className="flex-1 gt-gradient-primary border-0 hover:opacity-90 rounded-xl text-sm"
-                >
-                  <Link href={`/admin/events/${event.id}`}>
-                    <Eye className="h-4 w-4 mr-1" />
-                    View
-                  </Link>
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="rounded-xl"
-                    >
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="rounded-xl">
-                    <DropdownMenuItem
-                      className="rounded-lg cursor-pointer"
-                      onClick={() => {
-                        setSelectedEvent(event);
-                        setIsEditOpen(true);
-                      }}
-                    >
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
-                      onClick={() => {
-                        setSelectedEvent(event);
-                        setIsDeleteOpen(true);
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Hapus
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              {/* Event Details */}
+              <CardContent className="p-5">
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Calendar className="h-4 w-4" />
+                    <span>
+                      {event.date} • {event.time}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4" />
+                    <span>{event.location}</span>
+                  </div>
+                </div>
+
+                {/* Stats */}
+                <div className="flex items-center justify-between py-3 border-t border-dashed border-border">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">
+                      <span className="font-semibold">{event.ticketsSold}</span>
+                      <span className="text-muted-foreground">
+                        {" "}
+                        / {event.capacity}
+                      </span>
+                    </span>
+                  </div>
+                  <span className="font-semibold text-primary">
+                    {event.revenue}
+                  </span>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="h-2 bg-muted rounded-full overflow-hidden mt-2">
+                  <div
+                    className="h-full gt-gradient-primary rounded-full"
+                    style={{
+                      width: `${(event.ticketsSold / event.capacity) * 100}%`,
+                    }}
+                  />
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 mt-4">
+                  <Button
+                    asChild
+                    className="flex-1 gt-gradient-primary border-0 hover:opacity-90 rounded-xl text-sm"
+                  >
+                    <Link href={`/admin/events/${event.id}`}>
+                      <Eye className="h-4 w-4 mr-1" />
+                      View
+                    </Link>
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="rounded-xl"
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="rounded-xl">
+                      <DropdownMenuItem
+                        className="rounded-lg cursor-pointer"
+                        onClick={() => {
+                          setSelectedEvent(event);
+                          setIsEditOpen(true);
+                        }}
+                      >
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
+                        onClick={() => {
+                          setSelectedEvent(event);
+                          setIsDeleteOpen(true);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Hapus
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Create Event Dialog */}
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
