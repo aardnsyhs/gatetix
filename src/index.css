@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 10% 97%;
+    --foreground: 220 15% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 10%;
+    --primary: 231 75% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 231 75% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --tertiary: 230 65% 95%;
+    --tertiary-foreground: 231 75% 30%;
+    --neutral: 220 10% 97%;
+    --neutral-foreground: 220 15% 10%;
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 10% 45%;
+    --accent: 230 65% 95%;
+    --accent-foreground: 231 75% 30%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 150 65% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 45 90% 50%;
+    --warning-foreground: 220 15% 10%;
+    --info: 195 85% 45%;
+    --info-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 231 75% 55%;
+  }
+
+  .dark {
+    --background: 220 10% 8%;
+    --foreground: 210 20% 98%;
+    --card: 220 10% 15%;
+    --card-foreground: 210 20% 98%;
+    --popover: 220 10% 15%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 231 75% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 231 75% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --tertiary: 220 10% 25%;
+    --tertiary-foreground: 231 75% 70%;
+    --neutral: 220 10% 8%;
+    --neutral-foreground: 210 20% 98%;
+    --muted: 220 10% 25%;
+    --muted-foreground: 220 10% 65%;
+    --accent: 220 10% 25%;
+    --accent-foreground: 231 75% 70%;
+    --destructive: 0 75% 65%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 150 65% 50%;
+    --success-foreground: 0 0% 100%;
+    --warning: 45 90% 60%;
+    --warning-foreground: 220 10% 8%;
+    --info: 195 85% 55%;
+    --info-foreground: 0 0% 100%;
+    --border: 220 10% 25%;
+    --input: 220 10% 25%;
+    --ring: 231 75% 65%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    @apply text-foreground;
+  }
+
+  p, span, div, a, label, button {
+    @apply text-foreground;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 200ms ease-in-out;
+  }
+}
