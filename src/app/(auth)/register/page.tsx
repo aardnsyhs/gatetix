@@ -7,6 +7,7 @@ import { Ticket, Mail, Lock, User, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -134,12 +135,11 @@ export default function RegisterPage() {
             </div>
 
             <div className="flex items-start gap-2">
-              <input
-                type="checkbox"
+              <Checkbox
                 id="terms"
                 checked={agreeTerms}
-                onChange={(e) => setAgreeTerms(e.target.checked)}
-                className="h-4 w-4 mt-0.5 rounded border-gray-300 text-primary focus:ring-primary"
+                onCheckedChange={(checked) => setAgreeTerms(checked as boolean)}
+                className="mt-0.5"
                 required
               />
               <Label
