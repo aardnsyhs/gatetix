@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   DollarSign,
   Ticket,
@@ -221,12 +222,12 @@ export default function AdminDashboard() {
               ))}
             </div>
             <div className="p-4 border-t border-border">
-              <button
-                type="button"
+              <Link
+                href="/admin/orders"
                 className="text-sm text-primary font-medium hover:underline"
               >
                 Lihat semua pesanan →
-              </button>
+              </Link>
             </div>
           </CardContent>
         </Card>

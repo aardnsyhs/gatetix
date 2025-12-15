@@ -5,6 +5,7 @@ import { Plus, Copy, MoreVertical, Edit, Trash2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -12,6 +13,31 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const promoCodes = [
   {
@@ -59,6 +85,19 @@ const promoCodes = [
 export default function PromoCodes() {
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selectedPromo, setSelectedPromo] = useState<
+    (typeof promoCodes)[0] | null
+  >(null);
+  const [newPromo, setNewPromo] = useState({
+    code: "",
+    discount: "",
+    type: "percentage",
+    usageLimit: "",
+    expires: "",
+  });
 
   const filteredCodes = promoCodes.filter((code) =>
     code.code.toLowerCase().includes(searchQuery.toLowerCase())
@@ -68,6 +107,30 @@ export default function PromoCodes() {
     navigator.clipboard.writeText(code);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleCreatePromo = () => {
+    alert(`Kode promo "${newPromo.code}" berhasil dibuat!`);
+    setIsCreateOpen(false);
+    setNewPromo({
+      code: "",
+      discount: "",
+      type: "percentage",
+      usageLimit: "",
+      expires: "",
+    });
+  };
+
+  const handleEditPromo = () => {
+    alert(`Kode promo "${selectedPromo?.code}" berhasil diupdate!`);
+    setIsEditOpen(false);
+    setSelectedPromo(null);
+  };
+
+  const handleDeletePromo = () => {
+    alert(`Kode promo "${selectedPromo?.code}" berhasil dihapus!`);
+    setIsDeleteOpen(false);
+    setSelectedPromo(null);
   };
 
   const getStatusStyle = (status: string) => {
@@ -90,7 +153,10 @@ export default function PromoCodes() {
             Buat dan kelola kode diskon
           </p>
         </div>
-        <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
+        <Button
+          onClick={() => setIsCreateOpen(true)}
+          className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Buat Kode
         </Button>
@@ -137,11 +203,23 @@ export default function PromoCodes() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="rounded-xl">
-                    <DropdownMenuItem className="rounded-lg cursor-pointer">
+                    <DropdownMenuItem
+                      className="rounded-lg cursor-pointer"
+                      onClick={() => {
+                        setSelectedPromo(promo);
+                        setIsEditOpen(true);
+                      }}
+                    >
                       <Edit className="h-4 w-4 mr-2" />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                    <DropdownMenuItem
+                      className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
+                      onClick={() => {
+                        setSelectedPromo(promo);
+                        setIsDeleteOpen(true);
+                      }}
+                    >
                       <Trash2 className="h-4 w-4 mr-2" />
                       Hapus
                     </DropdownMenuItem>
@@ -189,6 +267,175 @@ export default function PromoCodes() {
           </Card>
         ))}
       </div>
+
+      {/* Create Promo Dialog */}
+      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Buat Kode Promo Baru</DialogTitle>
+            <DialogDescription>
+              Buat kode diskon untuk event Anda
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="promo-code">Kode Promo</Label>
+              <Input
+                id="promo-code"
+                value={newPromo.code}
+                onChange={(e) =>
+                  setNewPromo({
+                    ...newPromo,
+                    code: e.target.value.toUpperCase(),
+                  })
+                }
+                placeholder="Contoh: DISKON20"
+                className="rounded-xl font-mono"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="discount-type">Tipe Diskon</Label>
+                <Select
+                  value={newPromo.type}
+                  onValueChange={(v) => setNewPromo({ ...newPromo, type: v })}
+                >
+                  <SelectTrigger className="rounded-xl">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="percentage">Persentase (%)</SelectItem>
+                    <SelectItem value="fixed">Nominal (Rp)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="discount-value">Nilai Diskon</Label>
+                <Input
+                  id="discount-value"
+                  type="number"
+                  value={newPromo.discount}
+                  onChange={(e) =>
+                    setNewPromo({ ...newPromo, discount: e.target.value })
+                  }
+                  placeholder={newPromo.type === "percentage" ? "20" : "50000"}
+                  className="rounded-xl"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="usage-limit">Batas Penggunaan</Label>
+                <Input
+                  id="usage-limit"
+                  type="number"
+                  value={newPromo.usageLimit}
+                  onChange={(e) =>
+                    setNewPromo({ ...newPromo, usageLimit: e.target.value })
+                  }
+                  placeholder="100"
+                  className="rounded-xl"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="expires">Tanggal Berakhir</Label>
+                <Input
+                  id="expires"
+                  type="date"
+                  value={newPromo.expires}
+                  onChange={(e) =>
+                    setNewPromo({ ...newPromo, expires: e.target.value })
+                  }
+                  className="rounded-xl"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsCreateOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleCreatePromo}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              Buat Kode
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Promo Dialog */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Kode Promo</DialogTitle>
+            <DialogDescription>
+              Ubah detail kode promo {selectedPromo?.code}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-code">Kode Promo</Label>
+              <Input
+                id="edit-code"
+                defaultValue={selectedPromo?.code}
+                className="rounded-xl font-mono"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-limit">Batas Penggunaan</Label>
+              <Input
+                id="edit-limit"
+                type="number"
+                defaultValue={selectedPromo?.usageLimit}
+                className="rounded-xl"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleEditPromo}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              Simpan Perubahan
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Kode Promo?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menghapus kode promo &quot;
+              {selectedPromo?.code}&quot;? Tindakan ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-xl">Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeletePromo}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
+            >
+              Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -12,18 +12,39 @@ import {
   Eye,
   Edit,
   Trash2,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const events = [
   {
@@ -69,10 +90,42 @@ const events = [
 
 export default function AdminEvents() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<(typeof events)[0] | null>(
+    null
+  );
+  const [newEvent, setNewEvent] = useState({
+    title: "",
+    date: "",
+    time: "",
+    location: "",
+    capacity: "",
+  });
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleCreateEvent = () => {
+    // Simulasi create event
+    alert(`Event "${newEvent.title}" berhasil dibuat!`);
+    setIsCreateOpen(false);
+    setNewEvent({ title: "", date: "", time: "", location: "", capacity: "" });
+  };
+
+  const handleEditEvent = () => {
+    alert(`Event "${selectedEvent?.title}" berhasil diupdate!`);
+    setIsEditOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const handleDeleteEvent = () => {
+    alert(`Event "${selectedEvent?.title}" berhasil dihapus!`);
+    setIsDeleteOpen(false);
+    setSelectedEvent(null);
+  };
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -84,7 +137,10 @@ export default function AdminEvents() {
             Kelola event dan penjualan tiket Anda
           </p>
         </div>
-        <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
+        <Button
+          onClick={() => setIsCreateOpen(true)}
+          className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Buat Event
         </Button>
@@ -222,11 +278,23 @@ export default function AdminEvents() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="rounded-xl">
-                    <DropdownMenuItem className="rounded-lg cursor-pointer">
+                    <DropdownMenuItem
+                      className="rounded-lg cursor-pointer"
+                      onClick={() => {
+                        setSelectedEvent(event);
+                        setIsEditOpen(true);
+                      }}
+                    >
                       <Edit className="h-4 w-4 mr-2" />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                    <DropdownMenuItem
+                      className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
+                      onClick={() => {
+                        setSelectedEvent(event);
+                        setIsDeleteOpen(true);
+                      }}
+                    >
                       <Trash2 className="h-4 w-4 mr-2" />
                       Hapus
                     </DropdownMenuItem>
@@ -237,6 +305,165 @@ export default function AdminEvents() {
           </Card>
         ))}
       </div>
+
+      {/* Create Event Dialog */}
+      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Buat Event Baru</DialogTitle>
+            <DialogDescription>
+              Isi detail event yang ingin Anda buat
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Nama Event</Label>
+              <Input
+                id="title"
+                value={newEvent.title}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, title: e.target.value })
+                }
+                placeholder="Masukkan nama event"
+                className="rounded-xl"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="date">Tanggal</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={newEvent.date}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, date: e.target.value })
+                  }
+                  className="rounded-xl"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="time">Waktu</Label>
+                <Input
+                  id="time"
+                  type="time"
+                  value={newEvent.time}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, time: e.target.value })
+                  }
+                  className="rounded-xl"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="location">Lokasi</Label>
+              <Input
+                id="location"
+                value={newEvent.location}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, location: e.target.value })
+                }
+                placeholder="Masukkan lokasi event"
+                className="rounded-xl"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="capacity">Kapasitas</Label>
+              <Input
+                id="capacity"
+                type="number"
+                value={newEvent.capacity}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, capacity: e.target.value })
+                }
+                placeholder="Jumlah maksimal peserta"
+                className="rounded-xl"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsCreateOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleCreateEvent}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              Buat Event
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Event Dialog */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Event</DialogTitle>
+            <DialogDescription>
+              Ubah detail event {selectedEvent?.title}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-title">Nama Event</Label>
+              <Input
+                id="edit-title"
+                defaultValue={selectedEvent?.title}
+                className="rounded-xl"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-location">Lokasi</Label>
+              <Input
+                id="edit-location"
+                defaultValue={selectedEvent?.location}
+                className="rounded-xl"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleEditEvent}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              Simpan Perubahan
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Event?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menghapus event &quot;
+              {selectedEvent?.title}&quot;? Tindakan ini tidak dapat dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-xl">Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteEvent}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
+            >
+              Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

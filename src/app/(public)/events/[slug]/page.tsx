@@ -17,6 +17,7 @@ import {
   Minus,
   Plus,
   Ticket,
+  Check,
 } from "lucide-react";
 
 export default function EventDetail({
@@ -26,6 +27,27 @@ export default function EventDetail({
 }) {
   const { slug } = use(params);
   const [ticketQuantity, setTicketQuantity] = useState(1);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isShared, setIsShared] = useState(false);
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/events/${slug}`;
+    if (navigator.share) {
+      await navigator.share({
+        title: "Jakarta Music Festival 2024",
+        text: "Lihat event ini di GateTix!",
+        url,
+      });
+    } else {
+      await navigator.clipboard.writeText(url);
+      setIsShared(true);
+      setTimeout(() => setIsShared(false), 2000);
+    }
+  };
+
+  const handleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
 
   const event = {
     title: "Jakarta Music Festival 2024",
@@ -131,15 +153,27 @@ export default function EventDetail({
                       variant="outline"
                       size="icon"
                       className="rounded-xl"
+                      onClick={handleShare}
                     >
-                      <Share2 className="h-4 w-4" />
+                      {isShared ? (
+                        <Check className="h-4 w-4 text-emerald-500" />
+                      ) : (
+                        <Share2 className="h-4 w-4" />
+                      )}
                     </Button>
                     <Button
                       variant="outline"
                       size="icon"
-                      className="rounded-xl"
+                      className={`rounded-xl ${
+                        isFavorite ? "bg-red-50 border-red-200" : ""
+                      }`}
+                      onClick={handleFavorite}
                     >
-                      <Heart className="h-4 w-4" />
+                      <Heart
+                        className={`h-4 w-4 ${
+                          isFavorite ? "fill-red-500 text-red-500" : ""
+                        }`}
+                      />
                     </Button>
                   </div>
                 </div>

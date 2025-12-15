@@ -1,8 +1,9 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Calendar,
@@ -16,7 +17,27 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function EventDetailAdmin({
   params,
@@ -24,6 +45,34 @@ export default function EventDetailAdmin({
   params: Promise<{ eventId: string }>;
 }) {
   const { eventId } = use(params);
+  const router = useRouter();
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/events/jakarta-music-festival-2024`;
+    if (navigator.share) {
+      await navigator.share({
+        title: "Jakarta Music Festival 2024",
+        text: "Lihat event ini di GateTix!",
+        url,
+      });
+    } else {
+      await navigator.clipboard.writeText(url);
+      alert("Link event berhasil disalin!");
+    }
+  };
+
+  const handleDelete = () => {
+    alert("Event berhasil dihapus!");
+    router.push("/admin/events");
+  };
+
+  const handleEdit = () => {
+    alert("Event berhasil diupdate!");
+    setIsEditOpen(false);
+  };
+
   const event = {
     id: eventId,
     title: "Jakarta Music Festival 2024",
@@ -74,17 +123,26 @@ export default function EventDetailAdmin({
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="rounded-xl">
+          <Button
+            variant="outline"
+            className="rounded-xl"
+            onClick={handleShare}
+          >
             <Share2 className="h-4 w-4 mr-2" />
             Bagikan
           </Button>
-          <Button variant="outline" className="rounded-xl">
+          <Button
+            variant="outline"
+            className="rounded-xl"
+            onClick={() => setIsEditOpen(true)}
+          >
             <Edit className="h-4 w-4 mr-2" />
             Edit
           </Button>
           <Button
             variant="outline"
             className="rounded-xl text-destructive hover:text-destructive"
+            onClick={() => setIsDeleteOpen(true)}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -296,6 +354,83 @@ export default function EventDetailAdmin({
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Edit Event Dialog */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Event</DialogTitle>
+            <DialogDescription>
+              Ubah detail event {event.title}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-title">Nama Event</Label>
+              <Input
+                id="edit-title"
+                defaultValue={event.title}
+                className="rounded-xl"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-location">Lokasi</Label>
+              <Input
+                id="edit-location"
+                defaultValue={event.location}
+                className="rounded-xl"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-capacity">Kapasitas</Label>
+              <Input
+                id="edit-capacity"
+                type="number"
+                defaultValue={event.capacity}
+                className="rounded-xl"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsEditOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleEdit}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              Simpan Perubahan
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Event?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menghapus event &quot;{event.title}&quot;?
+              Tindakan ini tidak dapat dibatalkan dan semua data terkait akan
+              hilang.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-xl">Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
+            >
+              Hapus Event
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

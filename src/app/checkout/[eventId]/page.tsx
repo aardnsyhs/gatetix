@@ -288,11 +288,27 @@ export default function Checkout() {
                     <Input
                       id="promo"
                       value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
+                      onChange={(e) =>
+                        setPromoCode(e.target.value.toUpperCase())
+                      }
                       placeholder="Masukkan kode"
-                      className="rounded-xl"
+                      className="rounded-xl font-mono"
                     />
-                    <Button variant="outline" className="rounded-xl">
+                    <Button
+                      variant="outline"
+                      className="rounded-xl"
+                      onClick={() => {
+                        if (promoCode === "MERDEKA20") {
+                          alert("Kode promo berhasil diterapkan! Diskon 20%");
+                        } else if (promoCode === "SELAMATDATANG") {
+                          alert(
+                            "Kode promo berhasil diterapkan! Diskon Rp 25.000"
+                          );
+                        } else if (promoCode) {
+                          alert("Kode promo tidak valid atau sudah kadaluarsa");
+                        }
+                      }}
+                    >
                       Terapkan
                     </Button>
                   </div>

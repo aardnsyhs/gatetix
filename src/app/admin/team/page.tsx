@@ -5,6 +5,7 @@ import { UserPlus, MoreVertical, Shield, Mail, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -12,6 +13,31 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const teamMembers = [
   {
@@ -77,12 +103,43 @@ const roles = [
 
 export default function TeamRoles() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
+  const [isRoleOpen, setIsRoleOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<
+    (typeof teamMembers)[0] | null
+  >(null);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState("Staff");
 
   const filteredMembers = teamMembers.filter(
     (member) =>
       member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       member.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleInvite = () => {
+    alert(`Undangan berhasil dikirim ke ${inviteEmail} sebagai ${inviteRole}!`);
+    setIsInviteOpen(false);
+    setInviteEmail("");
+    setInviteRole("Staff");
+  };
+
+  const handleChangeRole = () => {
+    alert(`Peran ${selectedMember?.name} berhasil diubah!`);
+    setIsRoleOpen(false);
+    setSelectedMember(null);
+  };
+
+  const handleResendInvite = (member: (typeof teamMembers)[0]) => {
+    alert(`Undangan berhasil dikirim ulang ke ${member.email}!`);
+  };
+
+  const handleDelete = () => {
+    alert(`${selectedMember?.name} berhasil dihapus dari tim!`);
+    setIsDeleteOpen(false);
+    setSelectedMember(null);
+  };
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -93,7 +150,10 @@ export default function TeamRoles() {
             Kelola anggota tim dan izin akses
           </p>
         </div>
-        <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
+        <Button
+          onClick={() => setIsInviteOpen(true)}
+          className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+        >
           <UserPlus className="h-4 w-4 mr-2" />
           Undang Anggota
         </Button>
@@ -170,15 +230,30 @@ export default function TeamRoles() {
                           align="end"
                           className="rounded-xl w-44"
                         >
-                          <DropdownMenuItem className="rounded-lg cursor-pointer">
+                          <DropdownMenuItem
+                            className="rounded-lg cursor-pointer"
+                            onClick={() => {
+                              setSelectedMember(member);
+                              setIsRoleOpen(true);
+                            }}
+                          >
                             <Shield className="h-4 w-4 mr-2" />
                             Ubah Peran
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="rounded-lg cursor-pointer">
+                          <DropdownMenuItem
+                            className="rounded-lg cursor-pointer"
+                            onClick={() => handleResendInvite(member)}
+                          >
                             <Mail className="h-4 w-4 mr-2" />
                             Kirim Ulang Undangan
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                          <DropdownMenuItem
+                            className="rounded-lg cursor-pointer text-destructive focus:text-destructive"
+                            onClick={() => {
+                              setSelectedMember(member);
+                              setIsDeleteOpen(true);
+                            }}
+                          >
                             <Trash2 className="h-4 w-4 mr-2" />
                             Hapus
                           </DropdownMenuItem>
@@ -223,6 +298,126 @@ export default function TeamRoles() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Invite Member Dialog */}
+      <Dialog open={isInviteOpen} onOpenChange={setIsInviteOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Undang Anggota Baru</DialogTitle>
+            <DialogDescription>
+              Kirim undangan ke email untuk bergabung dengan tim
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="invite-email">Email</Label>
+              <Input
+                id="invite-email"
+                type="email"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                placeholder="email@contoh.com"
+                className="rounded-xl"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="invite-role">Peran</Label>
+              <Select value={inviteRole} onValueChange={setInviteRole}>
+                <SelectTrigger className="rounded-xl">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Admin">Admin</SelectItem>
+                  <SelectItem value="Manager">Manager</SelectItem>
+                  <SelectItem value="Staff">Staff</SelectItem>
+                  <SelectItem value="Staff Check-in">Staff Check-in</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsInviteOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleInvite}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              <Mail className="h-4 w-4 mr-2" />
+              Kirim Undangan
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Change Role Dialog */}
+      <Dialog open={isRoleOpen} onOpenChange={setIsRoleOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Ubah Peran</DialogTitle>
+            <DialogDescription>
+              Ubah peran untuk {selectedMember?.name}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Peran Baru</Label>
+              <Select defaultValue={selectedMember?.role}>
+                <SelectTrigger className="rounded-xl">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Admin">Admin</SelectItem>
+                  <SelectItem value="Manager">Manager</SelectItem>
+                  <SelectItem value="Staff">Staff</SelectItem>
+                  <SelectItem value="Staff Check-in">Staff Check-in</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsRoleOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleChangeRole}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              Simpan
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Anggota?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menghapus {selectedMember?.name} dari tim?
+              Mereka tidak akan bisa mengakses dashboard lagi.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-xl">Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
+            >
+              Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -81,7 +81,18 @@ export default function Settings() {
                       <span className="text-2xl font-bold text-white">GT</span>
                     </div>
                     <div>
-                      <Button variant="outline" className="rounded-xl">
+                      <Button
+                        variant="outline"
+                        className="rounded-xl"
+                        onClick={() => {
+                          const input = document.createElement("input");
+                          input.type = "file";
+                          input.accept = "image/*";
+                          input.onchange = () =>
+                            alert("Logo berhasil diupload!");
+                          input.click();
+                        }}
+                      >
                         <Palette className="h-4 w-4 mr-2" />
                         Ubah Logo
                       </Button>
@@ -141,7 +152,10 @@ export default function Settings() {
                 </div>
 
                 <div className="pt-4 border-t border-border">
-                  <Button className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
+                  <Button
+                    className="gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+                    onClick={() => alert("Pengaturan berhasil disimpan!")}
+                  >
                     <Save className="h-4 w-4 mr-2" />
                     Simpan Perubahan
                   </Button>
@@ -162,7 +176,10 @@ export default function Settings() {
                     Konfigurasi gateway pembayaran dan pengaturan pencairan
                     untuk organisasi Anda.
                   </p>
-                  <Button className="mt-6 gt-gradient-primary border-0 hover:opacity-90 rounded-xl">
+                  <Button
+                    className="mt-6 gt-gradient-primary border-0 hover:opacity-90 rounded-xl"
+                    onClick={() => alert("Fitur ini akan segera tersedia!")}
+                  >
                     Hubungkan Gateway Pembayaran
                   </Button>
                 </div>

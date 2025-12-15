@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Table,
   TableBody,
@@ -21,6 +23,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const attendees = [
   {
@@ -77,6 +87,9 @@ const attendees = [
 
 export default function AdminAttendees() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isEmailOpen, setIsEmailOpen] = useState(false);
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
 
   const filteredAttendees = attendees.filter(
     (attendee) =>
@@ -84,6 +97,49 @@ export default function AdminAttendees() {
       attendee.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const checkedInCount = attendees.filter((a) => a.checkedIn).length;
+
+  const handleExport = () => {
+    const headers = [
+      "Nama",
+      "Email",
+      "Event",
+      "Jenis Tiket",
+      "Status",
+      "Waktu Check-in",
+      "Gate",
+    ];
+    const csvContent = [
+      headers.join(","),
+      ...filteredAttendees.map((a) =>
+        [
+          a.name,
+          a.email,
+          a.event,
+          a.ticketType,
+          a.checkedIn ? "Sudah Masuk" : "Belum Masuk",
+          a.checkInTime || "-",
+          a.gate || "-",
+        ].join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "peserta-gatetix.csv";
+    link.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  const handleSendEmail = () => {
+    alert(
+      `Email berhasil dikirim ke ${attendees.length} peserta!\n\nSubjek: ${emailSubject}`
+    );
+    setIsEmailOpen(false);
+    setEmailSubject("");
+    setEmailMessage("");
+  };
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -95,11 +151,19 @@ export default function AdminAttendees() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="ghost" className="rounded-xl">
+          <Button
+            variant="ghost"
+            className="rounded-xl"
+            onClick={() => setIsEmailOpen(true)}
+          >
             <Mail className="h-4 w-4 mr-2" />
             Email Semua
           </Button>
-          <Button variant="outline" className="rounded-xl">
+          <Button
+            variant="outline"
+            className="rounded-xl"
+            onClick={handleExport}
+          >
             <Download className="h-4 w-4 mr-2" />
             Ekspor
           </Button>
@@ -240,6 +304,57 @@ export default function AdminAttendees() {
           </div>
         </div>
       </Card>
+
+      {/* Email Dialog */}
+      <Dialog open={isEmailOpen} onOpenChange={setIsEmailOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Kirim Email ke Semua Peserta</DialogTitle>
+            <DialogDescription>
+              Email akan dikirim ke {attendees.length} peserta
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="email-subject">Subjek</Label>
+              <Input
+                id="email-subject"
+                value={emailSubject}
+                onChange={(e) => setEmailSubject(e.target.value)}
+                placeholder="Masukkan subjek email"
+                className="rounded-xl"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email-message">Pesan</Label>
+              <Textarea
+                id="email-message"
+                value={emailMessage}
+                onChange={(e) => setEmailMessage(e.target.value)}
+                placeholder="Tulis pesan Anda..."
+                rows={5}
+                className="rounded-xl resize-none"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsEmailOpen(false)}
+              className="rounded-xl"
+            >
+              Batal
+            </Button>
+            <Button
+              onClick={handleSendEmail}
+              className="gt-gradient-primary border-0 rounded-xl"
+            >
+              <Mail className="h-4 w-4 mr-2" />
+              Kirim Email
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

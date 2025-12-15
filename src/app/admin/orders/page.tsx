@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Eye, Filter, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Download,
+  Eye,
+  Filter,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,6 +21,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const orders = [
   {
@@ -75,12 +102,56 @@ const orders = [
 
 export default function AdminOrders() {
   const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredOrders = orders.filter(
-    (order) =>
-      order.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.id.toLowerCase().includes(searchQuery.toLowerCase())
+  const [selectedOrder, setSelectedOrder] = useState<(typeof orders)[0] | null>(
+    null
   );
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("all");
+
+  const filteredOrders = orders.filter((order) => {
+    const matchesSearch =
+      order.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.id.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || order.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const handleExportCSV = () => {
+    const headers = [
+      "ID",
+      "Pelanggan",
+      "Email",
+      "Event",
+      "Tiket",
+      "Jumlah",
+      "Status",
+      "Tanggal",
+    ];
+    const csvContent = [
+      headers.join(","),
+      ...filteredOrders.map((order) =>
+        [
+          order.id,
+          order.customer,
+          order.email,
+          order.event,
+          order.tickets,
+          order.amount,
+          order.status,
+          order.date,
+        ].join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "pesanan-gatetix.csv";
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
 
   const getStatusStyle = (status: string) => {
     switch (status) {
@@ -104,7 +175,11 @@ export default function AdminOrders() {
             Lihat dan kelola semua pesanan tiket
           </p>
         </div>
-        <Button variant="outline" className="rounded-xl">
+        <Button
+          variant="outline"
+          className="rounded-xl"
+          onClick={handleExportCSV}
+        >
           <Download className="h-4 w-4 mr-2" />
           Ekspor CSV
         </Button>
@@ -118,9 +193,21 @@ export default function AdminOrders() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="flex-1 max-w-md rounded-xl"
         />
-        <Button variant="ghost" className="rounded-xl">
+        <Button
+          variant="ghost"
+          className="rounded-xl"
+          onClick={() => setIsFilterOpen(true)}
+        >
           <Filter className="h-4 w-4 mr-2" />
           Filter
+          {statusFilter !== "all" && (
+            <Badge
+              variant="secondary"
+              className="ml-2 bg-primary/10 text-primary"
+            >
+              1
+            </Badge>
+          )}
         </Button>
       </div>
 
@@ -194,6 +281,7 @@ export default function AdminOrders() {
                     variant="ghost"
                     size="icon"
                     className="opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"
+                    onClick={() => setSelectedOrder(order)}
                   >
                     <Eye className="h-4 w-4" />
                   </Button>
@@ -235,6 +323,105 @@ export default function AdminOrders() {
           </div>
         </div>
       </Card>
+
+      {/* Order Detail Sheet */}
+      <Sheet open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
+        <SheetContent className="gt-card-glow">
+          <SheetHeader>
+            <SheetTitle>Detail Pesanan</SheetTitle>
+          </SheetHeader>
+          <div className="space-y-6 mt-6">
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">ID Pesanan</p>
+              <p className="font-mono font-medium">{selectedOrder?.id}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Pelanggan</p>
+              <p className="font-medium">{selectedOrder?.customer}</p>
+              <p className="text-sm text-muted-foreground">
+                {selectedOrder?.email}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Event</p>
+              <p className="font-medium">{selectedOrder?.event}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Jumlah Tiket</p>
+              <p>{selectedOrder?.tickets} tiket</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">
+                Total Pembayaran
+              </p>
+              <p className="text-xl font-bold text-primary">
+                Rp {selectedOrder?.amount.toLocaleString("id-ID")}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Status</p>
+              <Badge className={getStatusStyle(selectedOrder?.status || "")}>
+                {selectedOrder?.status === "completed"
+                  ? "Selesai"
+                  : selectedOrder?.status === "pending"
+                  ? "Tertunda"
+                  : "Dikembalikan"}
+              </Badge>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">
+                Tanggal & Waktu
+              </p>
+              <p>
+                {selectedOrder?.date} • {selectedOrder?.time}
+              </p>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* Filter Dialog */}
+      <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Filter Pesanan</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="status-filter">Status</Label>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="rounded-xl">
+                  <SelectValue placeholder="Pilih status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Semua Status</SelectItem>
+                  <SelectItem value="completed">Selesai</SelectItem>
+                  <SelectItem value="pending">Tertunda</SelectItem>
+                  <SelectItem value="refunded">Dikembalikan</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              className="flex-1 rounded-xl"
+              onClick={() => {
+                setStatusFilter("all");
+                setIsFilterOpen(false);
+              }}
+            >
+              Reset
+            </Button>
+            <Button
+              className="flex-1 gt-gradient-primary border-0 rounded-xl"
+              onClick={() => setIsFilterOpen(false)}
+            >
+              Terapkan
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
