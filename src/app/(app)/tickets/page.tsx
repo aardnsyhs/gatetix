@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Calendar, MapPin, QrCode, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -178,11 +179,13 @@ export default function MyTickets() {
               <DialogTitle>{selectedTicket?.eventName}</DialogTitle>
             </DialogHeader>
             <div className="text-center">
-              <div className="bg-white p-6 rounded-2xl mb-6">
-                <img
-                  src={selectedTicket?.qrCode}
+              <div className="bg-white p-6 rounded-2xl mb-6 relative aspect-square">
+                <Image
+                  src={selectedTicket?.qrCode || ""}
                   alt="Ticket QR Code"
-                  className="w-full aspect-square"
+                  fill
+                  className="object-contain"
+                  unoptimized
                 />
               </div>
               <p className="text-sm text-muted-foreground mb-2">

@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function Login() {
+export default function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,10 +20,8 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2 mb-8">
             <div className="w-10 h-10 gt-gradient-primary rounded-xl flex items-center justify-center">
               <Ticket className="h-5 w-5 text-white" strokeWidth={2.5} />
@@ -57,9 +56,9 @@ export default function Login() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <a href="#" className="text-sm text-primary hover:underline">
+                <Link href="#" className="text-sm text-primary hover:underline">
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -81,14 +80,16 @@ export default function Login() {
               <input
                 type="checkbox"
                 id="remember"
-                className="rounded border-border"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
               />
-              <label
+              <Label
                 htmlFor="remember"
-                className="text-sm text-muted-foreground"
+                className="text-sm text-muted-foreground cursor-pointer"
               >
                 Remember me
-              </label>
+              </Label>
             </div>
 
             <Button
@@ -112,10 +113,15 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Right Side - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <div className="absolute inset-0 gt-gradient-hero" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920')] bg-cover bg-center opacity-30" />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920')",
+          }}
+        />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center text-white">
             <h2 className="text-4xl font-bold mb-4">Your next event awaits</h2>

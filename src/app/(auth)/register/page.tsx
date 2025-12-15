@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function Register() {
+export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -16,6 +16,7 @@ export default function Register() {
     email: "",
     password: "",
   });
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,10 +25,15 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Side - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <div className="absolute inset-0 gt-gradient-secondary" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1920')] bg-cover bg-center opacity-30" />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1920')",
+          }}
+        />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center text-white">
             <h2 className="text-4xl font-bold mb-4">Join the community</h2>
@@ -39,10 +45,8 @@ export default function Register() {
         </div>
       </div>
 
-      {/* Right Side - Form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2 mb-8">
             <div className="w-10 h-10 gt-gradient-primary rounded-xl flex items-center justify-center">
               <Ticket className="h-5 w-5 text-white" strokeWidth={2.5} />
@@ -133,19 +137,24 @@ export default function Register() {
               <input
                 type="checkbox"
                 id="terms"
-                className="rounded border-border mt-1"
+                checked={agreeTerms}
+                onChange={(e) => setAgreeTerms(e.target.checked)}
+                className="h-4 w-4 mt-0.5 rounded border-gray-300 text-primary focus:ring-primary"
                 required
               />
-              <label htmlFor="terms" className="text-sm text-muted-foreground">
+              <Label
+                htmlFor="terms"
+                className="text-sm text-muted-foreground cursor-pointer"
+              >
                 I agree to the{" "}
-                <a href="#" className="text-primary hover:underline">
+                <Link href="#" className="text-primary hover:underline">
                   Terms of Service
-                </a>{" "}
+                </Link>{" "}
                 and{" "}
-                <a href="#" className="text-primary hover:underline">
+                <Link href="#" className="text-primary hover:underline">
                   Privacy Policy
-                </a>
-              </label>
+                </Link>
+              </Label>
             </div>
 
             <Button

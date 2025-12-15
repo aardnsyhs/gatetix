@@ -152,28 +152,28 @@ export default function PublicLayout({
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
                     Features
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
                     Pricing
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
                     Integrations
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -181,28 +181,28 @@ export default function PublicLayout({
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
                     About
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
                     Blog
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
                     Careers
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -218,20 +218,20 @@ export default function PublicLayout({
                   </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     href="#"
                     className="hover:text-foreground transition-smooth"
                   >
                     Privacy
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

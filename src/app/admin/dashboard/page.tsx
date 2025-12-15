@@ -221,7 +221,10 @@ export default function AdminDashboard() {
               ))}
             </div>
             <div className="p-4 border-t border-border">
-              <button className="text-sm text-primary font-medium hover:underline">
+              <button
+                type="button"
+                className="text-sm text-primary font-medium hover:underline"
+              >
                 View all orders →
               </button>
             </div>

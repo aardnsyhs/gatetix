@@ -169,7 +169,10 @@ export default function AuditLogs() {
           </div>
 
           <div className="p-4 border-t border-border text-center">
-            <button className="text-sm text-primary font-medium hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary font-medium hover:underline"
+            >
               Load more logs
             </button>
           </div>

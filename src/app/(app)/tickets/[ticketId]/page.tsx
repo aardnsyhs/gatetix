@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Calendar,
   MapPin,
@@ -211,11 +212,13 @@ export default function TicketDetail({
             <Card className="gt-card-glow sticky top-24">
               <CardContent className="p-6 text-center">
                 <h3 className="font-semibold mb-4">Your Ticket</h3>
-                <div className="bg-white p-4 rounded-2xl mb-4">
-                  <img
+                <div className="bg-white p-4 rounded-2xl mb-4 relative aspect-square">
+                  <Image
                     src={ticket.qrCode}
                     alt="Ticket QR Code"
-                    className="w-full aspect-square"
+                    fill
+                    className="object-contain"
+                    unoptimized
                   />
                 </div>
                 <p className="text-sm text-muted-foreground mb-6">

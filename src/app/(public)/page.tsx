@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Search,
   Music,
@@ -101,7 +102,13 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 gt-gradient-hero opacity-95" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920')] bg-cover bg-center opacity-20" />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920')",
+          }}
+        />
         <div className="gt-container relative z-10 py-24 lg:py-32">
           <div className="max-w-3xl mx-auto text-center">
             <Badge
@@ -213,10 +220,12 @@ export default function LandingPage() {
               <Link key={event.id} href={`/events/${event.slug}`}>
                 <Card className="gt-card-glow overflow-hidden group">
                   <div className="relative h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={event.image}
                       alt={event.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <div className="absolute bottom-3 left-3">
@@ -284,7 +293,13 @@ export default function LandingPage() {
       <section className="gt-section">
         <div className="gt-container">
           <div className="gt-gradient-hero rounded-3xl p-8 sm:p-12 lg:p-16 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1920')] bg-cover bg-center opacity-10" />
+            <div
+              className="absolute inset-0 bg-cover bg-center opacity-10"
+              style={{
+                backgroundImage:
+                  "url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1920')",
+              }}
+            />
             <div className="relative z-10">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
                 Ready to Create Your Own Event?

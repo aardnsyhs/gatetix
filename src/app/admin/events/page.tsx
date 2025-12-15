@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Plus,
   Calendar,
@@ -128,10 +129,12 @@ export default function AdminEvents() {
           <Card key={event.id} className="gt-card-glow overflow-hidden group">
             {/* Event Image */}
             <div className="relative h-40 overflow-hidden">
-              <img
+              <Image
                 src={event.image}
                 alt={event.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                unoptimized
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute top-3 right-3">

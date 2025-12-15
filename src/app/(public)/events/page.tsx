@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -167,10 +168,12 @@ export default function EventListing() {
             <Link key={event.id} href={`/events/${event.slug}`}>
               <Card className="gt-card-glow overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
                 <div className="relative h-48 overflow-hidden">
-                  <img
+                  <Image
                     src={event.image}
                     alt={event.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <Badge className="absolute top-3 left-3" variant="secondary">

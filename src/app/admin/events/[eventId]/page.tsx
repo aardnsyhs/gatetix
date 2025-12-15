@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeft,
   Calendar,
@@ -176,11 +177,13 @@ export default function EventDetailAdmin({
                 <CardTitle>Event Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="aspect-video rounded-xl overflow-hidden">
-                  <img
+                <div className="aspect-video rounded-xl overflow-hidden relative">
+                  <Image
                     src={event.image}
                     alt={event.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    unoptimized
                   />
                 </div>
                 <div>

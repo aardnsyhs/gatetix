@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -75,10 +76,13 @@ export default function EventDetail({ params }: { params: { slug: string } }) {
     <div className="min-h-screen bg-background">
       {/* Hero Banner */}
       <div className="relative h-80 sm:h-96">
-        <img
+        <Image
           src={event.image}
           alt={event.title}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          unoptimized
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
       </div>
